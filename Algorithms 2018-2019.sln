@@ -41,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsParallel", "IsParallel\Is
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components", "Components\Components.csproj", "{EA2CA5A9-5DB0-47BF-835A-601CD8EF99B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pathbge1", "Pathbge1\Pathbge1.csproj", "{08C64278-BD1B-4565-B703-E8D4CE46EAF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maze", "Maze\Maze.csproj", "{3582D403-7B06-48E8-A22F-B931F6583028}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,14 @@ Global
 		{EA2CA5A9-5DB0-47BF-835A-601CD8EF99B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA2CA5A9-5DB0-47BF-835A-601CD8EF99B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA2CA5A9-5DB0-47BF-835A-601CD8EF99B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08C64278-BD1B-4565-B703-E8D4CE46EAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08C64278-BD1B-4565-B703-E8D4CE46EAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08C64278-BD1B-4565-B703-E8D4CE46EAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08C64278-BD1B-4565-B703-E8D4CE46EAF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3582D403-7B06-48E8-A22F-B931F6583028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3582D403-7B06-48E8-A22F-B931F6583028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3582D403-7B06-48E8-A22F-B931F6583028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3582D403-7B06-48E8-A22F-B931F6583028}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
