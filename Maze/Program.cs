@@ -9,7 +9,8 @@ namespace Maze
 {
     class Program
     {
-        static int[][] length; 
+        static int[][] length;
+        static bool isFound = false;
         static void Main(string[] args)
         {
             List<char> commands = new List<char>();
@@ -44,7 +45,9 @@ namespace Maze
                     }
                 }
             }
-            FindShortestWay(finishRowPos, finishColPos, colCount, rowCount, ref commands);
+            if (isFound)
+                FindShortestWay(finishRowPos, finishColPos, colCount, rowCount, ref commands);
+            else commands.Clear();
             using (var outFile = new StreamWriter("output.txt"))
             {
                 /*for (int i = 0; i < rowCount; i++)
@@ -66,7 +69,7 @@ namespace Maze
                 }
                 */
                 commands.Reverse();
-                outFile.WriteLine(commands.Count);
+                outFile.WriteLine(commands.Count == 0 ? -1 : commands.Count);
                 outFile.Write(string.Join("", commands));
             }
         }
@@ -99,6 +102,8 @@ namespace Maze
                             length[i][j] = 10000000;
                             finishRowPos = i;
                             finishColPos = j;
+                            isFound = true;
+                            return;
                         }
                     }
                 }
@@ -119,6 +124,7 @@ namespace Maze
                             continue;
                         if (length[i][j] < minNeighb)
                         {
+
                             minNeighb = length[i][j];
                             minRow = i;
                             minCol = j;
