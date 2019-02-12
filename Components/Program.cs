@@ -30,7 +30,7 @@ namespace Components
             for (int i = 0; i < vertexCount; i++)
             {
                 if(!visited[i])
-                    BFS(ref matrix, i, vertexCount, ref componentNumber);
+                    BFS(matrix, i, vertexCount, ref componentNumber);
             }
             using (var outFile = new StreamWriter("components.out"))
             {
@@ -41,7 +41,7 @@ namespace Components
                 }
             }
         }
-        static void BFS(ref int[,] matrix, int startVertex, int vertexCount, ref int compNum)
+        static void BFS(int[,] matrix, int startVertex, int vertexCount, ref int compNum)
         {
             Queue<int> dfsqueue = new Queue<int>();
             dfsqueue.Enqueue(startVertex);
