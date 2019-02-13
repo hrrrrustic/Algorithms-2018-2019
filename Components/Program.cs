@@ -11,56 +11,60 @@ namespace Components
     {
         static bool[] visited;
         static int[] vertexList;
+        static List<int>[] adjList;
+        static int componentNumber = 1;
         static void Main(string[] args)
         {
-            int componentNumber = 1;
             string[] data = File.ReadAllLines("components.in");
-            int vertexCount = int.Parse(data[0].Split(' ').First());
-            int edgeCount = int.Parse(data[0].Split(' ').Last());
+            string[] splittedInfo = data[0].Split(' ');
+            int vertexCount = int.Parse(splittedInfo[0]);
+            int edgeCount = int.Parse(splittedInfo[1]);
             vertexList = new int[vertexCount];
             visited = new bool[vertexCount];
-            int[,] matrix = new int[vertexCount, vertexCount];
+            adjList = new List<int>[vertexCount];
             for (int i = 0; i < edgeCount; i++)
             {
-                int j = int.Parse(data[i + 1].Split(' ').First()) - 1;
-                int k = int.Parse(data[i + 1].Split(' ').Last()) - 1;
-                matrix[j, k] = 1;
-                matrix[k, j] = 1;
+                string[] splittedData = data[i + 1].Split(' ');
+                int j = int.Parse(splittedData[0]) - 1;
+                int k = int.Parse(splittedData[1]) - 1;
+                if (adjList[j] == null)
+                    adjList[j] = new List<int>();
+                adjList[j].Add(k);
+                if (adjList[k] == null)
+                    adjList[k] = new List<int>();
+                adjList[k].Add(j);
             }
             for (int i = 0; i < vertexCount; i++)
             {
-                if(!visited[i])
-                    BFS(matrix, i, vertexCount, ref componentNumber);
+                if (!visited[i])
+                    BFS(i, vertexCount);
             }
-            using (var outFile = new StreamWriter("components.out"))
-            {
-                outFile.WriteLine(componentNumber - 1);
-                for (int i = 0; i < vertexCount; i++)
-                {
-                    outFile.Write(vertexList[i] + " ");
-                }
-            }
+            string answer = $"{ componentNumber - 1}" +"\r\n" + string.Join(" ", vertexList);
+            File.WriteAllText("components.out", answer);
         }
-        static void BFS(int[,] matrix, int startVertex, int vertexCount, ref int compNum)
+        static void BFS(int startVertex, int vertexCount)
         {
             Queue<int> dfsqueue = new Queue<int>();
             dfsqueue.Enqueue(startVertex);
             visited[startVertex] = true;
-            vertexList[startVertex] = compNum;
+            vertexList[startVertex] = componentNumber;
             while (dfsqueue.Count != 0)
             {
                 int curr = dfsqueue.Dequeue();
-                for (int i = startVertex; i < vertexCount; i++)
+                if (adjList[curr] != null)
                 {
-                    if(matrix[curr, i] == 1 && visited[i] == false)
+                    for (int i = 0; i < adjList[curr].Count; i++)
                     {
-                        visited[i] = true;
-                        vertexList[i] = compNum;
-                        dfsqueue.Enqueue(i);
+                        if (!visited[adjList[curr][i]])
+                        {
+                            visited[adjList[curr][i]] = true;
+                            vertexList[adjList[curr][i]] = componentNumber;
+                            dfsqueue.Enqueue(adjList[curr][i]);
+                        }
                     }
                 }
             }
-            compNum++;
-        }   
+            componentNumber++;
+        }
     }
 }

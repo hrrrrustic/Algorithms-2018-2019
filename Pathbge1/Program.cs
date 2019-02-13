@@ -11,51 +11,53 @@ namespace Pathbge1
     {
         static bool[] visited;
         static int[] vertexList;
+        static List<int>[] adjList;
         static void Main(string[] args)
         {
-            int path = 0;
             string[] data = File.ReadAllLines("pathbge1.in");
-            int vertexCount = int.Parse(data[0].Split(' ').First());
-            int edgeCount = int.Parse(data[0].Split(' ').Last());
+            string[] splittedInfo = data[0].Split(' ');
+            int vertexCount = int.Parse(splittedInfo[0]);
+            int edgeCount = int.Parse(splittedInfo[1]);
             vertexList = new int[vertexCount];
             visited = new bool[vertexCount];
-            int[,] matrix = new int[vertexCount, vertexCount];
+            adjList = new List<int>[vertexCount];
             for (int i = 0; i < edgeCount; i++)
             {
-                int j = int.Parse(data[i + 1].Split(' ').First()) - 1;
-                int k = int.Parse(data[i + 1].Split(' ').Last()) - 1;
-                matrix[j, k] = 1;
-                matrix[k, j] = 1;
+                string[] splittedData = data[i + 1].Split(' ');
+                int j = int.Parse(splittedData[0]) - 1;
+                int k = int.Parse(splittedData[1]) - 1;
+                if (adjList[j] == null)
+                    adjList[j] = new List<int>();
+                adjList[j].Add(k);
+                if (adjList[k] == null)
+                    adjList[k] = new List<int>();
+                adjList[k].Add(j);
             }
-            BFS(ref matrix, 0, vertexCount, path);
-            using (var outFile = new StreamWriter("pathbge1.out"))
-            {
-                for (int i = 0; i < vertexCount; i++)
-                {
-                    outFile.Write(vertexList[i] + " ");
-                }
-            }
+            BFS(0, vertexCount);
+            string answer = string.Join(" ", vertexList);
+            Console.WriteLine(answer);
         }
-        static void BFS(ref int[,] matrix, int startVertex, int vertexCount, int path)
+        static void BFS(int startVertex, int vertexCount)
         {
             Queue<int> dfsqueue = new Queue<int>();
             dfsqueue.Enqueue(startVertex);
             visited[startVertex] = true;
-            vertexList[startVertex] = path;
-            path++;
+            vertexList[startVertex] = 0;
             while (dfsqueue.Count != 0)
             {
                 int curr = dfsqueue.Dequeue();
-                for (int i = startVertex; i < vertexCount; i++)
-                {
-                    if (matrix[curr, i] == 1 && visited[i] == false)
+                if (adjList[curr] != null)
+                   {
+                    for (int i = 0; i < adjList[curr].Count; i++)
                     {
-                        visited[i] = true;
-                        vertexList[i] = path;
-                        dfsqueue.Enqueue(i);
+                        if (!visited[adjList[curr][i]])
+                        {
+                            visited[adjList[curr][i]] = true;
+                            vertexList[adjList[curr][i]] = vertexList[curr] + 1;
+                            dfsqueue.Enqueue(adjList[curr][i]);
+                        }
                     }
                 }
-                path++;
             }
         }
     }
