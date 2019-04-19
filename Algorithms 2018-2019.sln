@@ -73,7 +73,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search2", "Search2\Search2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prefix", "Prefix\Prefix.csproj", "{9877E174-264E-427F-B6C7-02B15891ED57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASD", "ASD\ASD.csproj", "{FAB53C2A-E6AB-42D5-BD2E-D5399B8812DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algorithms and Structures by PCMS", "ASD\Algorithms and Structures by PCMS.csproj", "{FAB53C2A-E6AB-42D5-BD2E-D5399B8812DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
