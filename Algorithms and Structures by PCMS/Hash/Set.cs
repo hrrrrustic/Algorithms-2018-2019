@@ -12,46 +12,42 @@ namespace Hash
         private const int hardDecision = 1000001;
         static void Solve(string[] args)
         {
-            List<string> Answers = new List<string>();                      
-            List<int>[] space = new List<int>[hardDecision];              
-            string[] input = File.ReadAllLines("set.in");                
-            for (int i = 0; i < input.Length; i++)
+            List<string> answers = new List<string>();                      
+            List<int>[] hashTable = new List<int>[hardDecision];              
+            string[] inputData = File.ReadAllLines("set.in");                
+            for (int i = 0; i < inputData.Length; i++)
             {                                                         
-                string[] inputSplitted = input[i].Split(' ');             
-                int value = int.Parse(inputSplitted[1]);
+                string[] splittedData = inputData[i].Split(' ');
+                string command = splittedData[0];
+                int value = int.Parse(splittedData[1]);
                 int position = GetHash(value);
-                switch (inputSplitted[0])
+                switch (command)
                 {
                     case "insert":                                                  
-                        if (space[position] == null)
+                        if (hashTable[position] == null)
                         {
-                            space[position] = new List<int>();
+                            hashTable[position] = new List<int>();
                         }
-                        if (space[position].Contains(value) == false)
+                        if (!hashTable[position].Contains(value))
                         {
-                            space[position].Add(value);
+                            hashTable[position].Add(value);
                         }
                         break;
 
                     case "delete":
-                        space[position]?.Remove(value);
+                        hashTable[position]?.Remove(value);
                         break;
                     case "exists":
-                        Answers.Add((space[position]?.Contains(value) ?? false).ToString().ToLower());
+                        answers.Add((hashTable[position]?.Contains(value) ?? false).ToString().ToLower());
                         break;
                 }
             }
-            using (var outFile = new StreamWriter("set.out"))
-            {
-                outFile.WriteLine(string.Join("\r\n", Answers));
-            }
+            File.WriteAllText("set.out", string.Join("\r\n", answers));
         }
 
-        static int GetHash(int a)
+        private static int GetHash(int valueToHash)
         {
-            int hash;
-            hash = a % hardDecision;
-            return Math.Abs(hash);
+            return Math.Abs(valueToHash % hardDecision);
         }
     }
 }

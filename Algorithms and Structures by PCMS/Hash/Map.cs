@@ -12,86 +12,83 @@ namespace Hash
         static void Solve(string[] args)
         {
             const int hardDecision = 1000000;
-            List<Tuple<string, string>>[] space = new List<Tuple<string, string>>[hardDecision];
+            List<Tuple<string, string>>[] hashTable = new List<Tuple<string, string>>[hardDecision];
             List<string> answers = new List<string>();
-            string[] input = File.ReadAllLines("map.in");
-            for (int i = 0; i < input.Length; i++)
+            string[] inputData = File.ReadAllLines("map.in");
+            for (int i = 0; i < inputData.Length; i++)
             {
-                string[] inputSplitted = input[i].Split(' ');
-                int position = Math.Abs((int)((GetHash(inputSplitted[1])) % hardDecision));
+                string[] inputSplitted = inputData[i].Split(' ');
+                string key = inputSplitted[1];
+                string value = inputSplitted[2];
+                int position = Math.Abs((int)((GetHash(key)) % hardDecision));
+                bool contains = false;
                 switch (inputSplitted[0])
                 {
                     case "put":
-                        bool item = true;
-                        if (space[position] == null)
+                        if (hashTable[position] == null)
                         {
-                            space[position] = new List<Tuple<string, string>>();
+                            hashTable[position] = new List<Tuple<string, string>>();
                         }
-                        for (int j = 0; j < space[position].Count; j++)
+                        for (int j = 0; j < hashTable[position].Count; j++)
                         {
-                            if (space[position][j].Item1 == inputSplitted[1])
+                            if (hashTable[position][j].Item1 == key)
                             {
-                                space[position][j] = Tuple.Create(space[position][j].Item1, inputSplitted[2]);
-                                item = false;
+                                hashTable[position][j] = Tuple.Create(hashTable[position][j].Item1, value);
+                                contains = true;
                                 break;
                             }
                         }
-                        if (item)
+                        if (!contains)
                         {
-                            space[position].Add(Tuple.Create(inputSplitted[1], inputSplitted[2]));
+                            hashTable[position].Add(Tuple.Create(key, value));
                         }
                         break;
                     case "get":
-                        bool item1 = true;
-                        if (space[position] != null)
+                        if (hashTable[position] != null)
                         {
-                            for (int j = 0; j < space[position].Count; j++)
+                            for (int j = 0; j < hashTable[position].Count; j++)
                             {
-                                if (space[position][j].Item1 == inputSplitted[1])
+                                if (hashTable[position][j].Item1 == key)
                                 {
-                                    answers.Add(space[position][j].Item2);
-                                    item1 = false;
+                                    answers.Add(hashTable[position][j].Item2);
+                                    contains = true;
                                     break;
                                 }
                             }
                         }
-                        if (item1)
+                        if (!contains)
                         {
                             answers.Add("none");
                         }
                         break;
                     case "delete":
-                        if (space[position] != null)
+                        if (hashTable[position] != null)
                         {
-                            for (int j = 0; j < space[position].Count; j++)
+                            for (int j = 0; j < hashTable[position].Count; j++)
                             {
-                                if (space[position][j].Item1 == inputSplitted[1])
+                                if (hashTable[position][j].Item1 == key)
                                 {
-                                    space[position].RemoveAt(j);
+                                    hashTable[position].RemoveAt(j);
                                     break;
                                 }
                             }
                         }
                         break;
                 }
-
             }
-            using (var outFile = new StreamWriter("map.out"))
-            {
-                outFile.WriteLine(string.Join("\r\n", answers));
-            }
+            File.WriteAllText("map.out", string.Join("\r\n", answers));
         }
-        static ulong GetHash(string needToHash)
+        static ulong GetHash(string valueToHash)
         {
-            ulong p = 1;
-            ulong dwa = (ulong)1e9 + 7;
-            ulong hash = 0;
-            for (int i = 0; i < needToHash.Length; i++)
+            ulong PrimeNumber = 1;
+            const ulong collisionDecreaser = (ulong)1e9 + 7; // Скорее всего не нужно
+            ulong hashResult = 0;
+            for (int i = 0; i < valueToHash.Length; i++)
             {
-                hash += ((ulong)(needToHash[i] - 'A' + 1) * p);
-                p = p * 31;
+                hashResult += ((ulong)(valueToHash[i] - 'A' + 1) * PrimeNumber);
+                PrimeNumber = PrimeNumber * 31;
             }
-            return hash % dwa;
+            return hashResult % collisionDecreaser;
         }
     }
 }   
