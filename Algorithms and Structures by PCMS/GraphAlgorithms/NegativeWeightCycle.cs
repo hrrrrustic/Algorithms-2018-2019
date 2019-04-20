@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Negative_Cycle
+namespace GraphAlgorithms
 {
-    class Program
+    class FordBellman
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             long[][] data = File.ReadAllLines("negcycle.in").Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray()).ToArray();
             long vertexCount = data[0][0];

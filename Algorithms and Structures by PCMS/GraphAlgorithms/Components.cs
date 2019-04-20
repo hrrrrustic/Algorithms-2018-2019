@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Components
+namespace GraphAlgorithms
 {
-    class Program
+    class BreadthFirstSearchforComponents
     {
         static bool[] visited;
         static int[] vertexList;
         static List<int>[] adjList;
         static int componentNumber = 1;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] data = File.ReadAllLines("components.in");
             string[] splittedInfo = data[0].Split(' ');

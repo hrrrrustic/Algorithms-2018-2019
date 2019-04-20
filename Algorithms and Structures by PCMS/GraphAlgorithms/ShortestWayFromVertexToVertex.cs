@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Shortest1to1
+namespace GraphAlgorithms
 {
 
     public class KVPComparer : IComparer<KeyValuePair<long, long>> // Господи за что?
@@ -23,9 +23,9 @@ namespace Shortest1to1
             else return -1;
         }
     }
-    class Program
+    class DijkstraForWayToVertex
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             long[][] data = File.ReadAllLines("pathmgep.in").Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray()).ToArray();
             long vertexCount = data[0][0];

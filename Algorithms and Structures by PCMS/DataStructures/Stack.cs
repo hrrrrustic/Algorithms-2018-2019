@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace Stack
+namespace DataStructures
 {
-    class Program
+    class Stack
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             int[] StackSimulator;
             int Counter;

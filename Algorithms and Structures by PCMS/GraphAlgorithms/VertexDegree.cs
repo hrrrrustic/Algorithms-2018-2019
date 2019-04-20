@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace DejCount
+namespace GraphAlgorithms
 {
-    class Program
+    class Matrix
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             
             string[] data = File.ReadAllLines("input.txt");

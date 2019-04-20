@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Map
+namespace Hash
 {
-    class Program
+    class HashTableforMap
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             const int hardDecision = 1000000;
             List<Tuple<string, string>>[] space = new List<Tuple<string, string>>[hardDecision];

@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Garland
+namespace BinarySearch
 {
-    class Garland
+    class BinarySearchForGarland
     {
         //Correct algorithm, but problem with rounding 
         static double answer;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] Input;
             using (var file = new StreamReader("garland.in"))

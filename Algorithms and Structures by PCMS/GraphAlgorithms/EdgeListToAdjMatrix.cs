@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Adjacency_Matrix
+namespace GraphAlgorithms
 {
-    class Program
+    class MatrixForEdjeToMatrix
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] data = File.ReadAllLines("input.txt");
             int vertexCount = int.Parse(data[0].Split(' ').First());

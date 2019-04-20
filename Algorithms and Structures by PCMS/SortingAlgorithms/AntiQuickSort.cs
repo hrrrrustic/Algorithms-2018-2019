@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace AntiQuickSort
+namespace SortingAlgorithms
 {
-    class AntiQuickSort
+    class QuickSortForAnti
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             int n, help;
             using (var file = new StreamReader("antiqs.in"))

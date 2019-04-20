@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Inversions
+namespace SortingAlgorithms
 {
-    class Program
+    class MergeSortForInversions
     {
         static decimal d = 0;
         static int[] Merge_Sort(int[] massive)
@@ -49,7 +49,7 @@ namespace Inversions
             }
             return merged;
         }
-        static void Main()
+        static void Solve()
         {
             using (var file = new StreamReader("inversions.in"))
             {

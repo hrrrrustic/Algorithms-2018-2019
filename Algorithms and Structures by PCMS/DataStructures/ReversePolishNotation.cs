@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace postfix
+namespace DataStructures
 {
-    class Program
+    class StackForPolishNotation
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] input;
             bool result = false;

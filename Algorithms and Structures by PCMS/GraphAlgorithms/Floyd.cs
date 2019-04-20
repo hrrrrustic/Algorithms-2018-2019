@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Floyd
+namespace GraphAlgorithms
 {
-    class Program
+    class Floyd
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             int[][] data = File.ReadAllLines("pathsg.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
             int vertexCount = data[0][0];

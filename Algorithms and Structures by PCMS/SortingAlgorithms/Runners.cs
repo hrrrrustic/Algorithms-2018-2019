@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace Runners
+namespace SortingAlgorithms
 {
-    class Program
+    class MergeSortForRunners
     {
         static List<string> Merge_Sort(List<string> massive)
         {
@@ -46,7 +46,7 @@ namespace Runners
             }
             return merged;
         }
-        static void Main()
+        static void Solve()
         {
             Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
 

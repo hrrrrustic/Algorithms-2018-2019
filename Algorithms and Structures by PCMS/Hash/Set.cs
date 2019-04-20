@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Set
+namespace Hash
 {
-    class Set
+    class HashTableForSet
     {
         private const int hardDecision = 1000001;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             List<string> Answers = new List<string>();                      
             List<int>[] space = new List<int>[hardDecision];              

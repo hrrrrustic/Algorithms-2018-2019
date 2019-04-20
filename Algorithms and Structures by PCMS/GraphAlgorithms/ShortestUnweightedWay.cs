@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pathbge1
+namespace GraphAlgorithms
 {
-    class Program
+    class BreadthFirstSearch
     {
         static bool[] visited;
         static int[] vertexList;
         static List<int>[] adjList;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] data = File.ReadAllLines("pathbge1.in");
             string[] splittedInfo = data[0].Split(' ');

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SpanTree2
+namespace GraphAlgorithms
 {
-    public class KVPComparer : IComparer<KeyValuePair<int,int>> // Господи за что?
+    public class KVPComparerForSpanTree : IComparer<KeyValuePair<int,int>> // Господи за что?
     {
         public int Compare(KeyValuePair<int,int> kvp1, KeyValuePair<int,int> kvp2)
         {
@@ -23,9 +23,9 @@ namespace SpanTree2
         }
     }
 
-    class MST
+    class Prima
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             long answer = 0;
             int edgeCount;
@@ -59,7 +59,7 @@ namespace SpanTree2
             {
                 bestdist[i] = 100001;
             }
-            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KVPComparer());
+            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KVPComparerForSpanTree());
             bestdist[0] = 0;
             prim.Add(new KeyValuePair<int, int>(0, 0), 0);
             for (int i = 0; i < vertexCount; i++)

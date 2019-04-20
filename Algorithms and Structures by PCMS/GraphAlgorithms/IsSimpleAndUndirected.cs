@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace IsUndirected
+namespace GraphAlgorithms
 {
-    class Program
+    class MatrixForCheckUndirected
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             bool unDirected = true;
             string[] data = File.ReadAllLines("input.txt");

@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Maze
+namespace GraphAlgorithms
 {
-    class Program
+    class DepthFirstSearchForMaze
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             List<char> commands = new List<char>();
             string[] mazeInfo;

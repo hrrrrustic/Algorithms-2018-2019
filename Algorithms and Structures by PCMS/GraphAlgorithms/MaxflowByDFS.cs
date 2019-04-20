@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Maxflow
+namespace GraphAlgorithms
 {
-    class Program
+    class FordFalkerson
     {
         static bool[] visited;
         static int t;
         static List<Tuple<int,int,int>>[] adjList;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             int[][] data = File.ReadAllLines("maxflow.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
             int vertexCount = data[0][0];

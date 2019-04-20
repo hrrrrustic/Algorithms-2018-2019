@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Heap_Sort
+namespace SortingAlgorithms
 {
     class HeapSort
     {
-        static void Main()
+        static void Solve()
         {
             int ArrayaySize;
             int[] Array;

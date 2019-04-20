@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace IsParallel
+namespace GraphAlgorithms
 {
-    class Program
+    class MatrixForCheckParallel
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             bool isParallel = false;
             string[] data = File.ReadAllLines("input.txt");

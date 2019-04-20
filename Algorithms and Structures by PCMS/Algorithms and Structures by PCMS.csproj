@@ -57,8 +57,8 @@
     <Compile Include="GraphAlgorithms\IsParallel%28Undirected%29.cs" />
     <Compile Include="GraphAlgorithms\IsSimpleAndUndirected.cs" />
     <Compile Include="GraphAlgorithms\MaxflowByDFS.cs" />
-    <Compile Include="GraphAlgorithms\MST.cs" />
-    <Compile Include="GraphAlgorithms\MSTOnCartesianCoordinate.cs" />
+    <Compile Include="GraphAlgorithms\MinSpanTree.cs" />
+    <Compile Include="GraphAlgorithms\MinSpanTreeOnCartesianCoordinate.cs" />
     <Compile Include="GraphAlgorithms\NegativeWeightCycle.cs" />
     <Compile Include="GraphAlgorithms\ShortestUnweightedWay.cs" />
     <Compile Include="GraphAlgorithms\ShortestWayFromVertexToVertex.cs" />

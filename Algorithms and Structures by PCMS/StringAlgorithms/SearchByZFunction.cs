@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Search2
+namespace StringAlgorithms
 {
-    class Program
+    class ZFunction
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] data = File.ReadAllLines("search2.in");
             string pattern = data[0];
