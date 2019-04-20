@@ -20,9 +20,10 @@ namespace Hash
                 string[] inputSplitted = inputData[i].Split(' ');
                 string key = inputSplitted[1];
                 string value = inputSplitted[2];
+                string command = inputSplitted[0];
                 int position = Math.Abs((int)((GetHash(key)) % hardDecision));
                 bool contains = false;
-                switch (inputSplitted[0])
+                switch (command)
                 {
                     case "put":
                         if (hashTable[position] == null)
