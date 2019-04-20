@@ -1,95 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
-namespace Hash
+namespace AlgorithmsAndStructuresByPCMS.Hash
 {
-    class HashTableforMap
+    public class HashTableForMap
     {
-        static void Solve(string[] args)
+        public static void Solve()
         {
             const int hardDecision = 1000000;
-            List<Tuple<string, string>>[] hashTable = new List<Tuple<string, string>>[hardDecision];
-            List<string> answers = new List<string>();
+
+            var hashTable = new List<Tuple<string, string>>[hardDecision];
+            var answers = new List<string>();
             string[] inputData = File.ReadAllLines("map.in");
-            for (int i = 0; i < inputData.Length; i++)
+
+            foreach (string line in inputData)
             {
-                string[] inputSplitted = inputData[i].Split(' ');
-                string key = inputSplitted[1];
-                string value = inputSplitted[2];
-                string command = inputSplitted[0];
+                string[] args = line.Split(' ');
+
+                string command = args[0];
+                string key = args[1];
+                string value = args[2];
+
                 int position = Math.Abs((int)((GetHash(key)) % hardDecision));
-                bool contains = false;
+                
                 switch (command)
                 {
                     case "put":
-                        if (hashTable[position] == null)
-                        {
-                            hashTable[position] = new List<Tuple<string, string>>();
-                        }
-                        for (int j = 0; j < hashTable[position].Count; j++)
-                        {
-                            if (hashTable[position][j].Item1 == key)
-                            {
-                                hashTable[position][j] = Tuple.Create(hashTable[position][j].Item1, value);
-                                contains = true;
-                                break;
-                            }
-                        }
-                        if (!contains)
-                        {
-                            hashTable[position].Add(Tuple.Create(key, value));
-                        }
+                        PutCommand(hashTable, position, key, value);
                         break;
                     case "get":
-                        if (hashTable[position] != null)
-                        {
-                            for (int j = 0; j < hashTable[position].Count; j++)
-                            {
-                                if (hashTable[position][j].Item1 == key)
-                                {
-                                    answers.Add(hashTable[position][j].Item2);
-                                    contains = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!contains)
-                        {
-                            answers.Add("none");
-                        }
+                        GetCommand(hashTable, position, key, answers);
                         break;
                     case "delete":
-                        if (hashTable[position] != null)
-                        {
-                            for (int j = 0; j < hashTable[position].Count; j++)
-                            {
-                                if (hashTable[position][j].Item1 == key)
-                                {
-                                    hashTable[position].RemoveAt(j);
-                                    break;
-                                }
-                            }
-                        }
+                        DeleteCommand(hashTable, position, key);
                         break;
                 }
             }
             File.WriteAllText("map.out", string.Join("\r\n", answers));
         }
-        static ulong GetHash(string valueToHash)
+
+        private static void PutCommand(List<Tuple<string, string>>[] hashTable, int position, string key, string value)
         {
-            ulong PrimeNumber = 1;
-            const ulong collisionDecreaser = (ulong)1e9 + 7; // Скорее всего не нужно
-            ulong hashResult = 0;
-            for (int i = 0; i < valueToHash.Length; i++)
+            if (hashTable[position] == null)
             {
-                hashResult += ((ulong)(valueToHash[i] - 'A' + 1) * PrimeNumber);
-                PrimeNumber = PrimeNumber * 31;
+                hashTable[position] = new List<Tuple<string, string>>();
+            }
+
+            for (int j = 0; j < hashTable[position].Count; j++)
+            {
+                if (hashTable[position][j].Item1 == key)
+                {
+                    hashTable[position][j] = Tuple.Create(hashTable[position][j].Item1, value);
+                    return;
+                }
+            }
+
+            // If don't contain key
+            hashTable[position].Add(Tuple.Create(key, value));
+        }
+
+        private static void GetCommand(List<Tuple<string, string>>[] hashTable, int position, string key, List<string> answers)
+        {
+            if (hashTable[position] != null)
+            {
+                for (int j = 0; j < hashTable[position].Count; j++)
+                {
+                    if (hashTable[position][j].Item1 == key)
+                    {
+                        answers.Add(hashTable[position][j].Item2);
+                        return;
+                    }
+                }
+            }
+
+            // If don't contain key
+            answers.Add("none");
+        }
+
+        private static void DeleteCommand(List<Tuple<string, string>>[] hashTable, int position, string key)
+        {
+            if (hashTable[position] != null)
+            {
+                for (int j = 0; j < hashTable[position].Count; j++)
+                {
+                    if (hashTable[position][j].Item1 == key)
+                    {
+                        hashTable[position].RemoveAt(j);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private static ulong GetHash(string valueToHash)
+        {
+            const ulong collisionDecreaser = (ulong)1e9 + 7; // Скорее всего не нужно
+
+            ulong primeNumber = 1;
+            ulong hashResult = 0;
+
+            foreach (char element in valueToHash)
+            {
+                hashResult += (ulong)(element - 'A' + 1) * primeNumber;
+                primeNumber *= 31;
             }
             return hashResult % collisionDecreaser;
         }
     }
-}   
+}

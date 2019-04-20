@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
-namespace Hash
+namespace AlgorithmsAndStructuresByPCMS.Hash
 {
-    class HashTableForSet
+    public class HashTableForSet
     {
-        private const int hardDecision = 1000001;
-        static void Solve(string[] args)
+        private const int HardDecision = 1000001;
+
+        public static void Solve()
         {
-            List<string> answers = new List<string>();                      
-            List<int>[] hashTable = new List<int>[hardDecision];              
-            string[] inputData = File.ReadAllLines("set.in");                
-            for (int i = 0; i < inputData.Length; i++)
-            {                                                         
-                string[] splittedData = inputData[i].Split(' ');
+            var answers = new List<string>();
+            var hashTable = new List<int>[HardDecision];
+            string[] inputData = File.ReadAllLines("set.in");
+
+            foreach (string line in inputData)
+            {
+                string[] splittedData = line.Split(' ');
                 string command = splittedData[0];
                 int value = int.Parse(splittedData[1]);
+
                 int position = GetHash(value);
+
                 switch (command)
                 {
-                    case "insert":                                                  
+                    case "insert":
                         if (hashTable[position] == null)
                         {
                             hashTable[position] = new List<int>();
@@ -37,6 +38,7 @@ namespace Hash
                     case "delete":
                         hashTable[position]?.Remove(value);
                         break;
+
                     case "exists":
                         answers.Add((hashTable[position]?.Contains(value) ?? false).ToString().ToLower());
                         break;
@@ -47,7 +49,7 @@ namespace Hash
 
         private static int GetHash(int valueToHash)
         {
-            return Math.Abs(valueToHash % hardDecision);
+            return Math.Abs(valueToHash % HardDecision);
         }
     }
 }
