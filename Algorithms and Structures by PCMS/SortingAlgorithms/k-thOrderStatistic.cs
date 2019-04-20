@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System;
 
-namespace kthOrderStatistic
+namespace SortingAlgorithms
 {
-    class QuickSort
+    class QuickSortForStatistic
     {
         public static void Swap<T>(ref T a, ref T b)
         {

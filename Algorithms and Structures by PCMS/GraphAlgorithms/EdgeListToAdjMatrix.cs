@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Adjacency_Matrix
+namespace GraphAlgorithms
 {
-    class Matrix
+    class MatrixForEdjeToMatrix
     {
         static void Solve(string[] args)
         {

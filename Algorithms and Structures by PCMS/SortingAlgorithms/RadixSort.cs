@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Radix_Sort
+namespace SortingAlgorithms
 {
     class RadixSort
     {

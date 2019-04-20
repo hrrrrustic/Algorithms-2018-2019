@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Map
+namespace Hash
 {
-    class HashTable
+    class HashTableforMap
     {
         static void Solve(string[] args)
         {

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace PrefixFunction
+namespace StringAlgorithms
 {
-    class ZFunction
+    class ZFunctionForPrefixFunction
     {
         static void Solve(string[] args)
         {

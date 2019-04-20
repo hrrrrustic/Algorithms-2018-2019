@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Dijkstra
+namespace GraphAlgorithms
 {
-    public class KVPComparer : IComparer<KeyValuePair<int, int>> // Господи за что?
+    public class KVPComparerForDijkstra : IComparer<KeyValuePair<int, int>> // Господи за что?
     {
         public int Compare(KeyValuePair<int, int> kvp1, KeyValuePair<int, int> kvp2)
         {
@@ -56,7 +56,7 @@ namespace Dijkstra
             }
             dist[0] = 0;
             bool[] used = new bool[vertexCount];
-            SortedDictionary<KeyValuePair<int, int>, int> neeeeeeeeeeeeeeet = new SortedDictionary<KeyValuePair<int, int>, int>(new KVPComparer());
+            SortedDictionary<KeyValuePair<int, int>, int> neeeeeeeeeeeeeeet = new SortedDictionary<KeyValuePair<int, int>, int>(new KVPComparerForDijkstra());
             dist[0] = 0;
             neeeeeeeeeeeeeeet.Add(new KeyValuePair<int, int>(0, dist[0] ), 0);
             while (neeeeeeeeeeeeeeet.Count != 0)

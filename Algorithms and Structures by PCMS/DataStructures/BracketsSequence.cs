@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace BracketsSequence
+namespace DataStructures
 {
-    class Stack
+    class StackForBrackets
     {
         static void Solve(string[] args)
         {

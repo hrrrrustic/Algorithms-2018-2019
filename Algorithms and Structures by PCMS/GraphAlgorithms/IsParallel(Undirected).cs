@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace IsParallelUndirected
+namespace GraphAlgorithms
 {
-    class Matrix
+    class MatrixForCheckParallel
     {
         static void Solve(string[] args)
         {

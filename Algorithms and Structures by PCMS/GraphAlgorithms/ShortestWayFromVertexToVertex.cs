@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace ShortestWayFromVertexToVertex
+namespace GraphAlgorithms
 {
 
     public class KVPComparer : IComparer<KeyValuePair<long, long>> // Господи за что?
@@ -23,7 +23,7 @@ namespace ShortestWayFromVertexToVertex
             else return -1;
         }
     }
-    class Dijkstra
+    class DijkstraForWayToVertex
     {
         static void Solve(string[] args)
         {

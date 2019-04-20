@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Garland
+namespace BinarySearch
 {
-    class BinarySearch
+    class BinarySearchForGarland
     {
         //Correct algorithm, but problem with rounding 
         static double answer;

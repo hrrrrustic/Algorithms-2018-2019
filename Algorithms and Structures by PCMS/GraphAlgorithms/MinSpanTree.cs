@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace MinSpanTree
+namespace GraphAlgorithms
 {
-    public class KVPComparer : IComparer<KeyValuePair<int,int>> // Господи за что?
+    public class KVPComparerForSpanTree : IComparer<KeyValuePair<int,int>> // Господи за что?
     {
         public int Compare(KeyValuePair<int,int> kvp1, KeyValuePair<int,int> kvp2)
         {
@@ -59,7 +59,7 @@ namespace MinSpanTree
             {
                 bestdist[i] = 100001;
             }
-            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KVPComparer());
+            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KVPComparerForSpanTree());
             bestdist[0] = 0;
             prim.Add(new KeyValuePair<int, int>(0, 0), 0);
             for (int i = 0; i < vertexCount; i++)

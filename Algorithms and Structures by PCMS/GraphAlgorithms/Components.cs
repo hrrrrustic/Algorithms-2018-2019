@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Components
+namespace GraphAlgorithms
 {
-    class BreadthFirstSearch
+    class BreadthFirstSearchforComponents
     {
         static bool[] visited;
         static int[] vertexList;

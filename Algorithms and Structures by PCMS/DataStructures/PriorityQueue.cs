@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Priority_Queue
+namespace DataStructures
 {
     class Heap
     {

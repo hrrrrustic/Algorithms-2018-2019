@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Set
+namespace Hash
 {
-    class HashTable
+    class HashTableForSet
     {
         private const int hardDecision = 1000001;
         static void Solve(string[] args)

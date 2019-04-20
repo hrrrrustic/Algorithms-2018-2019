@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace Runners
+namespace SortingAlgorithms
 {
-    class MergeSort
+    class MergeSortForRunners
     {
         static List<string> Merge_Sort(List<string> massive)
         {

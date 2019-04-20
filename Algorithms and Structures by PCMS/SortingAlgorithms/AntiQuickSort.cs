@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace AntiQuickSort
+namespace SortingAlgorithms
 {
-    class QuickSort
+    class QuickSortForAnti
     {
         static void Solve(string[] args)
         {

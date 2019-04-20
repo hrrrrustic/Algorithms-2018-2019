@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace UnweightedMaze
+namespace GraphAlgorithms
 {
-    class DepthFirstSearch
+    class DepthFirstSearchForMaze
     {
         static void Solve(string[] args)
         {

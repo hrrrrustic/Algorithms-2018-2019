@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Merge_Sort
+namespace SortingAlgorithms
 {
     class MergeSort
     {

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace MinSpanTreeOnCartesianCoordinate
+namespace GraphAlgorithms
 {
-    class Prima
+    class PrimaForCompleteGraph
     {
         static void Solve(string[] args)
         {
