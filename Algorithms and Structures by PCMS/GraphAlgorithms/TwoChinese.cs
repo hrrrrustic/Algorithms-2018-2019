@@ -7,10 +7,10 @@ using System.IO;
 
 namespace _2Chinese
 {
-    class Program
+    class DepthFirstSearch
     {
         // Doesn't work, but really near to correct solution
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             List<Edge> edges = new List<Edge>();
             int[][] file = File.ReadAllLines("chinese.in").Select(k => k.Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();

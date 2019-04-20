@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Merge_Sort
 {
-    class Program
+    class MergeSort
     {
         static int[] Merge_Sort(int[] massive)
         {
@@ -36,7 +36,7 @@ namespace Merge_Sort
             }
             return merged;
         }
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             using (var file = new StreamReader("sort.in"))
             {

@@ -7,12 +7,12 @@ using System.IO;
 
 namespace Priority_Queue
 {
-    class Program
+    class Heap
     {
         static List<Tuple<int, int>> heap = new List<Tuple<int, int>>();
         static string[] input;
         static List<string> Answers = new List<string>();
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             input = File.ReadAllLines("priorityqueue.in");
             for (int i = 0; i < input.Length; i++)

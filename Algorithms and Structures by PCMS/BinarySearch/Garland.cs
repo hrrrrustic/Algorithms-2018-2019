@@ -7,11 +7,11 @@ using System.IO;
 
 namespace Garland
 {
-    class Garland
+    class BinarySearch
     {
         //Correct algorithm, but problem with rounding 
         static double answer;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] Input;
             using (var file = new StreamReader("garland.in"))

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Search1
+namespace NativeSearch
 {
-    class Program
+    class NativeAlgorithm
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string[] data = File.ReadAllLines("search1.in");
             string pattern = data[0];

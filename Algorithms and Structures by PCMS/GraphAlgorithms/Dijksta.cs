@@ -23,9 +23,9 @@ namespace Dijkstra
         }
     }
 
-    class Program
+    class Dijkstra
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             //int[][] data = File.ReadAllLines("pathgep.in").Select(k => k.Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
             int[] info = Console.ReadLine().Split(' ').Select(k => int.Parse(k)).ToArray();

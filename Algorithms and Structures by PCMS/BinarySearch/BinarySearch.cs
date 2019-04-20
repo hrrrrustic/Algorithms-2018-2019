@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Binary_Search
 {
-    class Program
+    class BinarySearch
     {
         static void Main()
         {
@@ -18,10 +18,10 @@ namespace Binary_Search
             List<int> Answers = new List<int>();
             using (var Console = new StreamReader("binsearch.in "))
             {
-            MassiveSize = int.Parse(Console.ReadLine());
-            Data = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
-            RequestCount = int.Parse(Console.ReadLine());
-            Requests = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+                MassiveSize = int.Parse(Console.ReadLine());
+                Data = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+                RequestCount = int.Parse(Console.ReadLine());
+                Requests = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
             }
             for (int i = 0; i < RequestCount; i++)
             {

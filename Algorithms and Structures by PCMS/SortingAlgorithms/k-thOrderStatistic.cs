@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System;
 
-namespace k_th_order_statistic
+namespace kthOrderStatistic
 {
-    class Program
+    class QuickSort
     {
         public static void Swap<T>(ref T a, ref T b)
         {
@@ -62,7 +62,7 @@ namespace k_th_order_statistic
             }
         }
 
-        static void Main()
+        static void Solve()
         {
             int n, k;
             string[] list;

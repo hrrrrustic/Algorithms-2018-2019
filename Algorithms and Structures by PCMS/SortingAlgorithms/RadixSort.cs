@@ -7,9 +7,9 @@ using System.IO;
 
 namespace Radix_Sort
 {
-    class Program
+    class RadixSort
     {
-        static void Main()
+        static void Solve()
         {
             int[] ArrayOfParams;
             string[] InputStrings;
@@ -23,7 +23,7 @@ namespace Radix_Sort
                 }
             }
             InputStrings = InputStrings.Select(k => new string(k.Reverse().ToArray())).ToArray();
-            InputStrings = RadixSort(InputStrings, ArrayOfParams[1], ArrayOfParams[2]);
+            InputStrings = Radix(InputStrings, ArrayOfParams[1], ArrayOfParams[2]);
             InputStrings = InputStrings.Select(k => new string(k.Reverse().ToArray())).ToArray();
             using (var Outfile = new StreamWriter("radixsort.out"))
             {
@@ -33,7 +33,7 @@ namespace Radix_Sort
                 }
             }
         }
-        static string[] RadixSort(string[] InputArray, int LengthOfStrings, int CountOfSteps)
+        static string[] Radix(string[] InputArray, int LengthOfStrings, int CountOfSteps)
         {
             string[] OutputArray = new string[InputArray.Length];
             for (int i = 0; i < CountOfSteps; i++)

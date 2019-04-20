@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Prefix
+namespace PrefixFunction
 {
-    class Program
+    class ZFunction
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             string data = File.ReadAllText("prefix.in").Trim();
             int len = data.Length;

@@ -9,7 +9,7 @@ namespace Heap_Sort
 {
     class HeapSort
     {
-        static void Main()
+        static void Solve()
         {
             int ArrayaySize;
             int[] Array;

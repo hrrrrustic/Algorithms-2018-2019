@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SpanTree2
+namespace MinSpanTree
 {
     public class KVPComparer : IComparer<KeyValuePair<int,int>> // Господи за что?
     {
@@ -23,9 +23,9 @@ namespace SpanTree2
         }
     }
 
-    class MST
+    class Prima
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             long answer = 0;
             int edgeCount;

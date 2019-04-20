@@ -5,12 +5,10 @@ using System.IO;
 
 namespace Bellman_Ford
 {
-    class Program
+    class BellmanFord
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
-
-
             long[][] data = File.ReadAllLines("path.in").Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray()).ToArray();
             long vertexCount = data[0][0];
             long edgeCount = data[0][1];

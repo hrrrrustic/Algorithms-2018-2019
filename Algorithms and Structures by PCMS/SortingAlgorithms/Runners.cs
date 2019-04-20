@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Runners
 {
-    class Program
+    class MergeSort
     {
         static List<string> Merge_Sort(List<string> massive)
         {
@@ -46,7 +46,7 @@ namespace Runners
             }
             return merged;
         }
-        static void Main()
+        static void Solve()
         {
             Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
 

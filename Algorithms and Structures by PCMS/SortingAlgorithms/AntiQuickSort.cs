@@ -7,9 +7,9 @@ using System.IO;
 
 namespace AntiQuickSort
 {
-    class AntiQuickSort
+    class QuickSort
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             int n, help;
             using (var file = new StreamReader("antiqs.in"))

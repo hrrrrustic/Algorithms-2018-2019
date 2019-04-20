@@ -7,10 +7,10 @@ using System.IO;
 
 namespace Set
 {
-    class Set
+    class HashTable
     {
         private const int hardDecision = 1000001;
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             List<string> Answers = new List<string>();                      
             List<int>[] space = new List<int>[hardDecision];              

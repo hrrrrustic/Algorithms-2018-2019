@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Brackets
+namespace BracketsSequence
 {
-    class Brackets
+    class Stack
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             List<string> Answers = new List<string>();
             string[] input = File.ReadAllLines("brackets.in");

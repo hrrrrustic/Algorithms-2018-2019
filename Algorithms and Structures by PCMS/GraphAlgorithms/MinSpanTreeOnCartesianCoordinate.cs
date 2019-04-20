@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SpanTree
+namespace MinSpanTreeOnCartesianCoordinate
 {
-    class Program
+    class Prima
     {
-        static void Main(string[] args)
+        static void Solve(string[] args)
         {
             double answer = 0;
             //int[][] data = File.ReadAllLines("spantree.in").Select(k => k.Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
