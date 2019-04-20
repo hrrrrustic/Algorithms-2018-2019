@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Algorithms_and_Structures_by_PCMS
+namespace AlgorithmsAndStructuresByPCMS
 {
     class Program
     {
