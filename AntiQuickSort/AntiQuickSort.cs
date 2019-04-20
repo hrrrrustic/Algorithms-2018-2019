@@ -7,7 +7,7 @@ using System.IO;
 
 namespace AntiQuickSort
 {
-    class Program
+    class AntiQuickSort
     {
         static void Main(string[] args)
         {

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Brackets
 {
-    class Program
+    class Brackets
     {
         static void Main(string[] args)
         {

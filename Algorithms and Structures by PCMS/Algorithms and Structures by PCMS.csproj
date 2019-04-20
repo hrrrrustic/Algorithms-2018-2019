@@ -43,17 +43,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="BinarySearch\BinarySearch.cs" />
+    <Compile Include="BinarySearch\Garland.cs" />
+    <Compile Include="DataStructures\BracketsSequence.cs" />
+    <Compile Include="DataStructures\PriorityQueue.cs" />
+    <Compile Include="DataStructures\ReversePolishNotation.cs" />
+    <Compile Include="DataStructures\Stack.cs" />
+    <Compile Include="GraphAlgorithms\BellmanFord.cs" />
+    <Compile Include="GraphAlgorithms\Components.cs" />
+    <Compile Include="GraphAlgorithms\Dijksta.cs" />
+    <Compile Include="GraphAlgorithms\EdgeListToAdjMatrix.cs" />
+    <Compile Include="GraphAlgorithms\Floyd.cs" />
+    <Compile Include="GraphAlgorithms\IsParallel%28Undirected%29.cs" />
+    <Compile Include="GraphAlgorithms\IsSimpleAndUndirected.cs" />
+    <Compile Include="GraphAlgorithms\MaxflowByDFS.cs" />
+    <Compile Include="GraphAlgorithms\MST.cs" />
+    <Compile Include="GraphAlgorithms\MSTOnCartesianCoordinate.cs" />
+    <Compile Include="GraphAlgorithms\NegativeWeightCycle.cs" />
+    <Compile Include="GraphAlgorithms\ShortestUnweightedWay.cs" />
+    <Compile Include="GraphAlgorithms\ShortestWayFromVertexToVertex.cs" />
+    <Compile Include="GraphAlgorithms\TwoChinese.cs" />
+    <Compile Include="GraphAlgorithms\UnweightedMaze.cs" />
+    <Compile Include="GraphAlgorithms\VertexDegree.cs" />
+    <Compile Include="Hash\Map.cs" />
+    <Compile Include="Hash\Set.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SortingAlgorithms\AntiQuickSort.cs" />
+    <Compile Include="SortingAlgorithms\HeapSort.cs" />
+    <Compile Include="SortingAlgorithms\Inversions.cs" />
+    <Compile Include="SortingAlgorithms\k-thOrderStatistic.cs" />
+    <Compile Include="SortingAlgorithms\MergeSort.cs" />
+    <Compile Include="SortingAlgorithms\RadixSort.cs" />
+    <Compile Include="SortingAlgorithms\Runners.cs" />
+    <Compile Include="StringAlgorithms\NativeSearch.cs" />
+    <Compile Include="StringAlgorithms\PrefixFunction.cs" />
+    <Compile Include="StringAlgorithms\SearchByZFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataStructures\" />
-    <Folder Include="GraphAlgorithms\" />
-    <Folder Include="Hash\" />
-    <Folder Include="SortingAlgorithms\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

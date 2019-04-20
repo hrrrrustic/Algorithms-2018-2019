@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Heap_Sort
 {
-    class Program
+    class HeapSort
     {
         static void Main()
         {

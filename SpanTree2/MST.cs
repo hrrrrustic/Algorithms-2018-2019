@@ -23,7 +23,7 @@ namespace SpanTree2
         }
     }
 
-    class Program
+    class MST
     {
         static void Main(string[] args)
         {

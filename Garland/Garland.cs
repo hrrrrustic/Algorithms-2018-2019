@@ -7,8 +7,9 @@ using System.IO;
 
 namespace Garland
 {
-    class Program
+    class Garland
     {
+        //Correct algorithm, but problem with rounding 
         static double answer;
         static void Main(string[] args)
         {

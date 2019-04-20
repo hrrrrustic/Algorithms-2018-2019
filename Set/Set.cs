@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Set
 {
-    class Program
+    class Set
     {
         private const int hardDecision = 1000001;
         static void Main(string[] args)
