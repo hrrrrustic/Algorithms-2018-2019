@@ -5,92 +5,105 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace DataStructures
+namespace AlgorithmsAndStructuresByPCMS.DataStructures
 {
-    class Heap
+    public class Heap
     {
-        static List<Tuple<int, int>> heap = new List<Tuple<int, int>>();
-        static string[] input;
-        static List<string> Answers = new List<string>();
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
-            input = File.ReadAllLines("priorityqueue.in");
-            for (int i = 0; i < input.Length; i++)
+            List<string> answers = new List<string>();
+            List<Tuple<int, int>> heap = new List<Tuple<int, int>>();
+            string[] inputRequests = File.ReadAllLines("priorityqueue.in");
+            for (int i = 0; i < inputRequests.Length; i++)
             {
-                string[] dataRow = input[i].Split(' ');
-                switch (dataRow[0])
+                string[] currentRequest = inputRequests[i].Split(' ');
+                string command = currentRequest[0];
+                switch (command)
                 {
                     case "push":
-                        heap.Add(Tuple.Create(i, int.Parse(dataRow[1])));
-                        siftUp(heap.Count - 1);
+                        Push(i, int.Parse(currentRequest[1]), heap);
                         break;
                     case "extract-min":
-                        if (heap.Count != 0)
-                        {
-                            Answers.Add(heap[0].Item2.ToString());
-                            heap[0] = heap[heap.Count - 1];
-                            heap.RemoveAt(heap.Count - 1);
-                            siftDown(0);
-                        }
-                        else
-                        {
-                            Answers.Add("*");
-                        }
+                        ExtractMin(heap);
                         break;
                     case "decrease-key":
-                        int x = findPosition(int.Parse(dataRow[1]) - 1);
-                        heap[x] = Tuple.Create(heap[x].Item1, int.Parse(dataRow[2]));
-                        siftUp(x);
+                        int index = int.Parse(currentRequest[1]) - 1;
+                        int value = int.Parse(currentRequest[2]);
+                        DecreaseKey(index, value, heap);
                         break;
                 }
             }
-            using (var OutFile = new StreamWriter("priorityqueue.out"))
-            {
-                Console.WriteLine(string.Join("\r\n", Answers));
-            }
+                Console.WriteLine(string.Join("\r\n", answers));
         }
 
-        static void siftUp(int i)
+        private static void DecreaseKey(int index, int value, List<Tuple<int,int>> heap)
         {
-            while (i > 0 && heap[i].Item2 < heap[(i - 1) / 2].Item2)
+            int x = FindPosition(index, heap);
+            heap[x] = Tuple.Create(heap[x].Item1, value);
+            SiftUp(x, heap);
+        }
+        private static void Push(int index, int value, List<Tuple<int,int>> heap)
+        {
+            heap.Add(Tuple.Create(index, value));
+            SiftUp(heap.Count - 1, heap);
+        }
+        private static string ExtractMin(List<Tuple<int,int>> heap)
+        {
+            string answer;
+            if (heap.Count != 0)
             {
-                Tuple<int, int> swapHelper = heap[i];
-                heap[i] = heap[(i - 1) / 2];
-                heap[(i - 1) / 2] = swapHelper;
-                i = (i - 1) / 2;
+                answer = heap[0].Item2.ToString();
+                heap[0] = heap[heap.Count - 1];
+                heap.RemoveAt(heap.Count - 1);
+                SiftDown(0, heap);
+                return answer;
+            }
+            else
+            {
+                return "*";
             }
         }
-        static void siftDown(int i)
+        private static void SiftUp(int index, List<Tuple<int,int>> heap)
         {
-            while (2 * i + 1 < heap.Count)
+            while (index > 0 && heap[index].Item2 < heap[(index - 1) / 2].Item2)
             {
-                int left = 2 * i + 1;
-                int right = 2 * i + 2;
-                int j = left;
-                if (right < heap.Count && heap[right].Item2 < heap[left].Item2)
-                    j = right;
-                if (heap[i].Item2 <= heap[j].Item2)
+                Tuple<int, int> swapHelper = heap[index];
+                heap[index] = heap[(index - 1) / 2];
+                heap[(index - 1) / 2] = swapHelper;
+                index = (index - 1) / 2;
+            }
+        }
+        private static void SiftDown(int index, List<Tuple<int,int>> heap)
+        {
+            while (2 * index + 1 < heap.Count)
+            {
+                int leftPosition = 2 * index + 1;
+                int rightPosition = 2 * index + 2;
+                int helpPosition = leftPosition;
+                if (rightPosition < heap.Count && heap[rightPosition].Item2 < heap[leftPosition].Item2)
+                    helpPosition = rightPosition;
+                if (heap[index].Item2 <= heap[helpPosition].Item2)
                 {
                     break;
                 }
-                Tuple<int, int> swapHelper = heap[i];
-                heap[i] = heap[j];
-                heap[j] = swapHelper;
-                i = j;
+                Tuple<int, int> swapHelper = heap[index];
+                heap[index] = heap[helpPosition];
+                heap[helpPosition] = swapHelper;
+                index = helpPosition;
             }
         }
-        static int findPosition(int a)
+        private static int FindPosition(int neededIndex, List<Tuple<int,int>> heap)
         {
-            int position = 0;
+            int currentPosition = 0;
             for (int i = 0; i < heap.Count; i++)
             {
-                if (heap[i].Item1 == a)
+                if (heap[i].Item1 == neededIndex)
                 {
-                    position = i;
+                    currentPosition = i;
                     break;
                 }
             }
-            return position;
+            return currentPosition;
         }
     }
 }

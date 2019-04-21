@@ -1,56 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 
-namespace DataStructures
+namespace AlgorithmsAndStructuresByPCMS.DataStructures
 {
-    class StackForPolishNotation
+    public class StackForPolishNotation
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
-            string[] input;
-            bool result = false;
-            int j = 0;
-            using (var file = new StreamReader("postfix.in"))
+            string[] inputNotation = File.ReadAllText("postfix.in").Split(' ');
+            int currPosition = 0;
+            int[] stack = new int[inputNotation.Length];
+            for (int i = 0; i < inputNotation.Length; i++)
             {
-                input = file.ReadLine().Split(' ');
-            }
-            int[] stack = new int[input.Length];
-            for (int i = 0; i < input.Length; i++)
-            {
-                int numbers;
-                result = int.TryParse(input[i], out numbers);
-                if (result)
+                if (int.TryParse(inputNotation[i], out int number))
                 {
-                    stack[j] = numbers;
+                    stack[currPosition] = number;
                 }
                 else
                 {
-                    switch (input[i])
+                    switch (inputNotation[i])
                     {
                         case "+":
-                            stack[j - 2] = stack[j - 2] + stack[j - 1];
-                            j -= 2;
+                            stack[currPosition - 2] = stack[currPosition - 2] + stack[currPosition - 1];
                             break;
                         case "-":
-                            stack[j - 2] = stack[j - 2] - stack[j - 1];
-                            j -= 2;
+                            stack[currPosition - 2] = stack[currPosition - 2] - stack[currPosition - 1];
                             break;
                         case "*":
-                            stack[j - 2] = stack[j - 2] * stack[j - 1];
-                            j -= 2;
+                            stack[currPosition - 2] = stack[currPosition - 2] * stack[currPosition - 1];
                             break;
                     }
+                    currPosition -= 2;
                 }
-                j++;
+                currPosition++;
             }
-            using (var outfile = new StreamWriter("postfix.out"))
-            {
-                outfile.WriteLine(stack[0]);
-            }
+            File.WriteAllText("postfix.out", stack[0].ToString());
         }
     }
 }

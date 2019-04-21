@@ -1,40 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.IO;
 
-namespace DataStructures
+namespace AlgorithmsAndStructuresByPCMS.DataStructures
 {
-    class Stack
+    public class Stack
     {
-        static void Solve(string[] args)
+        public static void Solve()
         {
-            int[] StackSimulator;
-            int Counter;
-            List<int> Answers = new List<int>();
-            using (var file = new StreamReader("stack.in"))
+            string[] inputData = File.ReadAllLines("stack.in");
+            int commandCount = int.Parse(inputData[0]);
+            int[] stack = new int[commandCount];
+            List<int> answers = new List<int>();
+            int stackTop = 0;
+            for (int i = 0; i < commandCount; i++)
             {
-                Counter = int.Parse(file.ReadLine());
-                StackSimulator = new int[Counter];
-                for (int i = 0; i < Counter; i++)
+                string[] currentRequest = inputData[i + 1].Split(' ');
+                string command = currentRequest[0];
+                if (command == "+")
                 {
-                    string[] Input = file.ReadLine().Split(' ');
-                    if (Input[0] == "+")
-                    {
-                        StackSimulator[i] = int.Parse(Input[1]);
-                    }
-                    else
-                    {
-                        Answers.Add(StackSimulator[i - 1]);
-                        i -= 2;
-                        Counter -= 2;
-                    }
+                    int value = int.Parse(currentRequest[1]);
+                    stack[stackTop] = value;
+                    stackTop++;
+                }
+                else
+                {
+                    answers.Add(stack[stackTop - 1]);
+                    stackTop--;
                 }
             }
-            using (var outfile = new StreamWriter("stack.out"))
-            {
-                outfile.WriteLine(string.Join("\r\n", Answers));
-            }
+            File.WriteAllText("stack.out", string.Join("\r\n", answers));
         }
     }
 }

@@ -1,47 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.IO;
 
-namespace DataStructures
+namespace AlgorithmsAndStructuresByPCMS.DataStructures
 {
-    class StackForBrackets
+    public class StackForBrackets
     {
-        static void Solve(string[] args)
+        public static void Solve()
         {
-            List<string> Answers = new List<string>();
-            string[] input = File.ReadAllLines("brackets.in");
-            for (int i = 0; i < input.Length; i++)
+            List<string> answers = new List<string>();
+            string[] sequences = File.ReadAllLines("brackets.in");
+            for (int i = 0; i < sequences.Length; i++)
             {
-                int LengthHelper = input[i].Length;
-                for (int j = 1; j < LengthHelper; j++)
+                if (CheckSequence(sequences[i]))
                 {
-                    if (j < 1)
-                        j = 1;
-                    if (input[i].Length > 1)
-                    {
-                        if (input[i][j - 1] + 1 == input[i][j] || input[i][j - 1] + 2 == input[i][j])
-                        {
-                            input[i] = input[i].Remove(j - 1, 2);
-                            j -= 2;
-                            LengthHelper -= 2;
-                        }
-                    }
-                }
-                if (input[i] == "")
-                {
-                    Answers.Add("YES");
+                    answers.Add("YES");
                 }
                 else
                 {
-                    Answers.Add("NO");
+                    answers.Add("NO");
                 }
             }
-            using (var outfile = new StreamWriter("brackets.out"))
+            File.WriteAllText("brackets.out", string.Join("\r\n", answers));
+        }
+
+        public static bool CheckSequence(string sequence)
+        {
+            int sequenceLength = sequence.Length;
+            for (int j = 1; j < sequenceLength; j++)
             {
-                outfile.WriteLine(string.Join("\r\n", Answers));
+                if (j < 1)
+                    j = 1;
+
+                if (sequence.Length > 1)
+                {
+                    if (sequence[j - 1] + 1 == sequence[j] || sequence[j - 1] + 2 == sequence[j]) // ASCII table (, ), [, ]
+                    {
+                        sequence = sequence.Remove(j - 1, 2);
+                        j -= 2;
+                        sequenceLength -= 2;
+                    }
+                }
+            }
+            if (string.IsNullOrEmpty(sequence))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
