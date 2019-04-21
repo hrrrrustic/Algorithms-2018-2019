@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
-namespace BinarySearch
+namespace AlgorithmsAndStructuresByPCMS.BinarySearch
 {
     public class BinarySearchForGarland
     {
         //Correct algorithm, but problem with rounding 
-        public static void Solve(string[] args)
+        public static void Solve()
         {
             string[] inputData = Console.ReadLine().Split(' ');
             int bulbsCount = int.Parse(inputData[0]);
