@@ -7,67 +7,48 @@ using System.IO;
 
 namespace BinarySearch
 {
-    class BinarySearchForGarland
+    public class BinarySearchForGarland
     {
         //Correct algorithm, but problem with rounding 
-        static double answer;
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
-            string[] Input;
-            using (var file = new StreamReader("garland.in"))
-            {
-                Input = Console.ReadLine().Split();
-            }
-            int BulbsCount = int.Parse(Input[0]);
-            Input[1] = Input[1].Replace('.', ',');
-            double firstHeight = double.Parse(Input[1]);
-            double[] bulbsHeight = new double[BulbsCount];
+            string[] inputData = Console.ReadLine().Split(' ');
+            int bulbsCount = int.Parse(inputData[0]);
+            double firstHeight = double.Parse(inputData[1].Replace('.', ','));
+            double[] bulbsHeight = new double[bulbsCount];
             bulbsHeight[0] = firstHeight;
-            Binsearch(0.00, firstHeight, BulbsCount, bulbsHeight);
-            using (var outFile = new StreamWriter("garland.out"))
-            {
-                int answerA = (int)answer;
-                int answerB = (int)(answer * 100 % 100);
-                Console.WriteLine(answerA + "." + answerB);
-            }
+            double answer = BinarySearchSecondBulbHeight(0.00, firstHeight, bulbsCount, bulbsHeight);
+            Console.WriteLine(answer);
         }
-        static void Binsearch(double left, double right, int n, double[] bulbsHeight)
+        private static double BinarySearchSecondBulbHeight(double leftPosition, double rightPosition, int bulbsCount, double[] bulbsHeight)
         {
-            double mid;
-            while (left < right - 0.000005)
+            double midPosition = 0;
+            while (leftPosition < rightPosition - 0.000005)
             {
-                mid = (right + left) / 2.0;
-                int check = IsthisUnerZero(bulbsHeight, mid, n);
-
-                if (check == -1)
+                midPosition = (rightPosition + leftPosition) / 2.0;
+                if (IsItValid(bulbsHeight, midPosition, bulbsCount))
                 {
-                    left = mid;
+                    rightPosition = midPosition;
                 }
                 else
                 {
-                    right = mid;
+                    leftPosition = midPosition;
                 }
             }
+            return midPosition;
         }
-        static int IsthisUnerZero(double[] bulbsHeight, double m, int n)
+        private static bool IsItValid(double[] bulbsHeight, double secondBulbHeight, int bulbsCount)
         {
-            int check = 1;
-            bulbsHeight[1] = m;
-            for (int i = 2; i < n; i++)
+            bulbsHeight[1] = secondBulbHeight;
+            for (int i = 2; i < bulbsCount; i++)
             {
                 bulbsHeight[i] = 2.0 * bulbsHeight[i - 1] + 2.0 - bulbsHeight[i - 2];
                 if (bulbsHeight[i] < 0)
                 {
-                    check = -1;
-                    break;
+                    return false;
                 }
             }
-            if (check == 1)
-            {
-                answer = Math.Floor(bulbsHeight[n - 1] * 100) / 100;
-            }
-
-            return check;
+            return true;
         }
     }
 }

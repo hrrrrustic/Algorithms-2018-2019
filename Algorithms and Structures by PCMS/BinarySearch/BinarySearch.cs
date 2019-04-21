@@ -7,83 +7,46 @@ using System.IO;
 
 namespace BinarySearch
 {
-    class BinarySearch
+    public class BinarySearch
     {
-        static void Main()
+        public static void Main()
         {
-            int MassiveSize;
-            int[] Data;
-            int RequestCount;
-            int[] Requests;
-            List<int> Answers = new List<int>();
-            using (var Console = new StreamReader("binsearch.in "))
+            int arraySize = int.Parse(Console.ReadLine());
+            int[] inputArray = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+            int requestCount = int.Parse(Console.ReadLine());
+            int[] requests = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+            List<int> answers = new List<int>();
+            for (int i = 0; i < requestCount; i++)
             {
-                MassiveSize = int.Parse(Console.ReadLine());
-                Data = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
-                RequestCount = int.Parse(Console.ReadLine());
-                Requests = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+                answers.Add(BinSearch(inputArray, requests[i], true));
+                answers.Add(BinSearch(inputArray, requests[i], false));
             }
-            for (int i = 0; i < RequestCount; i++)
+            for (int i = 0; i < answers.Count; i += 2)
             {
-                Answers.Add(binSearch1(Data, Requests[i]));
-                Answers.Add(binSearch2(Data, Requests[i]));
-            }
-            using (var outConsole = new StreamWriter("binsearch.out"))
-            {
-            for (int i = 0; i < Answers.Count; i += 2)
-            {
-                Console.WriteLine(Answers[i] + " " + Answers[i + 1]);
-            }
+                Console.WriteLine(answers[i] + " " + answers[i + 1]);
             }
         }
-        static int binSearch1(int[] a, int val)
+        private static int BinSearch(int[] inputArray, int valueToSearch, bool needLeftEnter)
         {
-            int left = -1;
-            int right = a.Length;
-            if (val > a[right - 1] || val < a[left + 1])
+            int leftPosition = -1;
+            int rightPosition = inputArray.Length;
+            if (valueToSearch > inputArray[rightPosition - 1] || valueToSearch < inputArray[leftPosition + 1])
                 return -1;
-            while (left < right - 1)
+            while (leftPosition < rightPosition - 1)
             {
-                int mid = (left + right) / 2;
-                if (a[mid] < val)
+                int midPosition = (leftPosition + rightPosition) / 2;
+                if (needLeftEnter ? inputArray[midPosition] < valueToSearch : inputArray[midPosition] <= valueToSearch)
                 {
-                    left = mid;
+                    leftPosition = midPosition;
                 }
                 else
                 {
-                    right = mid;
+                    rightPosition = midPosition;
                 }
             }
-            if (a[right] == val)
+            if (needLeftEnter ? inputArray[rightPosition] == valueToSearch : inputArray[rightPosition - 1] == valueToSearch)
             {
-                return right + 1;
-            }
-            else
-            {
-                return -1;
-            }
-        }
-        static int binSearch2(int[] a, int val)
-        {
-            int left = -1;
-            int right = a.Length;
-            if (val > a[right - 1] || val < a[left + 1])
-                return -1;
-            while (left < right - 1)
-            {
-                int mid = (left + right) / 2;
-                if (a[mid] <= val)
-                {
-                    left = mid;
-                }
-                else
-                {
-                    right = mid;
-                }
-            }
-            if (a[right - 1] == val)
-            {
-                return right;
+                return needLeftEnter ? rightPosition + 1 : rightPosition;
             }
             else
             {
