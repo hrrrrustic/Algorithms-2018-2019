@@ -8,6 +8,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
     {
         public static void Solve(string[] args)
         {
+            //TODO:1 Ты не записываешь ничего в answers. Так и должно быть?
             List<string> answers = new List<string>();
             List<Tuple<int, int>> heap = new List<Tuple<int, int>>();
             string[] inputRequests = File.ReadAllLines("priorityqueue.in");
@@ -21,6 +22,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                         Push(i, int.Parse(currentRequest[1]), heap);
                         break;
                     case "extract-min":
+                        //TODO:2 А ты не должен ответы куда-то сохранять?
                         ExtractMin(heap);
                         break;
                     case "decrease-key":
@@ -30,7 +32,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                         break;
                 }
             }
-                Console.WriteLine(string.Join("\r\n", answers));
+            Console.WriteLine(string.Join("\r\n", answers));
         }
 
         private static void DecreaseKey(int index, int value, List<Tuple<int,int>> heap)
@@ -39,17 +41,18 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             heap[x] = Tuple.Create(heap[x].Item1, value);
             SiftUp(x, heap);
         }
+
         private static void Push(int index, int value, List<Tuple<int,int>> heap)
         {
             heap.Add(Tuple.Create(index, value));
             SiftUp(heap.Count - 1, heap);
         }
+
         private static string ExtractMin(List<Tuple<int,int>> heap)
         {
-            string answer;
             if (heap.Count != 0)
             {
-                answer = heap[0].Item2.ToString();
+                string answer = heap[0].Item2.ToString();
                 heap[0] = heap[heap.Count - 1];
                 heap.RemoveAt(heap.Count - 1);
                 SiftDown(0, heap);
@@ -70,6 +73,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                 index = (index - 1) / 2;
             }
         }
+
         private static void SiftDown(int index, List<Tuple<int,int>> heap)
         {
             while (2 * index + 1 < heap.Count)
@@ -77,10 +81,13 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                 int leftPosition = 2 * index + 1;
                 int rightPosition = 2 * index + 2;
                 int helpPosition = leftPosition;
+
                 if (rightPosition < heap.Count && heap[rightPosition].Item2 < heap[leftPosition].Item2)
                     helpPosition = rightPosition;
+
                 if (heap[index].Item2 <= heap[helpPosition].Item2)
                 {
+                    //TODO:4 return?
                     break;
                 }
                 Tuple<int, int> swapHelper = heap[index];
@@ -89,6 +96,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                 index = helpPosition;
             }
         }
+
         private static int FindPosition(int neededIndex, List<Tuple<int,int>> heap)
         {
             int currentPosition = 0;
@@ -96,6 +104,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             {
                 if (heap[i].Item1 == neededIndex)
                 {
+                    //TODO:3 А почему бы просто не вернуть тут i?
                     currentPosition = i;
                     break;
                 }

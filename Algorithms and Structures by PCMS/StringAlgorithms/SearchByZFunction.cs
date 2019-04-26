@@ -13,16 +13,19 @@ namespace StringAlgorithms
             int[] zFunction = SearchByZFunction(text, pattern, '#');
             OutPut(zFunction, pattern.Length);
         }
+
         private static int[] SearchByZFunction(string text, string pattern, char specialSymbol)
         {
             text = pattern + specialSymbol + text;
             int[] zFunction = new int[text.Length];
             int leftPositionOfBlock = 0, rightPositionOfBlock = 0;
+
             for (int i = 1; i < text.Length; i++)
             {
                 zFunction[i] = Math.Max(0, Math.Min((rightPositionOfBlock - i), zFunction[i - leftPositionOfBlock]));
                 while (i + zFunction[i] < text.Length && text[zFunction[i]] == text[i + zFunction[i]])
                     zFunction[i]++;
+
                 if (i + zFunction[i] > rightPositionOfBlock)
                 {
                     leftPositionOfBlock = i;
@@ -31,6 +34,7 @@ namespace StringAlgorithms
             }
             return zFunction;
         }
+
         private static void OutPut(int[] zFunction, int patternLength)
         {
             int countOfIngoing = 0;
