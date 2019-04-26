@@ -1,44 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace StringAlgorithms
 {
-    class ZFunction
+   public class ZFunction
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
-            string[] data = File.ReadAllLines("search2.in");
-            string pattern = data[0];
-            string text = pattern + "#" + data[1];
-            int len = data[0].Length + data[1].Length + 1;
-            int[] zfunc = new int[len];
-            int left = 0, right = 0;
-            for (int i = 1; i < len; i++)
+            string[] inputData = File.ReadAllLines("search2.in");
+            string pattern = inputData[0];
+            string text = inputData[1];
+            int[] zFunction = SearchByZFunction(text, pattern, '#');
+            OutPut(zFunction, pattern.Length);
+        }
+        private static int[] SearchByZFunction(string text, string pattern, char specialSymbol)
+        {
+            text = pattern + specialSymbol + text;
+            int[] zFunction = new int[text.Length];
+            int leftPositionOfBlock = 0, rightPositionOfBlock = 0;
+            for (int i = 1; i < text.Length; i++)
             {
-                zfunc[i] = Math.Max(0, Math.Min((right - i), zfunc[i - left]));
-                while (i + zfunc[i] < len && text[zfunc[i]] == text[i + zfunc[i]])
-                    zfunc[i]++;
-                if(i + zfunc[i] > right)
+                zFunction[i] = Math.Max(0, Math.Min((rightPositionOfBlock - i), zFunction[i - leftPositionOfBlock]));
+                while (i + zFunction[i] < text.Length && text[zFunction[i]] == text[i + zFunction[i]])
+                    zFunction[i]++;
+                if (i + zFunction[i] > rightPositionOfBlock)
                 {
-                    left = i;
-                    right = i + zfunc[i];
+                    leftPositionOfBlock = i;
+                    rightPositionOfBlock = i + zFunction[i];
                 }
             }
-            int answer = 0;
-            for (int i = pattern.Length; i < len; i++)
+            return zFunction;
+        }
+        private static void OutPut(int[] zFunction, int patternLength)
+        {
+            int countOfIngoing = 0;
+            for (int i = patternLength; i < zFunction.Length; i++)
             {
-                if (zfunc[i] == pattern.Length)
-                    answer++;
+                if (zFunction[i] == patternLength)
+                    countOfIngoing++;
             }
-            Console.WriteLine(answer);
-            for (int i = pattern.Length; i < len; i++)
+            Console.WriteLine(countOfIngoing);
+            for (int i = patternLength; i < zFunction.Length; i++)
             {
-                if (zfunc[i] == pattern.Length)
-                    Console.Write((i - pattern.Length) + " ");
+                if (zFunction[i] == patternLength)
+                    Console.Write((i - patternLength) + " ");
             }
         }
     }
