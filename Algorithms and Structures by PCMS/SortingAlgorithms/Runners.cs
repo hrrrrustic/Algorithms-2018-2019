@@ -3,81 +3,77 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace SortingAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    class MergeSortForRunners
+    public class MergeSortForRunners
     {
-        static List<string> Merge_Sort(List<string> massive)
+        private static List<string> MergeSorting(List<string> needToSortArray)
         {
-            if (massive.Count == 1)
-                return massive;
+            if (needToSortArray.Count == 1)
+                return needToSortArray;
 
-            int mid_point = massive.Count / 2;
-            return Merge(Merge_Sort(massive.Take(mid_point).ToList()), Merge_Sort(massive.Skip(mid_point).ToList()));
+            int midPosition = needToSortArray.Count / 2;
+            return Merge(MergeSorting(needToSortArray.Take(midPosition).ToList()), MergeSorting(needToSortArray.Skip(midPosition).ToList()));
         }
-        static List<string> Merge(List<string> mass1, List<string> mass2)
+        private static List<string> Merge(List<string> leftArray, List<string> rightArray)
         {
-            int a = 0, b = 0;
-            List<string> merged = new List<string>(mass1.Count + mass2.Count);
-            for (int i = 0; i < mass1.Count + mass2.Count; i++)
+            int leftPointer = 0, rightPointer = 0;
+            List<string> mergedArray = new List<string>(leftArray.Count + rightArray.Count);
+            for (int i = 0; i < leftArray.Count + rightArray.Count; i++)
             {
-                if (b < mass2.Count && a < mass1.Count)
-                    if (String.CompareOrdinal(mass1[a], mass2[b]) > 0)
+                if (rightPointer < rightArray.Count && leftPointer < leftArray.Count)
+                    if (string.CompareOrdinal(leftArray[leftPointer], rightArray[rightPointer]) > 0)
                     {
-                        merged.Add(mass2[b]);
-                        b++;
+                        mergedArray.Add(rightArray[leftPointer]);
+                        rightPointer++;
                     }
                     else
                     {
-                        merged.Add(mass1[a]);
-                        a++;
+                        mergedArray.Add(leftArray[leftPointer]);
+                        leftPointer++;
                     }
                 else
-                    if (b < mass2.Count)
+                    if (rightPointer < rightArray.Count)
                 {
-                    merged.Add(mass2[b]);
-                    b++;
+                    mergedArray.Add(rightArray[rightPointer]);
+                    rightPointer++;
                 }
                 else
                 {
-                    merged.Add(mass1[a]);
-                    a++;
+                    mergedArray.Add(leftArray[leftPointer]);
+                    leftPointer++;
                 }
             }
-            return merged;
+            return mergedArray;
         }
-        static void Solve()
+        public static void Solve()
         {
             Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
 
-            using (var file = new StreamReader("input.txt"))
+            string[] inputData = File.ReadAllLines("race.in");
+            int stringCount = int.Parse(inputData[0]);
+            for (int i = 0; i < stringCount; i++)
             {
-                int s = int.Parse(file.ReadLine());
-                for (int i = 0; i < s; i++)
+                string[] splittedData = inputData[i + 1].Split(' ');
+                if (dict.ContainsKey(splittedData[0]))
                 {
-                    var t = file.ReadLine();
-                    string[] list = t.Split(' ');
-
-                    if (dict.ContainsKey(list[0]))
-                    {
-                        dict[list[0]].Add(list[1]);
-                    }
-                    else
-                    {
-                        dict[list[0]] = new List<string> { list[1] };
-                    }
+                    dict[splittedData[0]].Add(splittedData[1]);
                 }
-                List<string> sortedCountry = Merge_Sort(dict.Keys.ToList());
-                using (var outfile = new StreamWriter("output.txt"))
+                else
                 {
-                    foreach (string j in sortedCountry)
+                    dict[splittedData[0]] = new List<string> { splittedData[1] };
+                }
+            }
+            List<string> sortedCountry = MergeSorting(dict.Keys.ToList());
+            using (var outFile = new StreamWriter("race.out"))
+            {
+                foreach (string country in sortedCountry)
+                {
+                    List<string> runners = dict[country];
+                    outFile.WriteLine("=== " + country + " ===");
+                    for (int i = 0; i < runners.Count; i++)
                     {
-                        List<string> sp = dict[j];
-                        outfile.WriteLine("=== " + j + " ===");
-                        for (int i = 0; i < sp.Count; i++)
-                        {
-                            outfile.WriteLine(sp[i]);
-                        }
+                        outFile.WriteLine(runners[i]);
                     }
                 }
             }

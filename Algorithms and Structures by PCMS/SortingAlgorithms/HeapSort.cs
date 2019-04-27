@@ -1,74 +1,66 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SortingAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    class HeapSort
+    public class HeapSort
     {
-        static void Solve()
+        public static void Solve()
         {
-            int ArrayaySize;
-            int[] Array;
-            using (var file = new StreamReader("INPUT.TXT"))
-            {
-                ArrayaySize = int.Parse(file.ReadLine());
-                Array = file.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
-            }
-            Array = heapSort(Array);
-            using (var OutFile = new StreamWriter("OUTPUT.TXT"))
-            {
-                OutFile.WriteLine(string.Join(" ", Array));
-            }
+            string[] inputData = File.ReadAllLines("sort.in").Select(k => k.Trim()).ToArray();
+            int countOfElements = int.Parse(inputData[0]);
+            int[] needToSortArray = inputData[1].Select(k => Convert.ToInt32(k)).ToArray();
+            needToSortArray = heapSort(needToSortArray);
+            File.WriteAllText("sort.out", string.Join(" ", needToSortArray));
         }
-        static int[] heapSort(int[] Array)
+        private static int[] heapSort(int[] needToSortArray)
         {
-            Array = buildMaxHeap(Array);
-            for (int i = Array.Length - 1; i >= 1; i--)
+            needToSortArray = buildMaxHeap(needToSortArray);
+            for (int i = needToSortArray.Length - 1; i > 0; i--)
             {
-                int swapHelper = Array[i];
-                Array[i] = Array[0];
-                Array[0] = swapHelper;
-                maxHeapify(Array, 0, i);
+                Swap(ref needToSortArray[i], ref needToSortArray[0]);
+                maxHeapify(needToSortArray, 0, i);
             }
-            return Array;
+            return needToSortArray;
         }
-        static int[] buildMaxHeap(int[] Array)
+        private static int[] buildMaxHeap(int[] needToSortArray)
         {
-            for (int i = Array.Length / 2; i >= 0; i--)
+            for (int i = needToSortArray.Length / 2; i > -1; i--)
             {
-                maxHeapify(Array, i, Array.Length);
+                maxHeapify(needToSortArray, i, needToSortArray.Length);
             }
-            return Array;
+            return needToSortArray;
         }
-        static int[] maxHeapify(int[] Array, int i, int lastIndex)
+        private static int[] maxHeapify(int[] needToSortArray, int i, int lastIndex)
         {
-            int left = 2 * i + 1;
-            int largest;
-            int right = 2 * i + 2;
-            if (left <= lastIndex - 1 && Array[left] > Array[i])
+            int leftChild = 2 * i + 1;
+            int largestChild;
+            int rightChild = 2 * i + 2;
+            if (leftChild <= lastIndex - 1 && needToSortArray[leftChild] > needToSortArray[i])
             {
-                largest = left;
+                largestChild = leftChild;
             }
             else
             {
-                largest = i;
+                largestChild = i;
             }
-            if (right <= lastIndex - 1 && Array[right] > Array[largest])
+            if (rightChild <= lastIndex - 1 && needToSortArray[rightChild] > needToSortArray[largestChild])
             {
-                largest = right;
+                largestChild = rightChild;
             }
-            if (largest != i)
+            if (largestChild != i)
             {
-                int swapHelper = Array[largest];
-                Array[largest] = Array[i];
-                Array[i] = swapHelper;
-                maxHeapify(Array, largest, lastIndex);
+                Swap(ref needToSortArray[largestChild], ref needToSortArray[i]);
+                maxHeapify(needToSortArray, largestChild, lastIndex);
             }
-            return Array;
+            return needToSortArray;
+        }
+        private static void Swap(ref int firstElement, ref int secondElement)
+        {
+            int swapHelper = firstElement;
+            firstElement = secondElement;
+            secondElement = swapHelper;
         }
     }
 }

@@ -1,95 +1,107 @@
 ﻿using System.IO;
 using System;
+using System.Linq;
 
-namespace SortingAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    class QuickSortForStatistic
+    public class QuickSortForStatistic
     {
-        public static void Swap<T>(ref T a, ref T b)
+        private static void Swap<T>(ref T firstElement, ref T secondElement)
         {
-            T c = a;
-            a = b;
-            b = c;
+            T swapHelper = firstElement;
+            firstElement = secondElement;
+            secondElement = swapHelper;
         }
 
-        public static int KthOrdered(int[] a, int k)
+        private static int KthOrdered(int[] inputArray, int searchPosition)
         {
-            int l = 0, r = a.Length - 1;
+            int leftPosition = 0, rightPosition = inputArray.Length - 1;
             while (true)
             {
-                if (l + 1 >= r)
+                if (leftPosition + 1 >= rightPosition)
                 {
-                    if (l + 1 == r && a[l] > a[r])
+                    if (leftPosition + 1 == rightPosition && inputArray[leftPosition] > inputArray[rightPosition])
                     {
-                        Swap(ref a[l], ref a[r]);
+                        Swap(ref inputArray[leftPosition], ref inputArray[rightPosition]);
                     }
-                    return a[k];
+                    return inputArray[searchPosition];
                 }
 
-                int mid = (l + r) / 2;
-                Swap(ref a[mid], ref a[l + 1]);
-                if (a[l] > a[r])
-                    Swap(ref a[l], ref a[r]);
-                if (a[l + 1] > a[r])
-                    Swap(ref a[l + 1], ref a[r]);
-                if (a[l] > a[l + 1])
-                    Swap(ref a[l], ref a[l + 1]);
+                int mid = (leftPosition + rightPosition) / 2;
+                Swap(ref inputArray[mid], ref inputArray[leftPosition + 1]);
+                if (inputArray[leftPosition] > inputArray[rightPosition])
+                    Swap(ref inputArray[leftPosition], ref inputArray[rightPosition]);
 
-                int i = l + 1;
-                int j = r;
-                int value = a[i];
+                if (inputArray[leftPosition + 1] > inputArray[rightPosition])
+                    Swap(ref inputArray[leftPosition + 1], ref inputArray[rightPosition]);
+
+                if (inputArray[leftPosition] > inputArray[leftPosition + 1])
+                    Swap(ref inputArray[leftPosition], ref inputArray[leftPosition + 1]);
+
+                int i = leftPosition + 1;
+                int j = rightPosition;
+
+                int value = inputArray[i];
 
                 while (true)
                 {
                     do
                     {
                         i++;
-                    } while (a[i] < value);
+                    } while (inputArray[i] < value);
                     do
                     {
                         j--;
-                    } while (a[j] > value);
+                    } while (inputArray[j] > value);
                     if (i > j)
+                    {
                         break;
-                    Swap(ref a[i], ref a[j]);
+                    }
+
+                    Swap(ref inputArray[i], ref inputArray[j]);
                 }
 
-                a[l + 1] = a[j];
-                a[j] = value;
+                inputArray[leftPosition + 1] = inputArray[j];
+                inputArray[j] = value;
 
-                if (j >= k) r = j - 1;
-                if (j <= k) l = i;
+                if (j >= searchPosition)
+                {
+                    rightPosition = j - 1;
+                }
+                if (j <= searchPosition)
+                {
+                    leftPosition = i;
+                }
             }
         }
 
-        static void Solve()
+        public static void Solve()
         {
-            int n, k;
-            string[] list;
-            using (var file = new StreamReader("input.txt"))
-            {
+            int[][] inputData = File.ReadAllLines("kth.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
+            int arrayLength = inputData[0][0];
+            int searchPosition = inputData[0][1];
+            int AValue = inputData[1][0];
+            int BValue = inputData[1][1];
+            int CValue = inputData[1][2];
+            int firstElemnet = inputData[1][3];
+            int secondElement = inputData[1][4];
+            int[] arrayForSearching = FillArray(arrayLength, AValue, BValue, CValue, firstElemnet, secondElement);
 
-                list = file.ReadLine()
-                              .Split(' ');
-                n = int.Parse(list[0]);
-                k = int.Parse(list[1]);
-                list = file.ReadLine()
-                              .Split();
-            }
-            int A = int.Parse(list[0]);
-            int B = int.Parse(list[1]);
-            int C = int.Parse(list[2]);
-            int[] a = new int[n];
-            a[0] = int.Parse(list[3]);
-            if (n > 1)
+            Console.WriteLine(KthOrdered(arrayForSearching, searchPosition - 1));
+        }
+        private static int[] FillArray(int arrayLength, int A, int B, int C, int firstElement, int secondelement)
+        {
+            int[] filledArray = new int[arrayLength];
+            filledArray[0] = firstElement;
+            if (arrayLength > 1)
             {
-                a[1] = int.Parse(list[4]);
-                for (int i = 0; i < n - 2; i++)
-                    a[i + 2] = A * a[i] + B * a[i + 1] + C;
+                filledArray[1] = secondelement;
             }
-
-            Console.WriteLine(KthOrdered(a, k - 1));
-            Console.ReadKey();
+            for (int i = 0; i < arrayLength - 2; i++)
+            {
+                filledArray[i + 2] = A * filledArray[i] + B * filledArray[i + 1] + C;
+            }
+            return filledArray;
         }
     }
 }

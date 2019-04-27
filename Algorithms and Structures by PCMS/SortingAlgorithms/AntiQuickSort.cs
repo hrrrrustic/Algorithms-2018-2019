@@ -1,34 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
-namespace SortingAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    class QuickSortForAnti
+    public class QuickSortForAnti
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
-            int n, help;
-            using (var file = new StreamReader("antiqs.in"))
+            int countOfElements = int.Parse(File.ReadAllText("antiqs.in"));
+            int[] antiQsArray = new int[countOfElements];
+            for (int i = 0; i < countOfElements; i++)
+                antiQsArray[i] = i + 1;
+            for (int i = 2; i < countOfElements; i++)
             {
-            n = int.Parse(Console.ReadLine());
+                Swap(ref antiQsArray[i], ref antiQsArray[i / 2]);
             }
-            int[] a = new int[n];
-            for (int i = 0; i < n; i++)
-                a[i] = i + 1;
-            for (int i = 2; i < n; i++)
-            {
-                help = a[i];
-                a[i] = a[i / 2];
-                a[i / 2] = help;
-            }
-            using (var outfile = new StreamWriter("antiqs.out"))
-            {
-            Console.WriteLine(string.Join(" ", a));
-            }
+
+            Console.WriteLine(string.Join(" ", antiQsArray));
+        }
+
+        private static void Swap(ref int firstElement, ref int secondElement)
+        {
+            int swapHelper = firstElement;
+            firstElement = secondElement;
+            secondElement = swapHelper;
         }
     }
 }

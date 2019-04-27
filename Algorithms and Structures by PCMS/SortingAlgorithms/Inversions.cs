@@ -5,67 +5,66 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SortingAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    class MergeSortForInversions
+    public struct InversionsResult
     {
-        static decimal d = 0;
-        static int[] Merge_Sort(int[] massive)
+        public static int inversionsCount = 0;
+    }
+
+    public class MergeSortForInversions
+    {
+        private static int[] MergeSorting(int[] needToSortArray)
         {
-            if (massive.Length == 1)
-                return massive;
-            int mid_point = massive.Length / 2;
-            return Merge(Merge_Sort(massive.Take(mid_point).ToArray()), Merge_Sort(massive.Skip(mid_point).ToArray()));
+            if (needToSortArray.Length == 1)
+                return needToSortArray;
+            int midPosition = needToSortArray.Length / 2;
+            return Merge(MergeSorting(needToSortArray.Take(midPosition).ToArray()), MergeSorting(needToSortArray.Skip(midPosition).ToArray()));
         }
-        static int[] Merge(int[] mass1, int[] mass2)
+        private static int[] Merge(int[] leftArray, int[] rightArray)
         {
-            int a = 0, b = 0;
-            int[] merged = new int[mass1.Length + mass2.Length];
-            for (int i = 0; i < mass1.Length + mass2.Length; i++)
+            int leftPointer = 0, rightPointer = 0;
+            
+            int[] mergedArray = new int[leftArray.Length + rightArray.Length];
+            for (int i = 0; i < leftArray.Length + rightArray.Length; i++)
             {
-                if (b < mass2.Length && a < mass1.Length)
-                    if (mass1[a] > mass2[b])
+                if (rightPointer < rightArray.Length && leftPointer < leftArray.Length)
+                {
+                    if (leftArray[leftPointer] > rightArray[rightPointer])
                     {
-                        merged[i] = mass2[b];
-                        b++;
-                        d = d + (mass1.Length - a);
+                        mergedArray[i] = rightArray[rightPointer];
+                        rightPointer++;
+                        InversionsResult.inversionsCount = InversionsResult.inversionsCount + (leftArray.Length - leftPointer);
+                       }
+                    else
+                    {
+                        mergedArray[i] = leftArray[leftPointer];
+                        leftPointer++;
+                    }
+                }
+                else
+                {
+                    if (rightPointer < rightArray.Length)
+                    {
+                        mergedArray[i] = rightArray[rightPointer];
+                        rightPointer++;
                     }
                     else
                     {
-                        merged[i] = mass1[a];
-                        a++;
+                        mergedArray[i] = leftArray[leftPointer];
+                        leftPointer++;
                     }
-                else
-                    if (b < mass2.Length)
-                {
-                    merged[i] = mass2[b];
-                    b++;
-                }
-                else
-                {
-                    merged[i] = mass1[a];
-                    a++;
                 }
             }
-            return merged;
+            return mergedArray;
         }
-        static void Solve()
+        public static void Solve()
         {
-            using (var file = new StreamReader("inversions.in"))
-            {
-                string t;
-                int s = int.Parse(file.ReadLine());
-                int[] arr = new int[s];
-                t = file.ReadLine();
-                string[] list = t.Split(' ');
-                for (int i = 0; i < arr.Length; i++)
-                    arr[i] = int.Parse(list[i]);
-                arr = Merge_Sort(arr);
-                using (var outfile = new StreamWriter("inversions.out"))
-                {
-                    outfile.Write(d);
-                }
-            }
+            string[] inputData = File.ReadAllLines("inversions.in").Select(k => k.Trim()).ToArray();
+            int countOfElements = int.Parse(inputData[0]);
+            int[] inputArray = inputData[1].Select(k => Convert.ToInt32(k)).ToArray();
+            inputArray = MergeSorting(inputArray);
+            File.WriteAllText("inversions.out", InversionsResult.inversionsCount.ToString());            
         }
     }
 }
