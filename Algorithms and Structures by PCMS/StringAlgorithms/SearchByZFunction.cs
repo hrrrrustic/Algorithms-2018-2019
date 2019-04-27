@@ -1,52 +1,52 @@
 ﻿using System;
 using System.IO;
 
-namespace StringAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.StringAlgorithms
 {
-   public class ZFunction
+   public class zFunction
     {
         public static void Solve(string[] args)
         {
             string[] inputData = File.ReadAllLines("search2.in");
             string pattern = inputData[0];
             string text = inputData[1];
-            int[] zFunction = SearchByZFunction(text, pattern, '#');
-            OutPut(zFunction, pattern.Length);
+            int[] zFunctionValue = SearchByzFunction(text, pattern, '#');
+            OutPut(zFunctionValue, pattern.Length);
         }
 
-        private static int[] SearchByZFunction(string text, string pattern, char specialSymbol)
+        private static int[] SearchByzFunction(string text, string pattern, char specialSymbol)
         {
             text = pattern + specialSymbol + text;
-            int[] zFunction = new int[text.Length];
+            int[] zFunctionValue = new int[text.Length];
             int leftPositionOfBlock = 0, rightPositionOfBlock = 0;
 
             for (int i = 1; i < text.Length; i++)
             {
-                zFunction[i] = Math.Max(0, Math.Min((rightPositionOfBlock - i), zFunction[i - leftPositionOfBlock]));
-                while (i + zFunction[i] < text.Length && text[zFunction[i]] == text[i + zFunction[i]])
-                    zFunction[i]++;
+                zFunctionValue[i] = Math.Max(0, Math.Min((rightPositionOfBlock - i), zFunctionValue[i - leftPositionOfBlock]));
+                while (i + zFunctionValue[i] < text.Length && text[zFunctionValue[i]] == text[i + zFunctionValue[i]])
+                    zFunctionValue[i]++;
 
-                if (i + zFunction[i] > rightPositionOfBlock)
+                if (i + zFunctionValue[i] > rightPositionOfBlock)
                 {
                     leftPositionOfBlock = i;
-                    rightPositionOfBlock = i + zFunction[i];
+                    rightPositionOfBlock = i + zFunctionValue[i];
                 }
             }
-            return zFunction;
+            return zFunctionValue;
         }
 
-        private static void OutPut(int[] zFunction, int patternLength)
+        private static void OutPut(int[] zFunctionValue, int patternLength)
         {
             int countOfIngoing = 0;
-            for (int i = patternLength; i < zFunction.Length; i++)
+            for (int i = patternLength; i < zFunctionValue.Length; i++)
             {
-                if (zFunction[i] == patternLength)
+                if (zFunctionValue[i] == patternLength)
                     countOfIngoing++;
             }
             Console.WriteLine(countOfIngoing);
-            for (int i = patternLength; i < zFunction.Length; i++)
+            for (int i = patternLength; i < zFunctionValue.Length; i++)
             {
-                if (zFunction[i] == patternLength)
+                if (zFunctionValue[i] == patternLength)
                     Console.Write((i - patternLength) + " ");
             }
         }

@@ -1,50 +1,49 @@
 ﻿using System;
 using System.IO;
 
-namespace StringAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.StringAlgorithms
 {
-    public class ZFunctionForPrefixFunction
+    public class zFunctionForPrefixFunction
     {
         public static void Solve(string[] args)
         {
             string text = File.ReadAllText("prefix.in").Trim();
-            int[] zFunction = ZFunction(text);
-            Console.WriteLine(string.Join(" ", ZFunctionToPrefixFunction(zFunction)));
+            int[] zFunctionValue = zFunction(text);
+            Console.WriteLine(string.Join(" ", zFunctionToPrefixFunction(zFunctionValue)));
         }
 
-        private static int[] ZFunction(string text)
+        private static int[] zFunction(string text)
         {
-            //TODO:9 Кажется, int[] - это не функция
-            int[] zFunction = new int[text.Length];
+            int[] zFunctionValue = new int[text.Length];
             int leftPositionOfBlock = 0;
             int rightPositionOfBlock = 0;
-
+            
             for (int i = 1; i < text.Length; i++)
             {
-                zFunction[i] = Math.Max(0, Math.Min((rightPositionOfBlock - i), zFunction[i - leftPositionOfBlock]));
-                while (i + zFunction[i] < text.Length && text[zFunction[i]] == text[i + zFunction[i]])
-                    zFunction[i]++;
+                zFunctionValue[i] = Math.Max(0, Math.Min((rightPositionOfBlock - i), zFunctionValue[i - leftPositionOfBlock]));
+                while (i + zFunctionValue[i] < text.Length && text[zFunctionValue[i]] == text[i + zFunctionValue[i]])
+                    zFunctionValue[i]++;
 
-                if (i + zFunction[i] > rightPositionOfBlock)
+                if (i + zFunctionValue[i] > rightPositionOfBlock)
                 {
                     leftPositionOfBlock = i;
-                    rightPositionOfBlock = i + zFunction[i];
+                    rightPositionOfBlock = i + zFunctionValue[i];
                 }
             }
-            return zFunction;
+            return zFunctionValue;
         }
 
-        private static int[] ZFunctionToPrefixFunction(int[] zFunction)
+        private static int[] zFunctionToPrefixFunction(int[] zFunctionValue)
         {
-            int[] prefixFunction = new int[zFunction.Length];
-            for (int i = 1; i < zFunction.Length; i++)
+            int[] prefixFunction = new int[zFunctionValue.Length];
+            for (int i = 1; i < zFunctionValue.Length; i++)
             {
-                //TODO:10 Есть подозрение, что это можно упостить до одного осмысленного условия в while
-                for (int j = zFunction[i] - 1; j > -1; j--)
-                    if (prefixFunction[i + j] > 0)
-                        break;
-                    else
-                        prefixFunction[i + j] = j + 1;
+                int j = zFunctionValue[i] - 1;
+                while(prefixFunction[i + j] <= 0 && j > -1)
+                {
+                    prefixFunction[i + j] = j + 1;
+                    j--;
+                }
             }
             return prefixFunction;
         }

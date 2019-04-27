@@ -8,7 +8,6 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
     {
         public static void Solve(string[] args)
         {
-            //TODO:1 Ты не записываешь ничего в answers. Так и должно быть?
             List<string> answers = new List<string>();
             List<Tuple<int, int>> heap = new List<Tuple<int, int>>();
             string[] inputRequests = File.ReadAllLines("priorityqueue.in");
@@ -22,8 +21,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                         Push(i, int.Parse(currentRequest[1]), heap);
                         break;
                     case "extract-min":
-                        //TODO:2 А ты не должен ответы куда-то сохранять?
-                        ExtractMin(heap);
+                        answers.Add(ExtractMin(heap));
                         break;
                     case "decrease-key":
                         int index = int.Parse(currentRequest[1]) - 1;
@@ -87,8 +85,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
 
                 if (heap[index].Item2 <= heap[helpPosition].Item2)
                 {
-                    //TODO:4 return?
-                    break;
+                    return;
                 }
                 Tuple<int, int> swapHelper = heap[index];
                 heap[index] = heap[helpPosition];
@@ -104,8 +101,8 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             {
                 if (heap[i].Item1 == neededIndex)
                 {
-                    //TODO:3 А почему бы просто не вернуть тут i?
-                    currentPosition = i;
+                    //TODO:3 А почему бы просто не вернуть тут i? Потому что тогда будет ругаться, что не везде возвращается int, а у нас гарантируется, что
+                    currentPosition = i; // значение найдется и тогда все равно придется после фора пихат какой-то ретерн
                     break;
                 }
             }
