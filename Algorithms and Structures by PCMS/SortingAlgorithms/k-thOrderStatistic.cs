@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
+    //TODO:7 И тут тоже не совпадает класс нейм и файл нейм
     public class QuickSortForStatistic
     {
         private static void Swap<T>(ref T firstElement, ref T secondElement)
@@ -89,6 +90,8 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 
             Console.WriteLine(KthOrdered(arrayForSearching, searchPosition - 1));
         }
+
+        //TODO:8 Кодстайл
         private static int[] FillArray(int arrayLength, int A, int B, int C, int firstElement, int secondelement)
         {
             int[] filledArray = new int[arrayLength];

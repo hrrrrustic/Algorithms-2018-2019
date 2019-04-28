@@ -10,10 +10,12 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
         {
             string[] inputData = File.ReadAllLines("sort.in").Select(k => k.Trim()).ToArray();
             int countOfElements = int.Parse(inputData[0]);
-            int[] needToSortArray = inputData[1].Select(k => Convert.ToInt32(k)).ToArray();
+            int[] needToSortArray = inputData[1].Select(Convert.ToInt32).ToArray();
             needToSortArray = heapSort(needToSortArray);
             File.WriteAllText("sort.out", string.Join(" ", needToSortArray));
         }
+        //TODO:3 Все еще нет отступов между методами
+        //TODO:4 Нейминг не по код стайлу
         private static int[] heapSort(int[] needToSortArray)
         {
             needToSortArray = buildMaxHeap(needToSortArray);
@@ -24,6 +26,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             }
             return needToSortArray;
         }
+
         private static int[] buildMaxHeap(int[] needToSortArray)
         {
             for (int i = needToSortArray.Length / 2; i > -1; i--)

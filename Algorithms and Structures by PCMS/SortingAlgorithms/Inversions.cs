@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
     public struct InversionsResult
     {
+        //TODO:5 Da fuq? Запустить дважды сортировку на разных массивах и убедить, что ты будешь получать WA
         public static int inversionsCount = 0;
     }
 
@@ -35,6 +33,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
                         mergedArray[i] = rightArray[rightPointer];
                         rightPointer++;
                         InversionsResult.inversionsCount = InversionsResult.inversionsCount + (leftArray.Length - leftPointer);
+                        //TODO:6 Что по отступам?
                        }
                     else
                     {
@@ -62,9 +61,9 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
         {
             string[] inputData = File.ReadAllLines("inversions.in").Select(k => k.Trim()).ToArray();
             int countOfElements = int.Parse(inputData[0]);
-            int[] inputArray = inputData[1].Select(k => Convert.ToInt32(k)).ToArray();
+            int[] inputArray = inputData[1].Select(Convert.ToInt32).ToArray();
             inputArray = MergeSorting(inputArray);
-            File.WriteAllText("inversions.out", InversionsResult.inversionsCount.ToString());            
+            File.WriteAllText("inversions.out", InversionsResult.inversionsCount.ToString());
         }
     }
 }

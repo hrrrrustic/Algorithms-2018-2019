@@ -27,6 +27,7 @@ namespace AlgorithmsAndStructuresByPCMS.StringAlgorithms
                 {
                     if (text[k + 1] != pattern[j])
                         compareHelper = false;
+                    //TODO:12 k = i + j?
                     k++;
                 }
                 if (compareHelper)

@@ -32,6 +32,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
                         mergedArray.Add(leftArray[leftPointer]);
                         leftPointer++;
                     }
+                //TODO:12 Ты же осознаешь, что тут скобочкам... Скажем так, плохо?
                 else
                     if (rightPointer < rightArray.Count)
                 {
