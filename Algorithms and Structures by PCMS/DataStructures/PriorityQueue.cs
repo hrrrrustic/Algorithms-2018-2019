@@ -101,8 +101,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             {
                 if (heap[i].Item1 == neededIndex)
                 {
-                    //TODO:3 А почему бы просто не вернуть тут i? Потому что тогда будет ругаться, что не везде возвращается int, а у нас гарантируется, что
-                    currentPosition = i; // значение найдется и тогда все равно придется после фора пихат какой-то ретерн
+                    currentPosition = i;
                     break;
                 }
             }

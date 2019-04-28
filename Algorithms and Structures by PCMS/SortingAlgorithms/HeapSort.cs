@@ -14,9 +14,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             needToSortArray = heapSort(needToSortArray);
             File.WriteAllText("sort.out", string.Join(" ", needToSortArray));
         }
-        //TODO:3 Все еще нет отступов между методами
-        //TODO:4 Нейминг не по код стайлу
-        private static int[] heapSort(int[] needToSortArray)
+        private static int[] HeapSort(int[] needToSortArray)
         {
             needToSortArray = buildMaxHeap(needToSortArray);
             for (int i = needToSortArray.Length - 1; i > 0; i--)

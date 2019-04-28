@@ -4,8 +4,7 @@ using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    //TODO:7 И тут тоже не совпадает класс нейм и файл нейм
-    public class QuickSortForStatistic
+    public class OrderStatisticByQS
     {
         private static void Swap<T>(ref T firstElement, ref T secondElement)
         {
@@ -91,14 +90,13 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             Console.WriteLine(KthOrdered(arrayForSearching, searchPosition - 1));
         }
 
-        //TODO:8 Кодстайл
-        private static int[] FillArray(int arrayLength, int A, int B, int C, int firstElement, int secondelement)
+        private static int[] FillArray(int arrayLength, int A, int B, int C, int firstElement, int secondElement)
         {
             int[] filledArray = new int[arrayLength];
             filledArray[0] = firstElement;
             if (arrayLength > 1)
             {
-                filledArray[1] = secondelement;
+                filledArray[1] = secondElement;
             }
             for (int i = 0; i < arrayLength - 2; i++)
             {

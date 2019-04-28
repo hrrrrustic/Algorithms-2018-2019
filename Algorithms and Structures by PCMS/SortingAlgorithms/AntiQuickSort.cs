@@ -1,19 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
-    //TODO:1: Название класса не совпадает с названием файла. Лучше так не делать
-    public class QuickSortForAnti
+    public class AntiQuickSort
     {
         public static void Solve(string[] args)
         {
             int countOfElements = int.Parse(File.ReadAllText("antiqs.in"));
 
-            //TODO:2 Use ur power, Luke (Enumerator.Range)
-            int[] antiQsArray = new int[countOfElements];
-            for (int i = 0; i < countOfElements; i++)
-                antiQsArray[i] = i + 1;
+            int[] antiQsArray = Enumerable.Range(1, countOfElements).Select(k => k + 1).ToArray();
+
             for (int i = 2; i < countOfElements; i++)
             {
                 Swap(ref antiQsArray[i], ref antiQsArray[i / 2]);

@@ -22,13 +22,10 @@ namespace AlgorithmsAndStructuresByPCMS.StringAlgorithms
             for (int i = 0; i < text.Length - pattern.Length + 1; i++)
             {
                 bool compareHelper = true;
-                int k = i;
                 for (int j = 0; j < pattern.Length; j++)
                 {
-                    if (text[k + 1] != pattern[j])
+                    if (text[i + j] != pattern[j])
                         compareHelper = false;
-                    //TODO:12 k = i + j?
-                    k++;
                 }
                 if (compareHelper)
                 {
