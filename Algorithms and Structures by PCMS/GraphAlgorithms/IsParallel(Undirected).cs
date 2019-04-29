@@ -1,38 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
-namespace GraphAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class MatrixForCheckParallel
+    public class MatrixForCheckParallel
     {
-        static void Solve(string[] args)
+        public static void Solve()
         {
-            bool isParallel = false;
-            string[] data = File.ReadAllLines("input.txt");
-            int vertexCount = int.Parse(data[0].Split(' ').First());
-            int edgeCount = int.Parse(data[0].Split(' ').Last());
-            int[,] matrix = new int[vertexCount, vertexCount];
-            for (int i = 1; i < edgeCount + 1; i++)
+            string[] inputData = File.ReadAllLines("input.txt");
+            int vertexCount = int.Parse(inputData[0].Split(' ').First());
+            int edgeCount = int.Parse(inputData[0].Split(' ').Last());
+
+            File.WriteAllText("output.txt", IsParallelAndDirected(inputData.Skip(1).ToArray(), vertexCount, edgeCount) ? "YES" : "NO");
+        }
+        private static bool IsParallelAndDirected(string[] edgeList, int vertexCount, int edgeCount)
+        {
+            int[,] adjMatrix = new int[vertexCount, vertexCount];
+            for (int i = 0; i < edgeCount; i++)
             {
-                int j = int.Parse(data[i].Split(' ').First()) - 1;
-                int k = int.Parse(data[i].Split(' ').Last()) - 1;
-                matrix[j, k]++;
-                if (matrix[j, k] + matrix[k, j] > 1)
+                int j = int.Parse(edgeList[i].Split(' ').First()) - 1;
+                int k = int.Parse(edgeList[i].Split(' ').Last()) - 1;
+                adjMatrix[j, k]++;
+                if (adjMatrix[j, k] + adjMatrix[k, j] > 1)
                 {
-                    isParallel = true;
-                    break;
+                    return true;
                 }
-
             }
-            using (var outFile = new StreamWriter("output.txt"))
-            {
-
-                outFile.Write(isParallel == true ? "YES" : "NO");
-            }
+            return false;
         }
     }
 }
