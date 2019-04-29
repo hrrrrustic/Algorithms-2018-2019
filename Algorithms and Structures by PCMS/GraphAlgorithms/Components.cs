@@ -11,6 +11,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         public List<int>[] AdjList;
         public int EdgeCount { get; set; }
         public int VertexCount { get; set; }
+        public int ComponentNumber { get; set; }
         public Graph(int vertexCount, int edgeCount)
         {
             EdgeCount = edgeCount;
@@ -18,19 +19,19 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             VertexList = new int[vertexCount];
             Visited = new bool[vertexCount];
             AdjList = new List<int>[vertexCount];
+            ComponentNumber = 1;
         }
     }
 
     public class BreadthFirstSearchforComponents
     {
-        static int componentNumber = 1;
         public static void Solve()
         {
             int[][] inputData = File.ReadAllLines("components.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
             Graph graph = new Graph(inputData[0][0], inputData[0][1]);
             InitGraph(graph, inputData.Skip(1).ToArray().ToArray());
             FindComponents(graph);
-            string answer = $"{ componentNumber - 1}" + "\r\n" + string.Join(" ", graph.VertexList);
+            string answer = $"{ graph.ComponentNumber - 1}" + "\r\n" + string.Join(" ", graph.VertexList);
             File.WriteAllText("components.out", answer);
         }
         private static void FindComponents(Graph graph)
@@ -38,7 +39,9 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             for (int i = 0; i < graph.VertexCount; i++)
             {
                 if (!graph.Visited[i])
+                {
                     BFS(graph, i, graph.VertexCount);
+                }
             }
         }
         private static void InitGraph(Graph graph, int[][] edgeList)
@@ -60,7 +63,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             Queue<int> bfsQueue = new Queue<int>();
             bfsQueue.Enqueue(startVertex);
             graph.Visited[startVertex] = true;
-            graph.VertexList[startVertex] = componentNumber;
+            graph.VertexList[startVertex] = graph.ComponentNumber;
             while (bfsQueue.Count != 0)
             {
                 int currentVertex = bfsQueue.Dequeue();
@@ -71,13 +74,13 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                         if (!graph.Visited[graph.AdjList[currentVertex][i]])
                         {
                             graph.Visited[graph.AdjList[currentVertex][i]] = true;
-                            graph.VertexList[graph.AdjList[currentVertex][i]] = componentNumber;
+                            graph.VertexList[graph.AdjList[currentVertex][i]] = graph.ComponentNumber;
                             bfsQueue.Enqueue(graph.AdjList[currentVertex][i]);
                         }
                     }
                 }
             }
-            componentNumber++;
+            graph.ComponentNumber++;
         }
     }
 }   
