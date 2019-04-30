@@ -5,25 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class BreadthFirstSearch
+
+    public class BreadthFirstSearch
     {
         static bool[] visited;
         static int[] vertexList;
         static List<int>[] adjList;
         static void Solve(string[] args)
         {
-            string[] data = File.ReadAllLines("pathbge1.in");
-            string[] splittedInfo = data[0].Split(' ');
-            int vertexCount = int.Parse(splittedInfo[0]);
-            int edgeCount = int.Parse(splittedInfo[1]);
+            int[][] inputData = File.ReadAllLines("pathbge1.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
+            int vertexCount = inputData[0][0];
+            int edgeCount = inputData[0][1];
             vertexList = new int[vertexCount];
             visited = new bool[vertexCount];
             adjList = new List<int>[vertexCount];
             for (int i = 0; i < edgeCount; i++)
             {
-                string[] splittedData = data[i + 1].Split(' ');
+                string[] splittedData = inputData[i + 1].Split(' ');
                 int j = int.Parse(splittedData[0]) - 1;
                 int k = int.Parse(splittedData[1]) - 1;
                 if (adjList[j] == null)
