@@ -12,9 +12,12 @@ namespace AlgorithmsAndStructuresByPCMS.BinarySearch
             double firstHeight = double.Parse(inputData[1].Replace('.', ','));
             double[] bulbsHeight = new double[bulbsCount];
             bulbsHeight[0] = firstHeight;
+
             double answer = BinarySearchSecondBulbHeight(0.00, firstHeight, bulbsCount, bulbsHeight);
+
             Console.WriteLine(answer);
         }
+
         private static double BinarySearchSecondBulbHeight(double leftPosition, double rightPosition, int bulbsCount, double[] bulbsHeight)
         {
             double midPosition = 0;
@@ -32,6 +35,7 @@ namespace AlgorithmsAndStructuresByPCMS.BinarySearch
             }
             return midPosition;
         }
+
         private static bool IsItValid(double[] bulbsHeight, double secondBulbHeight, int bulbsCount)
         {
             bulbsHeight[1] = secondBulbHeight;

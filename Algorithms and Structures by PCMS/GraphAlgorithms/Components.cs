@@ -61,7 +61,11 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         }
         public static void Solve()
         {
-            int[][] inputData = File.ReadAllLines("components.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
+            int[][] inputData = File
+                .ReadAllLines("components.in")
+                .Select(k => k.Trim().Split(' ').Select(int.Parse).ToArray())
+                .ToArray();
+
             Graph graph = InitGraph(inputData[0][0], inputData[0][1], inputData.Skip(1).ToArray());
             int[] components = graph.FindComponents();
             string answer = $"{ graph.ComponentNumber - 1}" + "\r\n" + string.Join(" ", components);

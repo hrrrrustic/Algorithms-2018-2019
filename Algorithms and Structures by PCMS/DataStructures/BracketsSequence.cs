@@ -9,17 +9,12 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
         {
             List<string> answers = new List<string>();
             string[] sequences = File.ReadAllLines("brackets.in");
+
             for (int i = 0; i < sequences.Length; i++)
             {
-                if (CheckSequence(sequences[i]))
-                {
-                    answers.Add("YES");
-                }
-                else
-                {
-                    answers.Add("NO");
-                }
+                answers.Add(CheckSequence(sequences[i]) ? "YES" : "NO");
             }
+
             File.WriteAllText("brackets.out", string.Join("\r\n", answers));
         }
 
@@ -41,14 +36,8 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                     }
                 }
             }
-            if (string.IsNullOrEmpty(sequence))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+
+            return string.IsNullOrEmpty(sequence);
         }
     }
 }

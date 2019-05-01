@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.DataStructures
 {
-    public class StackForPolishNotation
+    public class ReversePolishNotation
     {
         public static void Solve(string[] args)
         {
@@ -14,22 +14,26 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                 { "-",((x, y) => x - y) },
                 { "*", ((x, y) => x * y) }
             };
+
             string[] inputNotation = File.ReadAllText("postfix.in").Split(' ');
-            int currPosition = 0;
+            int current = 0;
+            
+            //TODO: use Stack<int>
             int[] stack = new int[inputNotation.Length];
             for (int i = 0; i < inputNotation.Length; i++)
             {
                 if (int.TryParse(inputNotation[i], out int number))
                 {
-                    stack[currPosition] = number;
+                    stack[current] = number;
                 }
                 else
                 {
-                    stack[currPosition - 2] = func[inputNotation[i]](stack[currPosition - 2], stack[currPosition - 1]);
-                    currPosition -= 2;
+                    stack[current - 2] = func[inputNotation[i]](stack[current - 2], stack[current - 1]);
+                    current -= 2;
                 }
-                currPosition++;
+                current++;
             }
+
             File.WriteAllText("postfix.out", stack[0].ToString());
         }
     }

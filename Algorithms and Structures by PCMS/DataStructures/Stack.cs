@@ -12,6 +12,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             int[] stack = new int[commandCount];
             List<int> answers = new List<int>();
             int stackTop = 0;
+
             for (int i = 0; i < commandCount; i++)
             {
                 string[] currentRequest = inputData[i + 1].Split(' ');
@@ -28,6 +29,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                     stackTop--;
                 }
             }
+
             File.WriteAllText("stack.out", string.Join("\r\n", answers));
         }
     }

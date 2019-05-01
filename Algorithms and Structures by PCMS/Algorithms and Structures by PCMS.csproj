@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinarySearch\BinarySearch.cs" />
-    <Compile Include="BinarySearch\Garland.cs" />
+    <Compile Include="BinarySearch\BinarySearchForGarland.cs" />
     <Compile Include="DataStructures\BracketsSequence.cs" />
     <Compile Include="DataStructures\PriorityQueue.cs" />
     <Compile Include="DataStructures\ReversePolishNotation.cs" />

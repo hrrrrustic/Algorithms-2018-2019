@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.DataStructures
 {
-    public class Heap
+    public class PriorityQueue
     {
         public static void Solve(string[] args)
         {
@@ -20,9 +20,11 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                     case "push":
                         Push(i, int.Parse(currentRequest[1]), heap);
                         break;
+
                     case "extract-min":
                         answers.Add(ExtractMin(heap));
                         break;
+
                     case "decrease-key":
                         int index = int.Parse(currentRequest[1]) - 1;
                         int value = int.Parse(currentRequest[2]);
@@ -37,13 +39,13 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
         {
             int x = FindPosition(index, heap);
             heap[x] = Tuple.Create(heap[x].Item1, value);
-            SiftUp(x, heap);
+            ShiftUp(x, heap);
         }
 
         private static void Push(int index, int value, List<Tuple<int,int>> heap)
         {
             heap.Add(Tuple.Create(index, value));
-            SiftUp(heap.Count - 1, heap);
+            ShiftUp(heap.Count - 1, heap);
         }
 
         private static string ExtractMin(List<Tuple<int,int>> heap)
@@ -61,7 +63,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                 return "*";
             }
         }
-        private static void SiftUp(int index, List<Tuple<int,int>> heap)
+        private static void ShiftUp(int index, List<Tuple<int,int>> heap)
         {
             while (index > 0 && heap[index].Item2 < heap[(index - 1) / 2].Item2)
             {

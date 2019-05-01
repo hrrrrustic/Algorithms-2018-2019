@@ -6,29 +6,45 @@ namespace AlgorithmsAndStructuresByPCMS.BinarySearch
 {
     public class BinarySearch
     {
-        public static void Main()
+        public static void Solve()
         {
             int arraySize = int.Parse(Console.ReadLine());
-            int[] inputArray = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+            int[] inputArray = Console
+                .ReadLine()
+                .Split(' ')
+                .Select(int.Parse)
+                .ToArray();
+
             int requestCount = int.Parse(Console.ReadLine());
-            int[] requests = Console.ReadLine().Split(' ').Select(n => int.Parse(n)).ToArray();
+            int[] requests = Console
+                .ReadLine()
+                .Split(' ')
+                .Select(int.Parse)
+                .ToArray();
+
+            //TODO:AI replace with List<(int, int)>
             List<int> answers = new List<int>();
             for (int i = 0; i < requestCount; i++)
             {
                 answers.Add(BinSearch(inputArray, requests[i], true));
                 answers.Add(BinSearch(inputArray, requests[i], false));
             }
+
             for (int i = 0; i < answers.Count; i += 2)
             {
-                Console.WriteLine(answers[i] + " " + answers[i + 1]);
+                Console.WriteLine($"{answers[i]} {answers[i + 1]}");
             }
         }
+
         private static int BinSearch(int[] inputArray, int valueToSearch, bool needLeftEnter)
         {
+            const int notFound = -1;
+
             int leftPosition = -1;
             int rightPosition = inputArray.Length;
             if (valueToSearch > inputArray[rightPosition - 1] || valueToSearch < inputArray[leftPosition + 1])
-                return -1;
+                return notFound;
+
             while (leftPosition < rightPosition - 1)
             {
                 int midPosition = (leftPosition + rightPosition) / 2;
@@ -41,14 +57,13 @@ namespace AlgorithmsAndStructuresByPCMS.BinarySearch
                     rightPosition = midPosition;
                 }
             }
+
             if (needLeftEnter ? inputArray[rightPosition] == valueToSearch : inputArray[rightPosition - 1] == valueToSearch)
             {
                 return needLeftEnter ? rightPosition + 1 : rightPosition;
             }
-            else
-            {
-                return -1;
-            }
+
+            return notFound;
         }
     }
 }
