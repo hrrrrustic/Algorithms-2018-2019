@@ -1,99 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
-namespace GraphAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    public class KVPComparerForDijkstra : IComparer<KeyValuePair<int, int>> // Господи за что?
+    public class KVPComparerForDijkstra : IComparer<KeyValuePair<int, int>>
     {
-        public int Compare(KeyValuePair<int, int> kvp1, KeyValuePair<int, int> kvp2)
+        public int Compare(KeyValuePair<int, int> LeftKVP, KeyValuePair<int, int> RightKVP)
         {
-            if (kvp1.Value < kvp2.Value)
+            if (LeftKVP.Value < RightKVP.Value)
                 return -1;
-            else if (kvp1.Value > kvp2.Value)
+            else if (LeftKVP.Value > RightKVP.Value)
                 return 1;
-            else if (kvp1.Value == kvp2.Value && kvp1.Key == kvp2.Key)
+            else if (LeftKVP.Value == RightKVP.Value && LeftKVP.Key == RightKVP.Key)
                 return 0;
-            else if (kvp1.Key > kvp2.Key && kvp1.Value == kvp2.Value)
+            else if (LeftKVP.Key > RightKVP.Key && LeftKVP.Value == RightKVP.Value)
                 return 1;
             else return -1;
         }
     }
 
-    class Dijkstra
+    public class Dijkstra
     {
-        static void Solve(string[] args)
+        public class Graph
         {
-            //int[][] data = File.ReadAllLines("pathgep.in").Select(k => k.Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
-            int[] info = Console.ReadLine().Split(' ').Select(k => int.Parse(k)).ToArray();
-            //int vertexCount = data[0][0];
-            int vertexCount = info[0];
-            //int edgeCount = data[0][1];
-            int edgeCount = info[1];
-            List<KeyValuePair<int, int>>[] adjMatrix = new List<KeyValuePair<int, int>>[vertexCount];
+            public List<KeyValuePair<int,int>>[] AdjList;
+            public int EdgeCount { get; set; }
+            public int VertexCount { get; set; }
+            public int[] Distance { get; set; }
+            public Graph(List<KeyValuePair<int,int>>[] adjList, int maxValue)
+            {
+                EdgeCount = adjList.Sum(k => k?.Count ?? 0);
+                VertexCount = adjList.Length;
+                AdjList = adjList;
+                Distance = Enumerable.Repeat(maxValue, VertexCount).ToArray();
+            }
+        }
+        public static void Solve()
+        {
+            int[] inputData = Console
+                .ReadLine()
+                .Split(' ')
+                .Select(k => int.Parse(k))
+                .ToArray();
+
+            int vertexCount = inputData[0];
+            int edgeCount = inputData[1];
+            Graph graph = InitGraph(vertexCount, edgeCount);
+            Console.WriteLine(string.Join(" ", DijkstraAlgo(graph)));
+        }
+        private static int[] DijkstraAlgo(Graph graph)
+        {
+            SortedDictionary<KeyValuePair<int, int>, int> justPriorityQueue = new SortedDictionary<KeyValuePair<int, int>, int>(new KVPComparerForDijkstra());
+            graph.Distance[0] = 0;
+            justPriorityQueue.Add(new KeyValuePair<int, int>(0, graph.Distance[0]), 0);
+            while (justPriorityQueue.Count != 0)
+            {
+                var currentMinEdge = justPriorityQueue.First();
+                justPriorityQueue.Remove(justPriorityQueue.First().Key);
+                if (graph.AdjList[currentMinEdge.Key.Key] != null)
+                {
+                    foreach (var item in graph.AdjList[currentMinEdge.Key.Key])
+                    {
+                        int destinationVertex = item.Key;
+                        int edgeWeight = item.Value;
+                        if (graph.Distance[currentMinEdge.Key.Key] + edgeWeight < graph.Distance[destinationVertex])
+                        {
+                            justPriorityQueue.Remove(new KeyValuePair<int, int>(destinationVertex, graph.Distance[destinationVertex]));
+                            graph.Distance[destinationVertex] = graph.Distance[currentMinEdge.Key.Key] + edgeWeight;
+                            justPriorityQueue.Add(new KeyValuePair<int, int>(destinationVertex, graph.Distance[destinationVertex]), 0);
+                        }
+                    }
+                }
+            }
+            return graph.Distance;
+        }
+        private static Graph InitGraph(int vertexCount, int edgeCount)
+        {
+            List<KeyValuePair<int, int>>[] adjList = new List<KeyValuePair<int, int>>[vertexCount];
             for (int i = 0; i < edgeCount; i++)
             {
                 int[] data = Console.ReadLine().Split(' ').Select(k => int.Parse(k)).ToArray();
-                //if (adjMatrix[data[i + 1][0] - 1] == null)
-                //adjMatrix[data[i + 1][0] - 1] = new List<KeyValuePair<int, int>>();
-                if (adjMatrix[data[0] - 1] == null)
-                    adjMatrix[data[0] - 1] = new List<KeyValuePair<int, int>>();
-                //adjMatrix[data[i + 1][0] - 1].Add(new KeyValuePair<int, int>(data[i + 1][1] - 1, data[i + 1][2]));
-                adjMatrix[data[0] - 1].Add(new KeyValuePair<int, int>(data[1] - 1, data[2]));
-                //if (adjMatrix[data[i + 1][1] - 1] == null)
-                //adjMatrix[data[i + 1][1] - 1] = new List<KeyValuePair<int, int>>();
-                if (adjMatrix[data[1] - 1] == null)
-                    adjMatrix[data[1] - 1] = new List<KeyValuePair<int, int>>();
-                adjMatrix[data[1] - 1].Add(new KeyValuePair<int, int>(data[0] - 1, data[2]));
+                if (adjList[data[0] - 1] == null)
+                    adjList[data[0] - 1] = new List<KeyValuePair<int, int>>();
+
+                adjList[data[0] - 1].Add(new KeyValuePair<int, int>(data[1] - 1, data[2]));
+                if (adjList[data[1] - 1] == null)
+                    adjList[data[1] - 1] = new List<KeyValuePair<int, int>>();
+
+                adjList[data[1] - 1].Add(new KeyValuePair<int, int>(data[0] - 1, data[2]));
             }
-            int[] dist = new int[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
-            {
-                dist[i] = 10000000;
-            }
-            dist[0] = 0;
-            bool[] used = new bool[vertexCount];
-            SortedDictionary<KeyValuePair<int, int>, int> neeeeeeeeeeeeeeet = new SortedDictionary<KeyValuePair<int, int>, int>(new KVPComparerForDijkstra());
-            dist[0] = 0;
-            neeeeeeeeeeeeeeet.Add(new KeyValuePair<int, int>(0, dist[0] ), 0);
-            while (neeeeeeeeeeeeeeet.Count != 0)
-            {
-                var cur = neeeeeeeeeeeeeeet.First();
-                neeeeeeeeeeeeeeet.Remove(neeeeeeeeeeeeeeet.First().Key);
-                if (adjMatrix[cur.Key.Key] != null)
-                    foreach (var item in adjMatrix[cur.Key.Key])
-                    {
-                        int to = item.Key;
-                        int lenght = item.Value;
-                        if (dist[cur.Key.Key] + lenght < dist[to])
-                        {
-                            neeeeeeeeeeeeeeet.Remove(new KeyValuePair<int, int> (to, dist[to]));
-                            dist[to] = dist[cur.Key.Key] + lenght;
-                            neeeeeeeeeeeeeeet.Add(new KeyValuePair<int, int>(to, dist[to]), 0);
-                        }
-                    }
-            }
-            /*for (int i = 0; i < vertexCount; i++)
-            {
-                int q = -1;
-                for (int j = 0; j < vertexCount; j++)
-                {
-                    if (!used[j] && (q == -1 || dist[j] < dist[q]))
-                        q = j;
-                }
-                used[q] = true;
-                foreach (var item in adjMatrix[q])
-                {
-                    if (dist[q] + item.Value < dist[item.Key])
-                        dist[item.Key] = dist[q] + item.Value;
-                }
-            }
-            */  
-            //File.WriteAllText("pathgep.out", string.Join(" ", dist));
-            Console.WriteLine(string.Join(" ", dist));
+            return new Graph(adjList, 1000000);
         }
     }
 }

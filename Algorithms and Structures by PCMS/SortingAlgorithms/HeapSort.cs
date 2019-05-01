@@ -11,10 +11,10 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             string[] inputData = File.ReadAllLines("sort.in").Select(k => k.Trim()).ToArray();
             int countOfElements = int.Parse(inputData[0]);
             int[] needToSortArray = inputData[1].Select(Convert.ToInt32).ToArray();
-            needToSortArray = heapSort(needToSortArray);
+            needToSortArray = HeapSorting(needToSortArray);
             File.WriteAllText("sort.out", string.Join(" ", needToSortArray));
         }
-        private static int[] HeapSort(int[] needToSortArray)
+        private static int[] HeapSorting(int[] needToSortArray)
         {
             needToSortArray = buildMaxHeap(needToSortArray);
             for (int i = needToSortArray.Length - 1; i > 0; i--)

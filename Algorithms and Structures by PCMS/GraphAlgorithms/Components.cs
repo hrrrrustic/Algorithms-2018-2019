@@ -4,62 +4,61 @@ using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    public class Graph
+    public class BreadthFirstSearchforComponents
     {
-        public List<int>[] AdjList;
-        public int EdgeCount { get; set; }
-        public int VertexCount { get; set; }
-        public int ComponentNumber { get; set; }
-        public Graph(List<int>[] adjList)
+        public class Graph
         {
-            EdgeCount = adjList.Sum(k => k?.Count ?? 0);
-            VertexCount = adjList.Length;
-            AdjList = adjList;
-            ComponentNumber = 1;
-        }
-
-        public int[] FindComponents()
-        {
-            int[] vertexList = new int[VertexCount];
-            bool[] visited = new bool[VertexCount];
-            for (int i = 0; i < VertexCount; i++)
+            public List<int>[] AdjList;
+            public int EdgeCount { get; set; }
+            public int VertexCount { get; set; }
+            public int ComponentNumber { get; set; }
+            public Graph(List<int>[] adjList)
             {
-                if (!visited[i])
-                {
-                    BFS(i, visited, vertexList);
-                }
+                EdgeCount = adjList.Sum(k => k?.Count ?? 0);
+                VertexCount = adjList.Length;
+                AdjList = adjList;
+                ComponentNumber = 1;
             }
-            return vertexList;
-        }
 
-        private void BFS(int startVertex, bool[] visited, int[] vertexList)
-        {
-            Queue<int> bfsQueue = new Queue<int>();
-            bfsQueue.Enqueue(startVertex);
-            visited[startVertex] = true;
-            vertexList[startVertex] = ComponentNumber;
-            while (bfsQueue.Count != 0)
+            public int[] FindComponents()
             {
-                int currentVertex = bfsQueue.Dequeue();
-                if (AdjList[currentVertex] != null)
+                int[] vertexList = new int[VertexCount];
+                bool[] visited = new bool[VertexCount];
+                for (int i = 0; i < VertexCount; i++)
                 {
-                    for (int i = 0; i < AdjList[currentVertex].Count; i++)
+                    if (!visited[i])
                     {
-                        if (!visited[AdjList[currentVertex][i]])
+                        BFS(i, visited, vertexList);
+                    }
+                }
+                return vertexList;
+            }
+
+            private void BFS(int startVertex, bool[] visited, int[] vertexList)
+            {
+                Queue<int> bfsQueue = new Queue<int>();
+                bfsQueue.Enqueue(startVertex);
+                visited[startVertex] = true;
+                vertexList[startVertex] = ComponentNumber;
+                while (bfsQueue.Count != 0)
+                {
+                    int currentVertex = bfsQueue.Dequeue();
+                    if (AdjList[currentVertex] != null)
+                    {
+                        for (int i = 0; i < AdjList[currentVertex].Count; i++)
                         {
-                            visited[AdjList[currentVertex][i]] = true;
-                            vertexList[AdjList[currentVertex][i]] = ComponentNumber;
-                            bfsQueue.Enqueue(AdjList[currentVertex][i]);
+                            if (!visited[AdjList[currentVertex][i]])
+                            {
+                                visited[AdjList[currentVertex][i]] = true;
+                                vertexList[AdjList[currentVertex][i]] = ComponentNumber;
+                                bfsQueue.Enqueue(AdjList[currentVertex][i]);
+                            }
                         }
                     }
                 }
+                ComponentNumber++;
             }
-            ComponentNumber++;
         }
-    }
-
-    public class BreadthFirstSearchforComponents
-    {
         public static void Solve()
         {
             int[][] inputData = File.ReadAllLines("components.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
