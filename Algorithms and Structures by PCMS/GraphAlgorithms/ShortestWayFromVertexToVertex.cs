@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
-namespace GraphAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
 
     public class KVPComparer : IComparer<KeyValuePair<long, long>> // Господи за что?

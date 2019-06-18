@@ -4,17 +4,17 @@ using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    public class KVPComparerForDijkstra : IComparer<KeyValuePair<int, int>>
+    public class KvpComparerForDijkstra : IComparer<KeyValuePair<int, int>>
     {
-        public int Compare(KeyValuePair<int, int> LeftKVP, KeyValuePair<int, int> RightKVP)
+        public int Compare(KeyValuePair<int, int> leftKvp, KeyValuePair<int, int> rightKvp)
         {
-            if (LeftKVP.Value < RightKVP.Value)
+            if (leftKvp.Value < rightKvp.Value)
                 return -1;
-            else if (LeftKVP.Value > RightKVP.Value)
+            else if (leftKvp.Value > rightKvp.Value)
                 return 1;
-            else if (LeftKVP.Value == RightKVP.Value && LeftKVP.Key == RightKVP.Key)
+            else if (leftKvp.Value == rightKvp.Value && leftKvp.Key == rightKvp.Key)
                 return 0;
-            else if (LeftKVP.Key > RightKVP.Key && LeftKVP.Value == RightKVP.Value)
+            else if (leftKvp.Key > rightKvp.Key && leftKvp.Value == rightKvp.Value)
                 return 1;
             else return -1;
         }
@@ -24,10 +24,10 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
     {
         public class Graph
         {
-            public List<KeyValuePair<int,int>>[] AdjList;
-            public int EdgeCount { get; set; }
-            public int VertexCount { get; set; }
-            public int[] Distance { get; set; }
+            public readonly List<KeyValuePair<int,int>>[] AdjList;
+            public int EdgeCount { get; }
+            public int VertexCount { get; }
+            public int[] Distance { get; }
             public Graph(List<KeyValuePair<int,int>>[] adjList, int maxValue)
             {
                 EdgeCount = adjList.Sum(k => k?.Count ?? 0);
@@ -51,7 +51,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         }
         private static int[] DijkstraAlgo(Graph graph)
         {
-            SortedDictionary<KeyValuePair<int, int>, int> justPriorityQueue = new SortedDictionary<KeyValuePair<int, int>, int>(new KVPComparerForDijkstra());
+            SortedDictionary<KeyValuePair<int, int>, int> justPriorityQueue = new SortedDictionary<KeyValuePair<int, int>, int>(new KvpComparerForDijkstra());
             graph.Distance[0] = 0;
             justPriorityQueue.Add(new KeyValuePair<int, int>(0, graph.Distance[0]), 0);
             while (justPriorityQueue.Count != 0)
@@ -80,7 +80,12 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             List<KeyValuePair<int, int>>[] adjList = new List<KeyValuePair<int, int>>[vertexCount];
             for (int i = 0; i < edgeCount; i++)
             {
-                int[] data = Console.ReadLine().Split(' ').Select(k => int.Parse(k)).ToArray();
+                int[] data = Console
+                    .ReadLine()
+                    .Split(' ')
+                    .Select(k => int.Parse(k))
+                    .ToArray();
+
                 if (adjList[data[0] - 1] == null)
                     adjList[data[0] - 1] = new List<KeyValuePair<int, int>>();
 
