@@ -4,9 +4,9 @@ using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class DepthFirstSearchForMaze
+    public class DepthFirstSearchForMaze
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
             List<char> commands = new List<char>();
             string[] mazeInfo;
@@ -68,7 +68,8 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 outFile.Write(string.Join("", commands));
             }
         }
-        static bool BFS(int[][] map, int startRowPos, int startColPos, int rowCount, int colCount, ref int finishColPos, ref int finishRowPos)
+
+        private static bool BFS(int[][] map, int startRowPos, int startColPos, int rowCount, int colCount, ref int finishColPos, ref int finishRowPos)
         {
             bool isFound = false;
             Queue<int> dfsqueue = new Queue<int>();
@@ -101,7 +102,8 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             }
             return isFound;
         }
-        static void FindShortestWay(int[][] data, int rowPos, int colPos, int colCount, int rowCount, ref List<char> commands)
+
+        private static void FindShortestWay(int[][] data, int rowPos, int colPos, int colCount, int rowCount, ref List<char> commands)
         {
             int minNeighb = 10000;
             int minCol = 0;

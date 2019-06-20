@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    public class KVPComparerForSpanTree : IComparer<KeyValuePair<int,int>> // Господи за что?
+    public class KvpComparerForSpanTree : IComparer<KeyValuePair<int,int>>
     {
         public int Compare(KeyValuePair<int,int> kvp1, KeyValuePair<int,int> kvp2)
         {
             if (kvp1.Value < kvp2.Value)
                 return -1;
-            else if (kvp1.Value > kvp2.Value)
+            if (kvp1.Value > kvp2.Value)
                 return 1;
-            else if (kvp1.Value == kvp2.Value && kvp1.Key == kvp2.Key)
+            if (kvp1.Value == kvp2.Value && kvp1.Key == kvp2.Key)
                 return 0;
-            else if (kvp1.Key > kvp2.Key && kvp1.Value == kvp2.Value)
+            if (kvp1.Key > kvp2.Key && kvp1.Value == kvp2.Value)
                 return 1;
-            else return -1;
+            return -1;
         }
     }
 
-    class Prima
+    public class Prima
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
             long answer = 0;
             int edgeCount;
@@ -31,13 +31,13 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             List<KeyValuePair<int, int>>[] adjList;
             using (var file = new StreamReader("spantree2.in"))
             {
-                int[] info = file.ReadLine().Split(' ').Select(k => int.Parse(k)).ToArray();
+                int[] info = file.ReadLine().Split(' ').Select(int.Parse).ToArray();
                 vertexCount = info[0];
                 edgeCount = info[1];
                 adjList = new List<KeyValuePair<int, int>>[vertexCount];
                 for (int i = 0; i < edgeCount; i++)
                 {
-                    int[] splittedData = file.ReadLine().Split(' ').Select(e => int.Parse(e)).ToArray();
+                    int[] splittedData = file.ReadLine().Split(' ').Select(int.Parse).ToArray();
                     int j = splittedData[0] - 1;
                     int k = splittedData[1] - 1;
                     int dist = splittedData[2];
@@ -57,7 +57,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             {
                 bestdist[i] = 100001;
             }
-            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KVPComparerForSpanTree());
+            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KvpComparerForSpanTree());
             bestdist[0] = 0;
             prim.Add(new KeyValuePair<int, int>(0, 0), 0);
             for (int i = 0; i < vertexCount; i++)
@@ -84,7 +84,6 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                     }
                 }
             }
-            //File.WriteAllText("spantree3.out", answer.ToString());
             Console.WriteLine(answer);
         }
     }

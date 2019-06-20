@@ -5,11 +5,15 @@ using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class FordBellman
+    public class FordBellman
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
-            long[][] data = File.ReadAllLines("negcycle.in").Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray()).ToArray();
+            long[][] data = File.
+                ReadAllLines("negcycle.in").
+                Select(k => k.Trim().Split(' ').Select(long.Parse).ToArray())
+                .ToArray();
+
             long vertexCount = data[0][0];
             List<Tuple<long, long, long>> edgeList = new List<Tuple<long, long, long>>();
             for (int i = 0; i < vertexCount; i++)
@@ -23,7 +27,6 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                     {
                         from++;
                         Console.WriteLine("YES\r\n" + 2 + "\r\n" + from + " " + from);
-                        //File.WriteAllText("negcycle.out", "YES\r\n" + 2 + "\r\n" + from + " " + from);
                         return;
                     }
                     if (weight != 1000000000)
@@ -62,24 +65,21 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 Console.WriteLine("NO");
                 return;
             }
-            else
+
+            for (int i = 0; i < vertexCount; i++)
             {
-                for (int i = 0; i < vertexCount; i++)
-                {
-                    cycleStart = prev[cycleStart];
-                }
-                long current = cycleStart;
-                while (true)
-                {
-                    cycle.Add(current + 1);
-                    if (current == cycleStart && cycle.Count != 1)
-                        break;
-                    current = prev[current];
-                }
+                cycleStart = prev[cycleStart];
+            }
+            long current = cycleStart;
+            while (true)
+            {
+                cycle.Add(current + 1);
+                if (current == cycleStart && cycle.Count != 1)
+                    break;
+                current = prev[current];
             }
             cycle.Reverse();
             Console.WriteLine("YES\r\n" + cycle.Count + "\r\n" + string.Join(" ", cycle));
-            //File.WriteAllText("negcycle.out", "YES\r\n" + cycle.Count + "\r\n" + string.Join(" ", cycle));
         }
     }
 }

@@ -11,9 +11,13 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         static bool[] visited;
         static int[] vertexList;
         static List<int>[] adjList;
-        static void Solve(string[] args)
+
+        public static void Solve(string[] args)
         {
-            int[][] inputData = File.ReadAllLines("pathbge1.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
+            int[][] inputData = File
+                .ReadAllLines("pathbge1.in")
+                .Select(k => k.Trim().Split(' ').Select(int.Parse).ToArray())
+                .ToArray();
             int vertexCount = inputData[0][0];
             int edgeCount = inputData[0][1];
             vertexList = new int[vertexCount];
@@ -35,7 +39,8 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             string answer = string.Join(" ", vertexList);
             Console.WriteLine(answer);
         }
-        static void BFS(int startVertex, int vertexCount)
+
+        private static void BFS(int startVertex, int vertexCount)
         {
             Queue<int> dfsqueue = new Queue<int>();
             dfsqueue.Enqueue(startVertex);
@@ -45,7 +50,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             {
                 int curr = dfsqueue.Dequeue();
                 if (adjList[curr] != null)
-                   {
+                {
                     for (int i = 0; i < adjList[curr].Count; i++)
                     {
                         if (!visited[adjList[curr][i]])

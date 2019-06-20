@@ -1,31 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
 
-    public class KVPComparer : IComparer<KeyValuePair<long, long>> // Господи за что?
+    public class DijkstraForWayToVertex
     {
-        public int Compare(KeyValuePair<long, long> kvp1, KeyValuePair<long, long> kvp2)
+        public static void Solve(string[] args)
         {
-            if (kvp1.Value < kvp2.Value)
-                return -1;
-            else if (kvp1.Value > kvp2.Value)
-                return 1;
-            else if (kvp1.Value == kvp2.Value && kvp1.Key == kvp2.Key)
-                return 0;
-            else if (kvp1.Key > kvp2.Key && kvp1.Value == kvp2.Value)
-                return 1;
-            else return -1;
-        }
-    }
-    class DijkstraForWayToVertex
-    {
-        static void Solve(string[] args)
-        {
-            long[][] data = File.ReadAllLines("pathmgep.in").Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray()).ToArray();
+            long[][] data = File
+                .ReadAllLines("pathmgep.in")
+                .Select(k => k.Trim().Split(' ').Select(long.Parse).ToArray())
+                .ToArray();
+
             long vertexCount = data[0][0];
             long start = data[0][1] - 1;
             long finish = data[0][2] - 1;
@@ -68,7 +57,6 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                     }
             }
 
-            //File.WriteAllText("pathmgep.out", dist[finish].ToString());
             if (dist[finish] == long.MaxValue)
             {
                 Console.WriteLine(-1);

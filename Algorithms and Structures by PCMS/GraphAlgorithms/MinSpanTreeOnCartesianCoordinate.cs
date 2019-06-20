@@ -3,12 +3,11 @@ using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class PrimaForCompleteGraph
+    public class PrimaForCompleteGraph
     {
-        static void Solve(string[] args)
+        public static void Solve(string[] args)
         {
             double answer = 0;
-            //int[][] data = File.ReadAllLines("spantree.in").Select(k => k.Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
             int v = int.Parse(Console.ReadLine());
             bool[] used = new bool[v];
             double[] bestDist = new double[v];
@@ -18,7 +17,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             {
                 if (adjMatrix[i] == null)
                     adjMatrix[i] = new double[v];
-                data[i] = Console.ReadLine().Split(' ').Select(k => int.Parse(k)).ToArray();
+                data[i] = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
                 for (int j = 0; j < i; j++)
                 {
                     if (adjMatrix[j] == null)
@@ -29,7 +28,6 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 }
                 bestDist[i] = 100000;
             }
-            //int vertexCount = data[0][0];
             bestDist[0] = 0;
             for (int i = 0; i < v; i++)
             {
@@ -49,7 +47,6 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                     }
             }
             Console.WriteLine(answer);
-            //File.WriteAllText("spantree.out", answer.ToString());
         }
     }
 }
