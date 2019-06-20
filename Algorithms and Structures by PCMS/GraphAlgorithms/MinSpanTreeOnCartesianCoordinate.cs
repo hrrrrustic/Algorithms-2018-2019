@@ -5,52 +5,88 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
     public class PrimaForCompleteGraph
     {
-        public class Graph
+        private class Graph
         {
-            
+            public int VertexCount { get; }
+            public double[][] AdjMatrix { get; }
+            public bool[] Visited { get; }
+
+            public Graph(int vertexCount, double[][] adjMatrix)
+            {
+                AdjMatrix = adjMatrix;
+                VertexCount = vertexCount;
+                Visited = new bool[vertexCount];
+            }
         }
         public static void Solve(string[] args)
         {
-            double answer = 0;
-            int v = int.Parse(Console.ReadLine());
-            bool[] used = new bool[v];
-            double[] bestDist = new double[v];
-            int[][] data = new int[v][];
-            double[][] adjMatrix = new double[v][];
-            for (int i = 0; i < v; i++)
+            int rowCount = int.Parse(Console.ReadLine());
+
+            Graph currentGraph = InitGraph(rowCount);
+            
+            Console.WriteLine(PrimaAlgo(currentGraph));
+        }
+
+        private static Graph InitGraph(int vertexCount)
+        {
+            double[][] adjMatrix = new double[vertexCount][];
+            int[][] vertexCoordinates = new int[vertexCount][];
+            for (int i = 0; i < vertexCount; i++)
             {
                 if (adjMatrix[i] == null)
-                    adjMatrix[i] = new double[v];
-                data[i] = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+                    adjMatrix[i] = new double[vertexCount];
+
+                vertexCoordinates[i] = Console
+                    .ReadLine()
+                    .Split(' ')
+                    .Select(int.Parse)
+                    .ToArray();
+
                 for (int j = 0; j < i; j++)
                 {
                     if (adjMatrix[j] == null)
-                        adjMatrix[j] = new double[v];
-                    double val = Math.Sqrt((data[j][0] - data[i][0])*(data[j][0] - data[i][0]) + (data[j][1] - data[i][1])*(data[j][1] - data[i][1]));
-                    adjMatrix[i][j] = val;
-                    adjMatrix[j][i] = val;
+                        adjMatrix[j] = new double[vertexCount];
+
+                    double edgeWeight = Math.Sqrt
+                            (
+                             (vertexCoordinates[j][0] - vertexCoordinates[i][0]) * (vertexCoordinates[j][0] - vertexCoordinates[i][0]) + 
+                             (vertexCoordinates[j][1] - vertexCoordinates[i][1]) * (vertexCoordinates[j][1] - vertexCoordinates[i][1])
+                            );
+
+                    adjMatrix[i][j] = edgeWeight;
+                    adjMatrix[j][i] = edgeWeight;
                 }
-                bestDist[i] = 100000;
             }
-            bestDist[0] = 0;
-            for (int i = 0; i < v; i++)
+            return new Graph(vertexCount, adjMatrix);
+        }
+
+        private static double PrimaAlgo(Graph graph)
+        {
+            const double maxEdgeWeight = 100000;
+            double[] bestDistance = Enumerable.Repeat(maxEdgeWeight, graph.VertexCount).ToArray();
+
+            double answer = 0;
+            bestDistance[0] = 0;
+
+            for (int i = 0; i < graph.VertexCount; i++)
             {
-                int q = -1;
-                for (int j = 0; j < v; j++)
+                int k = -1;
+                for (int j = 0; j < graph.VertexCount; j++)
                 {
-                    if (!used[j] && (q == -1 || bestDist[j] < bestDist[q]))
-                        q = j;
+                    if (!graph.Visited[j] && (k == -1 || bestDistance[j] < bestDistance[k]))
+                        k = j;
                 }
-                answer += bestDist[q];
-                used[q] = true;
-                if (i != v - 1)
-                    for (int j = 0; j < v; j++)
+                answer += bestDistance[k];
+                graph.Visited[k] = true;
+                if (i != graph.VertexCount - 1)
+                    for (int j = 0; j < graph.VertexCount; j++)
                     {
-                        if (adjMatrix[q][j] < bestDist[j])
-                            bestDist[j] = adjMatrix[q][j];
+                        if (graph.AdjMatrix[k][j] < bestDistance[j])
+                            bestDistance[j] = graph.AdjMatrix[k][j];
                     }
             }
-            Console.WriteLine(answer);
+
+            return answer;
         }
     }
 }
