@@ -30,14 +30,12 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         {
             long[][] data = File
                 .ReadAllLines("path.in")
-                .Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray())
+                .Select(k => k.Trim().Split(' ').Select(long.Parse).ToArray())
                 .ToArray();
 
-            long vertexCount = data[0][0];
-            long edgeCount = data[0][1];
             long start = data[0][2] - 1;
 
-            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), edgeCount, vertexCount);
+            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), data[0][1], data[0][0]);
 
             currentGraph.Distances[start] = 0;
 
@@ -68,9 +66,9 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 {
                     long fromVertex = graph.EdgeList[j].Item1;
                     long toVertex = graph.EdgeList[j].Item2;
-                    long edjeWeight = graph.EdgeList[j].Item3;
-                    if (graph.Distances[fromVertex] != long.MaxValue && graph.Distances[fromVertex] + edjeWeight < graph.Distances[toVertex])
-                        graph.Distances[toVertex] = graph.Distances[fromVertex] + edjeWeight;
+                    long edgeWeight = graph.EdgeList[j].Item3;
+                    if (graph.Distances[fromVertex] != long.MaxValue && graph.Distances[fromVertex] + edgeWeight < graph.Distances[toVertex])
+                        graph.Distances[toVertex] = graph.Distances[fromVertex] + edgeWeight;
                 }
             }
         }

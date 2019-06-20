@@ -5,71 +5,103 @@ using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class FordFalkerson
+    public class FordFalkerson
     {
-        static bool[] visited;
-        static int t;
-        static List<Tuple<int,int,int>>[] adjList;
-        static void Solve(string[] args)
+        private class Graph
         {
-            int[][] data = File.ReadAllLines("maxflow.in").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
-            int vertexCount = data[0][0];
-            int edgeCount = data[0][1];
-            adjList = new List<Tuple<int, int, int>>[vertexCount];
-            t = vertexCount - 1;
-            visited = new bool[vertexCount];
-            for (int i = 0; i < edgeCount; i++)
+            public List<Tuple<int,int,int>>[] AdjList { get; }
+            public int VertexCount { get; }
+            public int Sink { get; }
+            public const int MaxEdgeCapacity = (int) 1e5;
+            public bool[] Visited { get; set; }
+
+            public Graph(List<Tuple<int, int, int>>[] adjList, int vertexCount)
             {
-                int from = data[i + 1][0] - 1;
-                int to = data[i + 1][1] - 1;
-                if (adjList[from] == null)
-                    adjList[from] = new List<Tuple<int,int,int>>(999);
-                adjList[from].Add(Tuple.Create(to, data[i + 1][2], 0));
-                if (adjList[to] == null)
-                    adjList[to] = new List<Tuple<int, int, int>>(999);
-                adjList[to].Add(Tuple.Create(from, data[i + 1][2], data[i + 1][2]));
+                AdjList = adjList;
+                VertexCount = vertexCount;
+                Sink = vertexCount - 1;
+                Visited = Enumerable.Repeat(false, vertexCount).ToArray();
             }
-            int answer = 0;
+        }
+        public static void Solve(string[] args)
+        {
+            int[][] data = File
+                .ReadAllLines("maxflow.in")
+                .Select(k => k.Trim().Split(' ').Select(int.Parse).ToArray())
+                .ToArray();
+            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), data[0][1], data[0][0]);
+            int maxFlow = 0;
             while(true)
             {
-                int currentanswer = answer;
-                answer += FFByDfs(0, (int)1e5);
-                if (currentanswer == answer)
+
+                int prevMaxFlowValue = maxFlow;
+                maxFlow += FordFalkersonAlgoByDFS(currentGraph, 0, Graph.MaxEdgeCapacity);
+
+                if (prevMaxFlowValue == maxFlow)
                     break;
-                for (int i = 0; i < visited.Length; i++)
-                {
-                    visited[i] = false;
-                }
+                currentGraph.Visited = Enumerable.Repeat(false, currentGraph.VertexCount).ToArray();
             }
-            Console.WriteLine(answer);
+
+            Console.WriteLine(maxFlow);
         }
 
-        static int FFByDfs(int u, int Cmin)
+        private static int FordFalkersonAlgoByDFS(Graph graph, int source, int currentCapacity)
         {
-            if (u == t)
-                return Cmin;
-            visited[u] = true;
-            for (int i = 0; i < adjList[u].Count; i++)
+            if (source == graph.Sink)
+                return currentCapacity;
+            graph.Visited[source] = true;
+            for (int i = 0; i < graph.AdjList[source].Count; i++)
             {
-                if (!visited[adjList[u][i].Item1] && adjList[u][i].Item3 < adjList[u][i].Item2)
+                if (!graph.Visited[graph.AdjList[source][i].Item1] && graph.AdjList[source][i].Item3 < graph.AdjList[source][i].Item2)
                 {
-                    int min = Cmin > adjList[u][i].Item2 - adjList[u][i].Item3 ? adjList[u][i].Item2 - adjList[u][i].Item3 : Cmin;
-                    int delta = FFByDfs(adjList[u][i].Item1, min);
+                    int minValue = currentCapacity > graph.AdjList[source][i].Item2 - graph.AdjList[source][i].Item3 ? 
+                        graph.AdjList[source][i].Item2 - graph.AdjList[source][i].Item3 : currentCapacity;
+
+                    int delta = FordFalkersonAlgoByDFS(graph, graph.AdjList[source][i].Item1, minValue);
                     if (delta > 0)
                     {
-                        adjList[u][i] = Tuple.Create(adjList[u][i].Item1, adjList[u][i].Item2, adjList[u][i].Item3 + delta);
-                        int pos;
-                        for (pos = 0; pos < adjList[adjList[u][i].Item1].Count; pos++)
+                        graph.AdjList[source][i] = Tuple
+                            .Create
+                                (
+                                graph.AdjList[source][i].Item1, graph.AdjList[source][i].Item2,
+                                graph.AdjList[source][i].Item3 + delta
+                                );
+                        int index;
+                        for (index = 0; index < graph.AdjList[graph.AdjList[source][i].Item1].Count; index++)
                         {
-                            if (adjList[adjList[u][i].Item1][pos].Item1 == u)
+                            if (graph.AdjList[graph.AdjList[source][i].Item1][index].Item1 == source)
                                 break;
                         }
-                        adjList[adjList[u][i].Item1][pos] = Tuple.Create(adjList[adjList[u][i].Item1][pos].Item1, adjList[adjList[u][i].Item1][pos].Item2, adjList[adjList[u][i].Item1][pos].Item3 - delta);
+                        graph.AdjList[graph.AdjList[source][i].Item1][index] = Tuple
+                            .Create
+                                (
+                                graph.AdjList[graph.AdjList[source][i].Item1][index].Item1,
+                                graph.AdjList[graph.AdjList[source][i].Item1][index].Item2,
+                                graph.AdjList[graph.AdjList[source][i].Item1][index].Item3 - delta
+                                );
+
                         return delta;
                     }
                 }
             }
             return 0;
+        }
+
+        private static Graph InitGraph(int[][] data, int edgeCount, int vertexCount)
+        {
+            List<Tuple<int, int, int>>[] adjList = new List<Tuple<int, int, int>>[vertexCount];
+            for (int i = 0; i < edgeCount; i++)
+            {
+                int fromVertex = data[i][0] - 1;
+                int toVertex = data[i][1] - 1;
+                if (adjList[fromVertex] == null)
+                    adjList[fromVertex] = new List<Tuple<int, int, int>>(999);
+                adjList[fromVertex].Add(Tuple.Create(toVertex, data[i][2], 0));
+                if (adjList[toVertex] == null)
+                    adjList[toVertex] = new List<Tuple<int, int, int>>(999);
+                adjList[toVertex].Add(Tuple.Create(fromVertex, data[i][2], data[i][2]));
+            }
+            return  new Graph(adjList, vertexCount);
         }
     }
 }

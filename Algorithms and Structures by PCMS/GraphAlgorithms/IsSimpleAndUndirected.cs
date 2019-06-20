@@ -8,9 +8,13 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         public static void Solve()
         {
             
-            int[][] inputData = File.ReadAllLines("input.txt").Select(k => k.Trim().Split(' ').Select(e => int.Parse(e)).ToArray()).ToArray();
+            int[][] inputData = File
+                .ReadAllLines("input.txt")
+                .Select(k => k.Trim().Split(' ').Select(int.Parse).ToArray())
+                .ToArray();
             int vertexCount = inputData[0][0];
-            File.WriteAllText("output.txt", IsUndirectedAndSimple(inputData.Skip(1).ToArray(), vertexCount) == true ? "YES" : "NO");
+            File.WriteAllText("output.txt", 
+                IsUndirectedAndSimple(inputData.Skip(1).ToArray(), vertexCount) == true ? "YES" : "NO");
         }
         private static bool IsUndirectedAndSimple(int[][] adjMatrix, int vertexCount)
         {

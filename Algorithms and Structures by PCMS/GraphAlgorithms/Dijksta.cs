@@ -10,13 +10,13 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         {
             if (leftKvp.Value < rightKvp.Value)
                 return -1;
-            else if (leftKvp.Value > rightKvp.Value)
+            if (leftKvp.Value > rightKvp.Value)
                 return 1;
-            else if (leftKvp.Value == rightKvp.Value && leftKvp.Key == rightKvp.Key)
+            if (leftKvp.Value == rightKvp.Value && leftKvp.Key == rightKvp.Key)
                 return 0;
-            else if (leftKvp.Key > rightKvp.Key && leftKvp.Value == rightKvp.Value)
+            if (leftKvp.Key > rightKvp.Key && leftKvp.Value == rightKvp.Value)
                 return 1;
-            else return -1;
+            return -1;
         }
     }
 
@@ -25,12 +25,10 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         private class Graph
         {
             public readonly List<KeyValuePair<int,int>>[] AdjList;
-            private int EdgeCount { get; }
             private int VertexCount { get; }
             public int[] Distance { get; }
             public Graph(List<KeyValuePair<int,int>>[] adjList, int maxValue)
             {
-                EdgeCount = adjList.Sum(k => k?.Count ?? 0);
                 VertexCount = adjList.Length;
                 AdjList = adjList;
                 Distance = Enumerable.Repeat(maxValue, VertexCount).ToArray();
@@ -41,12 +39,10 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             int[] inputData = Console
                 .ReadLine()
                 .Split(' ')
-                .Select(k => int.Parse(k))
+                .Select(int.Parse)
                 .ToArray();
 
-            int vertexCount = inputData[0];
-            int edgeCount = inputData[1];
-            Graph graph = InitGraph(vertexCount, edgeCount);
+            Graph graph = InitGraph(inputData[0], inputData[1]);
             Console.WriteLine(string.Join(" ", DijkstraAlgo(graph)));
         }
         private static int[] DijkstraAlgo(Graph graph)
@@ -83,7 +79,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 int[] data = Console
                     .ReadLine()
                     .Split(' ')
-                    .Select(k => int.Parse(k))
+                    .Select(int.Parse)
                     .ToArray();
 
                 if (adjList[data[0] - 1] == null)

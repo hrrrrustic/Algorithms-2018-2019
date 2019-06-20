@@ -10,11 +10,12 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             
             string[] inputData = File.ReadAllLines("input.txt");
             int vertexCount = int.Parse(inputData[0].Split(' ').First());
-            File.WriteAllText("output.txt", string.Join(" ", VertexDegrees(inputData.Skip(1).ToArray(), vertexCount)));
+            File.WriteAllText("output.txt", 
+                string.Join(" ", VertexDegrees(inputData.Skip(1).ToArray(), vertexCount)));
         }
-        private static int[] VertexDegrees(string[] edgeList, int verteCount)
+        private static int[] VertexDegrees(string[] edgeList, int vertexCount)
         {
-            int[] degrees = new int[verteCount];
+            int[] degrees = new int[vertexCount];
             for (int i = 0; i < edgeList.Length; i++)
             {
                 int[] splittedData = edgeList[i].Split(' ').Select(k => int.Parse(k) - 1).ToArray();

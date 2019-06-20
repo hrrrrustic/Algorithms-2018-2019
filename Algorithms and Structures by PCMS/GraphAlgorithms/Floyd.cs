@@ -23,7 +23,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             int[][] inputData = File
                 .ReadAllLines("pathsg.in")
                 .Select(k => k.Trim().Split(' ')
-                    .Select(e => int.Parse(e))
+                    .Select(int.Parse)
                     .ToArray())
                 .ToArray();
             int vertexCount = inputData[0][0];

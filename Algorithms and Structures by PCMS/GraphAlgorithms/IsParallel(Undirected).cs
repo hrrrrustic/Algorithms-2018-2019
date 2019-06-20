@@ -13,7 +13,8 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             int vertexCount = int.Parse(inputData[0].Split(' ').First());
             int edgeCount = int.Parse(inputData[0].Split(' ').Last());
 
-            File.WriteAllText("output.txt", IsParallelAndDirected(inputData.Skip(1).ToArray(), vertexCount, edgeCount) ? "YES" : "NO");
+            File.WriteAllText("output.txt", 
+                IsParallelAndDirected(inputData.Skip(1).ToArray(), vertexCount, edgeCount) ? "YES" : "NO");
         }
         private static bool IsParallelAndDirected(string[] edgeList, int vertexCount, int edgeCount)
         {

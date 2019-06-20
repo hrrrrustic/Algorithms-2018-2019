@@ -18,7 +18,6 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             string[] inputNotation = File.ReadAllText("postfix.in").Split(' ');
             int current = 0;
             
-            //TODO: use Stack<int>
             int[] stack = new int[inputNotation.Length];
             for (int i = 0; i < inputNotation.Length; i++)
             {
