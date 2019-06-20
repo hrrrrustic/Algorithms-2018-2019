@@ -10,8 +10,8 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         private class Graph
         {
             public long VertexCount { get; }
-            public  long EdgeCount { get; }
-            public  long[] Distances { get; }
+            public long EdgeCount { get; }
+            public long[] Distances { get; }
             public List<Tuple<long, long, long>> EdgeList { get; }
 
             public Graph(long vertexCount, List<Tuple<long, long, long>> edgeList, long edgeCount)
@@ -26,6 +26,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 }
             }
         }
+
         public static void Solve(string[] args)
         {
             long[][] data = File

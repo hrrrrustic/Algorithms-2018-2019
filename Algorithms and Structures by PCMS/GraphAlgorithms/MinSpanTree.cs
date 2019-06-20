@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    public class KvpComparerForSpanTree : IComparer<KeyValuePair<int,int>>
+    public class KvpComparerForSpanTree : IComparer<KeyValuePair<int, int>>
     {
-        public int Compare(KeyValuePair<int,int> kvp1, KeyValuePair<int,int> kvp2)
+        public int Compare(KeyValuePair<int, int> kvp1, KeyValuePair<int, int> kvp2)
         {
             if (kvp1.Value < kvp2.Value)
                 return -1;
@@ -23,68 +23,88 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 
     public class Prima
     {
+        private class Graph
+        {
+            public List<KeyValuePair<int, int>>[] AdjList { get; }
+            public int VertexCount { get; }
+            public bool[] Visited { get; }
+
+            public Graph(List<KeyValuePair<int,int>>[] adjList, int vertexCount, int edgeCount)
+            {
+                AdjList = adjList;
+                VertexCount = vertexCount;
+                Visited = new bool[vertexCount];
+            }
+        }
+
         public static void Solve(string[] args)
         {
-            long answer = 0;
-            int edgeCount;
-            int vertexCount;
-            List<KeyValuePair<int, int>>[] adjList;
-            using (var file = new StreamReader("spantree2.in"))
+            int[][] data = File
+                .ReadAllLines("spantree2.in")
+                .Select(k => k.Split(' ').Select(int.Parse).ToArray())
+                .ToArray();
+            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), data[0][1], data[0][0]);
+
+            Console.WriteLine(PrimaAlgo(currentGraph));
+        }
+
+        private static Graph InitGraph(int[][] data, int edgeCount, int vertexCount)
+        {
+            List<KeyValuePair<int, int>>[] adjList = new List<KeyValuePair<int, int>>[vertexCount];
+            for (int i = 0; i < edgeCount; i++)
             {
-                int[] info = file.ReadLine().Split(' ').Select(int.Parse).ToArray();
-                vertexCount = info[0];
-                edgeCount = info[1];
-                adjList = new List<KeyValuePair<int, int>>[vertexCount];
-                for (int i = 0; i < edgeCount; i++)
-                {
-                    int[] splittedData = file.ReadLine().Split(' ').Select(int.Parse).ToArray();
-                    int j = splittedData[0] - 1;
-                    int k = splittedData[1] - 1;
-                    int dist = splittedData[2];
-                    if (adjList[j] == null)
-                        adjList[j] = new List<KeyValuePair<int, int>>();
-                    KeyValuePair<int, int> value = new KeyValuePair<int, int>(k, dist);
-                    adjList[j].Add(value);
-                    if (adjList[k] == null)
-                        adjList[k] = new List<KeyValuePair<int, int>>();
-                    KeyValuePair<int, int> value2 = new KeyValuePair<int, int>(j, dist);
-                    adjList[k].Add(value2);
-                }
+                int firstVertex = data[i][0] - 1;
+                int secondVertex = data[i][1] - 1;
+                int edgeWeight = data[i][2];
+                if (adjList[firstVertex] == null)
+                    adjList[firstVertex] = new List<KeyValuePair<int, int>>();
+
+                adjList[firstVertex].Add(new KeyValuePair<int, int>(secondVertex, edgeWeight));
+
+                if (adjList[secondVertex] == null)
+                    adjList[secondVertex] = new List<KeyValuePair<int, int>>();
+
+                adjList[secondVertex].Add(new KeyValuePair<int, int>(firstVertex, edgeWeight));
             }
-            bool[] visited = new bool[vertexCount];
-            int[] bestdist = new int[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
+
+            return new Graph(adjList, vertexCount, edgeCount);
+        }
+
+        private static long PrimaAlgo(Graph graph)
+        {
+            long spanTreeWeight = 0;
+            const int maxWeight = 100000;
+            int[] bestDistance = Enumerable.Repeat(maxWeight + 1, graph.VertexCount).ToArray();
+
+            SortedDictionary<KeyValuePair<int, int>, int> priorityQueue =
+                new SortedDictionary<KeyValuePair<int, int>, int>(new KvpComparerForSpanTree());
+
+            bestDistance[0] = 0;
+            priorityQueue.Add(new KeyValuePair<int, int>(0, 0), 0);
+
+            for (int i = 0; i < graph.VertexCount; i++)
             {
-                bestdist[i] = 100001;
-            }
-            SortedDictionary<KeyValuePair<int,int>,int> prim = new SortedDictionary<KeyValuePair<int, int>,int>(new KvpComparerForSpanTree());
-            bestdist[0] = 0;
-            prim.Add(new KeyValuePair<int, int>(0, 0), 0);
-            for (int i = 0; i < vertexCount; i++)
-            {
-                var f = prim.First();
-                int vertex = f.Key.Key;
-                int d = f.Key.Value;
-                answer += d;
-                visited[vertex] = true;
-                prim.Remove(new KeyValuePair<int, int>(vertex,d));
-                for (int j = 0; j < adjList[vertex].Count; j++)
+                var bestEdge = priorityQueue.First();
+                int destinationVertex = bestEdge.Key.Key;
+                int bestEdgeWeight = bestEdge.Key.Value;
+                spanTreeWeight += bestEdgeWeight;
+                graph.Visited[destinationVertex] = true;
+                priorityQueue.Remove(new KeyValuePair<int, int>(destinationVertex, bestEdgeWeight));
+
+                for (int j = 0; j < graph.AdjList[destinationVertex].Count; j++)
                 {
-                    int dist = adjList[vertex][j].Value;
-                    int dest = adjList[vertex][j].Key;
-                    if (dist < bestdist[dest] && !visited[dest])
+                    int distance = graph.AdjList[destinationVertex][j].Value;
+                    int destination = graph.AdjList[destinationVertex][j].Key;
+                    if (distance < bestDistance[destination] && !graph.Visited[destination])
                     {
-                        try
-                        {
-                            prim.Remove(new KeyValuePair<int, int>(dest, bestdist[dest]));
-                        }
-                        catch (Exception) { }
-                        prim.Add(new KeyValuePair<int, int>(dest, dist), 0);
-                        bestdist[dest] = dist;
+                        priorityQueue.Remove(new KeyValuePair<int, int>(destination, bestDistance[destination]));
+                        priorityQueue.Add(new KeyValuePair<int, int>(destination, distance), 0);
+                        bestDistance[destination] = distance;
                     }
                 }
             }
-            Console.WriteLine(answer);
+
+            return spanTreeWeight;
         }
     }
 }

@@ -5,6 +5,10 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
     public class PrimaForCompleteGraph
     {
+        public class Graph
+        {
+            
+        }
         public static void Solve(string[] args)
         {
             double answer = 0;
