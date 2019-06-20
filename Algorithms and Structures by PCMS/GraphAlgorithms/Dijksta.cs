@@ -22,11 +22,11 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 
     public class Dijkstra
     {
-        public class Graph
+        private class Graph
         {
             public readonly List<KeyValuePair<int,int>>[] AdjList;
-            public int EdgeCount { get; }
-            public int VertexCount { get; }
+            private int EdgeCount { get; }
+            private int VertexCount { get; }
             public int[] Distance { get; }
             public Graph(List<KeyValuePair<int,int>>[] adjList, int maxValue)
             {

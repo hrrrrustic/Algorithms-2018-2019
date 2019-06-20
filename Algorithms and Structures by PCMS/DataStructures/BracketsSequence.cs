@@ -18,7 +18,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
             File.WriteAllText("brackets.out", string.Join("\r\n", answers));
         }
 
-        public static bool CheckSequence(string sequence)
+        private static bool CheckSequence(string sequence)
         {
             int sequenceLength = sequence.Length;
             for (int j = 1; j < sequenceLength; j++)

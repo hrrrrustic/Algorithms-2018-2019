@@ -22,7 +22,6 @@ namespace AlgorithmsAndStructuresByPCMS.BinarySearch
                 .Select(int.Parse)
                 .ToArray();
 
-            //TODO:AI replace with List<(int, int)>
             List<int> answers = new List<int>();
             for (int i = 0; i < requestCount; i++)
             {

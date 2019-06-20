@@ -6,18 +6,14 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
     public class Floyd
     {
-        public class Graph
+        private class Graph
         {
-            public int VertexCount { get; private set; }
-            public int EdgeCount { get; }
-            public int[][] EdgeList { get; }
+            public int VertexCount { get; }
             public int[][] DistanseMatrix { get; }
 
-            public Graph(int[][] edgeList, int[][] distanseMatrix, int vertexCount, int edgeCount)
+            public Graph(int[][] distanseMatrix, int vertexCount)
             {
-                EdgeList = edgeList;
                 VertexCount = vertexCount;
-                EdgeCount = edgeCount;
                 DistanseMatrix = distanseMatrix;
             }
         }
@@ -37,10 +33,10 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 vertexCount);
 
             FloydAlgo(currentGraph);
-
+            PrintAnswer(currentGraph);
         }
 
-        public static Graph InitGraph(int[][] edgeList, int[][] dist, int edgeCount, int vertexCount)
+        private static Graph InitGraph(int[][] edgeList, int[][] dist, int edgeCount, int vertexCount)
         {
             for (int i = 0; i < edgeCount; i++)
             {
@@ -49,10 +45,10 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 int weight = edgeList[i][2];
                 dist[from][to] = weight;
             }
-            return new Graph(edgeList, dist, vertexCount, edgeCount);
+            return new Graph(dist, vertexCount);
         }
 
-        public static void PrintAnswer(Graph graph)
+        private static void PrintAnswer(Graph graph)
         {
             for (int i = 0; i < graph.VertexCount; i++)
             {
@@ -65,7 +61,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             }
         }
 
-        public static int[][] InitDistanseMatrix(int vertexCount)
+        private static int[][] InitDistanseMatrix(int vertexCount)
         {
             int[][] dist = new int[vertexCount][];
             for (int i = 0; i < vertexCount; i++)
@@ -83,7 +79,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             return dist;
         }
 
-        public static void FloydAlgo(Graph graph)
+        private static void FloydAlgo(Graph graph)
         {
             for (int i = 0; i < graph.VertexCount; i++)
             {

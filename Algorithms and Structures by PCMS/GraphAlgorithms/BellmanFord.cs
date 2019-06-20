@@ -3,63 +3,105 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace GraphAlgorithms
+namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
-    class BellmanFord
+    public class BellmanFord
     {
-        static void Solve(string[] args)
+        private class Graph
         {
-            long[][] data = File.ReadAllLines("path.in").Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray()).ToArray();
+            public long VertexCount { get; }
+            public  long EdgeCount { get; }
+            public  long[] Distances { get; }
+            public List<Tuple<long, long, long>> EdgeList { get; }
+
+            public Graph(long vertexCount, List<Tuple<long, long, long>> edgeList, long edgeCount)
+            {
+                VertexCount = vertexCount;
+                EdgeList = edgeList;
+                EdgeCount = edgeCount;
+                Distances = new long[vertexCount];
+                for (int i = 0; i < vertexCount; i++)
+                {
+                    Distances[i] = long.MaxValue;
+                }
+            }
+        }
+        public static void Solve(string[] args)
+        {
+            long[][] data = File
+                .ReadAllLines("path.in")
+                .Select(k => k.Trim().Split(' ').Select(e => long.Parse(e)).ToArray())
+                .ToArray();
+
             long vertexCount = data[0][0];
             long edgeCount = data[0][1];
             long start = data[0][2] - 1;
+
+            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), edgeCount, vertexCount);
+
+            currentGraph.Distances[start] = 0;
+
+            BellmanFordAlgo(currentGraph);
+            BellmanFordSearchVertexOnNegativeCycle(currentGraph);
+            PrintAnswer(currentGraph);
+        }
+
+        private static Graph InitGraph(long[][] inputData, long edgeCount, long vertexCount)
+        {
             List<Tuple<long, long, long>> edgeList = new List<Tuple<long, long, long>>();
             for (int i = 0; i < edgeCount; i++)
             {
-                long from = data[i + 1][0] - 1;
-                long to = data[i + 1][1] - 1;
-                long weight = data[i + 1][2];
+                long from = inputData[i + 1][0] - 1;
+                long to = inputData[i + 1][1] - 1;
+                long weight = inputData[i + 1][2];
                 edgeList.Add(Tuple.Create(from, to, weight));
             }
-            long[] dist = new long[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
-            {
-                dist[i] = long.MaxValue;
-            }
-            dist[start] = 0;
-            for (int i = 0; i < vertexCount - 1; i++)
-            {
-                for (int j = 0; j < edgeCount; j++)
-                {
-                    long from = edgeList[j].Item1;
-                    long to = edgeList[j].Item2;
-                    long w = edgeList[j].Item3;
-                    if (dist[from] != long.MaxValue && dist[from] + w < dist[to])
-                        dist[to] = dist[from] + w;
-                }
-            }
-            for (int i = 0; i < vertexCount - 1; i++)
-            {
-                for (int j = 0; j < edgeCount; j++)
-                {
 
-                    long from = edgeList[j].Item1;
-                    long to = edgeList[j].Item2;
-                    long w = edgeList[j].Item3;
-                    if (dist[from] != long.MaxValue && dist[from] + w < dist[to])
-                        dist[to] = (long)(-5*1e18) + 228;
-                }
-            }
-            for (int i = 0; i < vertexCount; i++)
+            return new Graph(vertexCount, edgeList, edgeCount);
+        }
+
+        private static void BellmanFordAlgo(Graph graph)
+        {
+            for (int i = 0; i < graph.VertexCount - 1; i++)
             {
-                if (dist[i] <= -5 * 1e18 + 228) // 18 нулей
-                    Console.WriteLine("-");
-                else if (dist[i] == long.MaxValue)
-                    Console.WriteLine("*");
-                else
-                    Console.WriteLine(dist[i]);
+                for (int j = 0; j < graph.EdgeCount; j++)
+                {
+                    long fromVertex = graph.EdgeList[j].Item1;
+                    long toVertex = graph.EdgeList[j].Item2;
+                    long edjeWeight = graph.EdgeList[j].Item3;
+                    if (graph.Distances[fromVertex] != long.MaxValue && graph.Distances[fromVertex] + edjeWeight < graph.Distances[toVertex])
+                        graph.Distances[toVertex] = graph.Distances[fromVertex] + edjeWeight;
+                }
             }
         }
 
+        private static void BellmanFordSearchVertexOnNegativeCycle(Graph graph)
+        {
+            for (int i = 0; i < graph.VertexCount - 1; i++)
+            {
+                for (int j = 0; j < graph.EdgeCount; j++)
+                {
+
+                    long fromVertex = graph.EdgeList[j].Item1;
+                    long toVertex = graph.EdgeList[j].Item2;
+                    long edgeWeight = graph.EdgeList[j].Item3;
+                    if (graph.Distances[fromVertex] != long.MaxValue && graph.Distances[fromVertex] + edgeWeight < graph.Distances[toVertex])
+                        graph.Distances[toVertex] = (long)(-5 * 1e18) + 228;
+                }
+            }
+        }
+
+        private static void PrintAnswer(Graph graph)
+        {
+            for (int i = 0; i < graph.VertexCount; i++)
+            {
+                if (graph.Distances[i] <= -5 * 1e18 + 228)
+                    Console.WriteLine("-");
+                else if (graph.Distances[i] == long.MaxValue)
+                    Console.WriteLine("*");
+                else
+                    Console.WriteLine(graph.Distances[i]);
+            }
+        }
     }
 }

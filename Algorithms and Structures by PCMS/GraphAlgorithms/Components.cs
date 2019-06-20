@@ -6,17 +6,15 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
     public class BreadthFirstSearchforComponents
     {
-        public class Graph
+        private class Graph
         {
-            public List<int>[] AdjList;
-            public int EdgeCount { get; set; }
-            public int VertexCount { get; set; }
-            public int ComponentNumber { get; set; }
+            private readonly List<int>[] _adjList;
+            private int VertexCount { get; }
+            public int ComponentNumber { get; private set; }
             public Graph(List<int>[] adjList)
             {
-                EdgeCount = adjList.Sum(k => k?.Count ?? 0);
                 VertexCount = adjList.Length;
-                AdjList = adjList;
+                _adjList = adjList;
                 ComponentNumber = 1;
             }
 
@@ -43,15 +41,15 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 while (bfsQueue.Count != 0)
                 {
                     int currentVertex = bfsQueue.Dequeue();
-                    if (AdjList[currentVertex] != null)
+                    if (_adjList[currentVertex] != null)
                     {
-                        for (int i = 0; i < AdjList[currentVertex].Count; i++)
+                        for (int i = 0; i < _adjList[currentVertex].Count; i++)
                         {
-                            if (!visited[AdjList[currentVertex][i]])
+                            if (!visited[_adjList[currentVertex][i]])
                             {
-                                visited[AdjList[currentVertex][i]] = true;
-                                vertexList[AdjList[currentVertex][i]] = ComponentNumber;
-                                bfsQueue.Enqueue(AdjList[currentVertex][i]);
+                                visited[_adjList[currentVertex][i]] = true;
+                                vertexList[_adjList[currentVertex][i]] = ComponentNumber;
+                                bfsQueue.Enqueue(_adjList[currentVertex][i]);
                             }
                         }
                     }

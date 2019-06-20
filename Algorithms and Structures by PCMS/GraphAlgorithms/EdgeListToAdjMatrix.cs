@@ -11,7 +11,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             int vertexCount = int.Parse(inputData[0].Split(' ').First());
             int edgeCount = int.Parse(inputData[0].Split(' ').Last());
             int[,] matrix = EdgeListToMatrix(vertexCount, edgeCount, inputData.Skip(1).ToArray());
-            OutPut(matrix, vertexCount);
+            PrintAnswer(matrix, vertexCount);
         }
         private static int[,] EdgeListToMatrix(int vertexCount,int edgeCount, string[] edjeList)
         {
@@ -24,7 +24,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             }
             return adjMatrix;
         }
-        private static void OutPut(int[,] adjMatrix, int vertexCount)
+        private static void PrintAnswer(int[,] adjMatrix, int vertexCount)
         {
             using (var outFile = new StreamWriter("output.txt"))
             {

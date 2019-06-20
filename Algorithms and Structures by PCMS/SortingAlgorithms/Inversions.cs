@@ -6,7 +6,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
     public class InversionsResult
     {
-        public int inversionsCount = 0;
+        public int InversionsCount = 0;
     }
 
     public class MergeSortForInversions
@@ -31,7 +31,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
                     {
                         mergedArray[i] = rightArray[rightPointer];
                         rightPointer++;
-                        inversions.inversionsCount = inversions.inversionsCount + (leftArray.Length - leftPointer);
+                        inversions.InversionsCount = inversions.InversionsCount + (leftArray.Length - leftPointer);
                     }
                     else
                     {
@@ -62,7 +62,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             int countOfElements = int.Parse(inputData[0]);
             int[] inputArray = inputData[1].Select(Convert.ToInt32).ToArray();
             inputArray = MergeSorting(inputArray, inversions);
-            File.WriteAllText("inversions.out", inversions.inversionsCount.ToString());
+            File.WriteAllText("inversions.out", inversions.InversionsCount.ToString());
         }
     }
 }

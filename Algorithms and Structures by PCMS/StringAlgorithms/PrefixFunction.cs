@@ -9,7 +9,7 @@ namespace AlgorithmsAndStructuresByPCMS.StringAlgorithms
         {
             string text = File.ReadAllText("prefix.in").Trim();
             int[] zFunctionValue = zFunction(text);
-            Console.WriteLine(string.Join(" ", zFunctionToPrefixFunction(zFunctionValue)));
+            Console.WriteLine(string.Join(" ", ZFunctionToPrefixFunction(zFunctionValue)));
         }
 
         private static int[] zFunction(string text)
@@ -33,7 +33,7 @@ namespace AlgorithmsAndStructuresByPCMS.StringAlgorithms
             return zFunctionValue;
         }
 
-        private static int[] zFunctionToPrefixFunction(int[] zFunctionValue)
+        private static int[] ZFunctionToPrefixFunction(int[] zFunctionValue)
         {
             int[] prefixFunction = new int[zFunctionValue.Length];
             for (int i = 1; i < zFunctionValue.Length; i++)

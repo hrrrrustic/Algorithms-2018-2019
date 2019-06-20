@@ -83,9 +83,9 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             int AValue = inputData[1][0];
             int BValue = inputData[1][1];
             int CValue = inputData[1][2];
-            int firstElemnet = inputData[1][3];
+            int firstElement = inputData[1][3];
             int secondElement = inputData[1][4];
-            int[] arrayForSearching = FillArray(arrayLength, AValue, BValue, CValue, firstElemnet, secondElement);
+            int[] arrayForSearching = FillArray(arrayLength, AValue, BValue, CValue, firstElement, secondElement);
 
             Console.WriteLine(KthOrdered(arrayForSearching, searchPosition - 1));
         }
