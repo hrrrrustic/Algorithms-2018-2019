@@ -7,6 +7,19 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
     public class FordBellman
     {
+        private class Graph
+        {
+            public List<Tuple<int,int,long>> EdgeList { get; }
+            public int EdgeCount { get; }
+            public int VertexCount { get; }
+
+            public Graph(List<Tuple<int, int, long>> edgeList, int vertexCount)
+            {
+                EdgeList = edgeList;
+                VertexCount = vertexCount;
+                EdgeCount = edgeList.Count;
+            }
+        }
         public static void Solve(string[] args)
         {
             long[][] data = File.
@@ -14,72 +27,86 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 Select(k => k.Trim().Split(' ').Select(long.Parse).ToArray())
                 .ToArray();
 
-            long vertexCount = data[0][0];
-            List<Tuple<long, long, long>> edgeList = new List<Tuple<long, long, long>>();
+            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), (int)data[0][0]);
+
+            List<int> negativeCycle = SearchNegativeCycleByBellmanFordAlgo(currentGraph);
+
+            if (negativeCycle == null)
+            {
+                Console.WriteLine("NO");
+            }
+            else
+            {
+                Console.WriteLine("YES\r\n" + negativeCycle.Count + "\r\n" + string.Join(" ", negativeCycle));
+            }
+        }
+
+        private static Graph InitGraph(long[][] data, int vertexCount)
+        {
+            List<Tuple<int, int, long>> edgeList = new List<Tuple<int, int, long>>();
             for (int i = 0; i < vertexCount; i++)
             {
                 for (int j = 0; j < vertexCount; j++)
                 {
-                    long from = i;
-                    long to = j;
-                    long weight = data[i + 1][j];
-                    if(from == to && weight < 0)
-                    {
-                        from++;
-                        Console.WriteLine("YES\r\n" + 2 + "\r\n" + from + " " + from);
-                        return;
-                    }
-                    if (weight != 1000000000)
-                        edgeList.Add(Tuple.Create(from, to, weight));
+                    int fromVertex = i;
+                    int toVertex = j;
+                    long edgeWeight = data[i][j];
+                   
+                    if (edgeWeight != 1000000000)
+                        edgeList.Add(Tuple.Create(fromVertex, toVertex, edgeWeight));
                 }
             }
-            long[] dist = new long[vertexCount];
-            long[] prev = new long[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
-            {
-                dist[i] = 1000000000;
-                prev[i] = -1;
-            }
-            int edgeCount = edgeList.Count;
-            dist[0] = 0;
-            long cycleStart = -1;
-            for (int i = 0; i < vertexCount - 1; i++)
+            return new Graph(edgeList, vertexCount);
+        }
+
+        private static List<int> SearchNegativeCycleByBellmanFordAlgo(Graph graph)
+        {
+            long[] distance = Enumerable.Repeat((long)1000000000, graph.VertexCount).ToArray();
+            int[] parents = Enumerable.Repeat(-1, graph.VertexCount).ToArray();
+
+            distance[0] = 0;
+            int cycleStart = -1;
+            for (int i = 0; i < graph.VertexCount - 1; i++)
             {
                 cycleStart = -1;
-                for (int j = 0; j < edgeCount; j++)
+                for (int j = 0; j < graph.EdgeCount; j++)
                 {
-                    long from = edgeList[j].Item1;
-                    long to = edgeList[j].Item2;
-                    long w = edgeList[j].Item3;
-                    if (dist[from] + w < dist[to])
+                    int fromVertex = graph.EdgeList[j].Item1;
+                    int toVertex = graph.EdgeList[j].Item2;
+                    long edgeWeight = graph.EdgeList[j].Item3;
+                    if (distance[fromVertex] + edgeWeight < distance[toVertex])
                     {
-                        dist[to] = dist[from] + w;
-                        cycleStart = to;
-                        prev[to] = from;
+                        distance[toVertex] = distance[fromVertex] + edgeWeight;
+                        cycleStart = toVertex;
+                        parents[toVertex] = fromVertex;
                     }
                 }
             }
-            List<long> cycle = new List<long>(100);
             if (cycleStart == -1)
             {
-                Console.WriteLine("NO");
-                return;
+                return null;
             }
 
-            for (int i = 0; i < vertexCount; i++)
+            return GetCycle(graph, cycleStart, parents);
+        }
+
+        private static List<int> GetCycle(Graph graph, int cycleStart, int[] parents)
+        {
+            List<int> cycle = new List<int>();
+            for (int i = 0; i < graph.VertexCount; i++)
             {
-                cycleStart = prev[cycleStart];
+                cycleStart = parents[cycleStart];
             }
-            long current = cycleStart;
+            int current = cycleStart;
             while (true)
             {
                 cycle.Add(current + 1);
                 if (current == cycleStart && cycle.Count != 1)
                     break;
-                current = prev[current];
+                current = parents[current];
             }
             cycle.Reverse();
-            Console.WriteLine("YES\r\n" + cycle.Count + "\r\n" + string.Join(" ", cycle));
+            return cycle;
         }
     }
 }
