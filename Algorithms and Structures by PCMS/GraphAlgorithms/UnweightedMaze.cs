@@ -86,7 +86,6 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
         }
         private static bool BFSCheckWay(Maze maze)
         {
-            bool wayExisted = false;
             Queue<Tuple<int,int>> queue = new Queue<Tuple<int, int>>();
             queue.Enqueue(maze.StartPosition);
 
@@ -110,12 +109,13 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                         if (maze.MazeMap[i][j] == Finish)
                         {
                             maze.FinishPosition = new Tuple<int, int>(i, j);
-                            wayExisted = true;
+                            return true;
                         }
                     }
                 }
             }
-            return wayExisted;
+
+            return false;
         }
 
         private static bool IsItValidNeighbour(int maxColumn, int maxRow, int j, int i, int currentCol, int currentRow)
