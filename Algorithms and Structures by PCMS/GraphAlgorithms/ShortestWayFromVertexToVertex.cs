@@ -8,6 +8,19 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 
     public class DijkstraForWayToVertex
     {
+        private class Graph
+        {
+            public int VertexCount { get; }
+            public List<KeyValuePair<int, long>>[] AdjMatrix { get; }
+            public bool[] Visited { get; }
+
+            public Graph(int vertexCount, List<KeyValuePair<int, long>>[] adjMatrix)
+            {
+                VertexCount = vertexCount;
+                AdjMatrix = adjMatrix;
+                Visited = new bool[vertexCount];
+            }
+        }
         public static void Solve(string[] args)
         {
             long[][] data = File
@@ -15,10 +28,26 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 .Select(k => k.Trim().Split(' ').Select(long.Parse).ToArray())
                 .ToArray();
 
-            long vertexCount = data[0][0];
-            long start = data[0][1] - 1;
-            long finish = data[0][2] - 1;
-            List<KeyValuePair<long, long>>[] adjMatrix = new List<KeyValuePair<long, long>>[vertexCount];
+            int startVertex = (int)(data[0][1]) - 1;
+            int finishVertex = (int)(data[0][2]) - 1;
+
+            Graph currentGraph = InitGraph(data.Skip(1).ToArray(), (int)data[0][0]);
+
+            long distance = DijkstraAlgo(currentGraph, startVertex, finishVertex);
+
+            if (distance == long.MaxValue)
+            {
+                Console.WriteLine(-1);
+            }
+            else
+            {
+                Console.WriteLine(distance);
+            }
+        }
+
+        private static Graph InitGraph(long[][] data, int vertexCount)
+        {
+            List<KeyValuePair<int, long>>[] adjMatrix = new List<KeyValuePair<int, long>>[vertexCount];
             for (int i = 0; i < vertexCount; i++)
             {
                 for (int j = 0; j < vertexCount; j++)
@@ -28,43 +57,38 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                     if (data[i + 1][j] != -1)
                     {
                         if (adjMatrix[i] == null)
-                            adjMatrix[i] = new List<KeyValuePair<long, long>>();
-                        adjMatrix[i].Add(new KeyValuePair<long, long>(j, data[i + 1][j]));
+                            adjMatrix[i] = new List<KeyValuePair<int, long>>();
+                        adjMatrix[i].Add(new KeyValuePair<int, long>(j, data[i + 1][j]));
                     }
                 }
             }
-            long[] dist = new long[vertexCount];
-            bool[] used = new bool[vertexCount];
-            for (int i = 0; i < vertexCount; i++)
+            return new Graph(vertexCount, adjMatrix);
+        }
+
+        private static long DijkstraAlgo(Graph graph, int startVertex, int finishVertex)
+        {
+            long[] distancesFromStartVertex = Enumerable.Repeat(long.MaxValue, graph.VertexCount).ToArray();
+            distancesFromStartVertex[startVertex] = 0;
+
+            for (int i = 0; i < graph.VertexCount; i++)
             {
-                dist[i] = long.MaxValue;
-            }
-            dist[start] = 0;
-            for (int i = 0; i < vertexCount; i++)
-            {
-                long q = -1;
-                for (int j = 0; j < vertexCount; j++)
+                long k = -1;
+                for (int j = 0; j < graph.VertexCount; j++)
                 {
-                    if (!used[j] && (q == -1 || dist[j] < dist[q]))
-                        q = j;
+                    if (!graph.Visited[j] && (k == -1 || distancesFromStartVertex[j] < distancesFromStartVertex[k]))
+                        k = j;
                 }
-                used[q] = true;
-                if (adjMatrix[q] != null)
-                    foreach (var item in adjMatrix[q])
+                graph.Visited[k] = true;
+
+                if (graph.AdjMatrix[k] != null)
+                    foreach (var item in graph.AdjMatrix[k])
                     {
-                        if (dist[q] + item.Value < dist[item.Key])
-                            dist[item.Key] = dist[q] + item.Value;
+                        if (distancesFromStartVertex[k] + item.Value < distancesFromStartVertex[item.Key])
+                            distancesFromStartVertex[item.Key] = distancesFromStartVertex[k] + item.Value;
                     }
             }
 
-            if (dist[finish] == long.MaxValue)
-            {
-                Console.WriteLine(-1);
-            }
-            else
-            {
-                Console.WriteLine(dist[finish]);
-            }
+            return distancesFromStartVertex[finishVertex];
         }
     }
 }
