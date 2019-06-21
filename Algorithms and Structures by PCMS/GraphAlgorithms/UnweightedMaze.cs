@@ -1,140 +1,170 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 {
     public class DepthFirstSearchForMaze
     {
+        private const int Start = 0;
+        private const int Finish = 10001;
+        private const int Wall = -1;
+        private const int Road = -2;
+
+        private class Maze
+        {
+            public int[][] MazeMap { get; }
+            public int RowCount { get; }
+            public int ColumnCount { get; }
+            public Tuple<int,int> StartPosition { get; }
+            public Tuple<int,int> FinishPosition { get; set; }
+
+            public Maze(int[][] maze, int rowCount, int columnCount, Tuple<int,int> startPosition, Tuple<int,int> finishPosition)
+            {
+                MazeMap = MazeMap;
+                RowCount = rowCount;
+                ColumnCount = columnCount;
+                StartPosition = startPosition;
+                FinishPosition = finishPosition;
+            }
+        }
         public static void Solve(string[] args)
         {
-            List<char> commands = new List<char>();
-            string[] mazeInfo;
-            bool isFound = false;
-            int finishColPos = 0;
-            int finishRowPos = 0;
-            int startRowPos = 0;
-            int startColPos = 0;
-            int rowCount;
-            int colCount;
-            int[][] data;
-            using (var file = new StreamReader("input.txt"))
-            {
-                mazeInfo = file.ReadLine().Split(' ');
-                rowCount = int.Parse(mazeInfo[0]);
-                colCount = int.Parse(mazeInfo[1]);
-                data = new int[rowCount][];
-                for (int i = 0; i < rowCount; i++)
-                {
-                    data[i] = new int[colCount];
-                }
-                for (int i = 0; i < rowCount; i++)
-                {
-                    string buffer = file.ReadLine();
-                    for (int j = 0; j < colCount; j++)
-                    {
-                        switch (buffer[j])
-                        {
-                            case '.':
-                                data[i][j] = -2;
-                                break;
-                            case 'T':
-                                finishRowPos = i;
-                                finishColPos = j;
-                                data[i][j] = 10001;
-                                break;
-                            case 'S':
-                                startRowPos = i;
-                                startColPos = j;
-                                data[i][j] = 0;
-                                break;
-                            case '#':
-                                data[i][j] = -1;
-                                break;
-                        }
+            Maze currentMaze = InitMaze();
+            
+            bool wayExisted = BFSCheckWay(currentMaze);
 
-                    }
-                }
-            }
-            isFound = BFS(data, startRowPos, startColPos, rowCount, colCount, ref finishColPos, ref finishRowPos);
+            List<char> commands = wayExisted ? FindShortestWay(currentMaze) : null;
+            commands.Reverse();
 
-            if (isFound)
-                FindShortestWay(data, finishRowPos, finishColPos, colCount, rowCount, ref commands);
-            else commands.Clear();
             using (var outFile = new StreamWriter("output.txt"))
             {
-                commands.Reverse();
-                outFile.WriteLine(commands.Count == 0 ? -1 : commands.Count);
+                outFile.WriteLine(commands == null ? -1 : commands.Count);
                 outFile.Write(string.Join("", commands));
             }
         }
 
-        private static bool BFS(int[][] map, int startRowPos, int startColPos, int rowCount, int colCount, ref int finishColPos, ref int finishRowPos)
+        private static Maze InitMaze()
         {
-            bool isFound = false;
-            Queue<int> dfsqueue = new Queue<int>();
-            dfsqueue.Enqueue(startRowPos);
-            dfsqueue.Enqueue(startColPos);
-            while (dfsqueue.Count != 0)
+            using (var file = new StreamReader("input.txt"))
             {
-                int currRowPos = dfsqueue.Dequeue();
-                int currColPos = dfsqueue.Dequeue();
-                for (int i = currRowPos - 1; i < currRowPos + 2; i++)
+                string[] mazeInfo = file.ReadLine().Split(' ');
+                int rowCount = int.Parse(mazeInfo[0]);
+                int colCount = int.Parse(mazeInfo[1]);
+                Tuple<int, int> startPosition = null;
+                Tuple<int, int> finishPosition = null;
+                int[][] data = Enumerable.Repeat(new int[colCount], rowCount).ToArray();
+
+                for (int i = 0; i < rowCount; i++)
                 {
-                    for (int j = currColPos - 1; j < currColPos + 2; j++)
+                    char[] currentMazeRow = file.ReadLine().ToCharArray();
+                    for (int j = 0; j < colCount; j++)
                     {
-                        if (Math.Abs(currColPos - j) + Math.Abs(currRowPos - i) != 1 || j > colCount - 1|| j < 0 || i > rowCount - 1 || i < 0)
-                            continue;
-                        if (map[i][j] == -2)
+                        switch (currentMazeRow[j])
                         {
-                            dfsqueue.Enqueue(i);
-                            dfsqueue.Enqueue(j);
-                            map[i][j] = map[currRowPos][currColPos] + 1;
+                            case '.':
+                                data[i][j] = Road;
+                                break;
+                            case 'T':
+                                finishPosition = new Tuple<int, int>(i,j);
+                                data[i][j] = Finish;
+                                break;
+                            case 'S':
+                                startPosition = new Tuple<int, int>(i,j);
+                                data[i][j] = Start;
+                                break;
+                            case '#':
+                                data[i][j] = Wall;
+                                break;
                         }
-                        if (map[i][j] == 10001)
+
+                    }
+                }
+                return new Maze(data, rowCount,colCount, startPosition, finishPosition);
+            }
+        }
+        private static bool BFSCheckWay(Maze maze)
+        {
+            bool wayExisted = false;
+            Queue<Tuple<int,int>> queue = new Queue<Tuple<int, int>>();
+            queue.Enqueue(maze.StartPosition);
+
+            while (queue.Count != 0)
+            {
+                Tuple<int,int> currentPosition = queue.Dequeue();
+                int currentRow = currentPosition.Item1;
+                int currentColumn = currentPosition.Item2;
+
+                for (int i = currentRow - 1; i < currentRow + 2; i++)
+                {
+                    for (int j = currentColumn - 1; j < currentColumn + 2; j++)
+                    {
+                        if (!IsItValidNeighbour(maze.ColumnCount, maze.RowCount, j, i, currentColumn, currentRow))
+                            continue;
+                        if (maze.MazeMap[i][j] == Road)
                         {
-                            finishRowPos = i;
-                            finishColPos = j;
-                            isFound = true;
+                            queue.Enqueue(new Tuple<int, int>(i, j));
+                            maze.MazeMap[i][j] = maze.MazeMap[currentRow][currentColumn] + 1;
+                        }
+                        if (maze.MazeMap[i][j] == Finish)
+                        {
+                            maze.FinishPosition = new Tuple<int, int>(i, j);
+                            wayExisted = true;
                         }
                     }
                 }
             }
-            return isFound;
+            return wayExisted;
         }
 
-        private static void FindShortestWay(int[][] data, int rowPos, int colPos, int colCount, int rowCount, ref List<char> commands)
+        private static bool IsItValidNeighbour(int maxColumn, int maxRow, int j, int i, int currentCol, int currentRow)
         {
-            int minNeighb = 10000;
-            int minCol = 0;
-            int minRow = 0;
-            while (minNeighb != 0)
-            {
-                for (int i = rowPos - 1; i < rowPos + 2; i++)
-                {
-                    for (int j = colPos - 1; j < colPos + 2; j++)
-                    {
-                        if (Math.Abs(colPos - j) + Math.Abs(rowPos - i) > 1 || j > colCount - 1 || j < 0 || i > rowCount - 1 || i < 0 || data[i][j] == -1)
-                            continue;
-                        if (data[i][j] < minNeighb)
-                        {
+            if (Math.Abs(currentCol - j) + Math.Abs(currentRow - i) != 1 || j > maxColumn - 1 || j < 0 ||
+                i > maxRow - 1 || i < 0) return false;
 
-                            minNeighb = data[i][j];
-                            minRow = i;
-                            minCol = j;
+            return true;
+        }
+
+        private static List<char> FindShortestWay(Maze maze)
+        {
+            List<char> commands = new List<char>();
+            int finishRowPosition = maze.FinishPosition.Item1;
+            int finishColumnPosition = maze.FinishPosition.Item2;
+            int minDistanceNeighbour = 10000;
+            int minNeighbourCol = 0;
+            int minNeighbourRow = 0;
+
+            while (minDistanceNeighbour != 0)
+            {
+                for (int i = finishRowPosition - 1; i < finishRowPosition + 2; i++)
+                {
+                    for (int j = finishColumnPosition - 1; j < finishColumnPosition + 2; j++)
+                    {
+                        if (!IsItValidNeighbour(maze.ColumnCount, maze.RowCount, j, i, finishColumnPosition, finishRowPosition) 
+                            || maze.MazeMap[i][j] == Wall)
+                            continue;
+                        if (maze.MazeMap[i][j] < minDistanceNeighbour)
+                        {
+                            minDistanceNeighbour = maze.MazeMap[i][j];
+                            minNeighbourRow = i;
+                            minNeighbourCol = j;
                         }
                     }
                 }
-                if (minRow > rowPos)
+                if (minNeighbourRow > finishRowPosition)
                     commands.Add('U');
-                else if (minRow < rowPos)
+                else if (minNeighbourRow < finishColumnPosition)
                     commands.Add('D');
-                else if (minCol > colPos)
+                else if (minNeighbourCol > finishColumnPosition)
                     commands.Add('L');
                 else commands.Add('R');
-                rowPos = minRow;
-                colPos = minCol;
+
+                finishRowPosition = minNeighbourRow;
+                finishColumnPosition = minNeighbourCol;
             }
+
+            return commands;
         }
     }
 }
