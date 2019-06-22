@@ -36,12 +36,19 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             bool wayExisted = BFSCheckWay(currentMaze);
 
             List<char> commands = wayExisted ? FindShortestWay(currentMaze) : null;
-            commands.Reverse();
 
             using (var outFile = new StreamWriter("output.txt"))
             {
-                outFile.WriteLine(commands == null ? -1 : commands.Count);
-                outFile.Write(string.Join("", commands));
+                if (commands == null)
+                {
+                    outFile.WriteLine(-1);
+                }
+                else
+                {
+                    commands.Reverse();
+                    outFile.WriteLine(commands.Count);
+                    outFile.Write(string.Join("", commands));
+                }
             }
         }
 
