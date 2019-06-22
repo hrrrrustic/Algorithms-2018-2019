@@ -22,7 +22,7 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
 
             public Maze(int[][] maze, int rowCount, int columnCount, Tuple<int,int> startPosition, Tuple<int,int> finishPosition)
             {
-                MazeMap = MazeMap;
+                MazeMap = maze;
                 RowCount = rowCount;
                 ColumnCount = columnCount;
                 StartPosition = startPosition;
