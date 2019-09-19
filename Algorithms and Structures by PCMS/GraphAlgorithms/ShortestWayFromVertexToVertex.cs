@@ -54,11 +54,11 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
                 {
                     if (i == j)
                         continue;
-                    if (data[i + 1][j] != -1)
+                    if (data[i][j] != -1)
                     {
                         if (adjMatrix[i] == null)
                             adjMatrix[i] = new List<KeyValuePair<int, long>>();
-                        adjMatrix[i].Add(new KeyValuePair<int, long>(j, data[i + 1][j]));
+                        adjMatrix[i].Add(new KeyValuePair<int, long>(j, data[i][j]));
                     }
                 }
             }
