@@ -10,7 +10,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
         {
             int countOfElements = int.Parse(File.ReadAllText("antiqs.in"));
 
-            int[] antiQsArray = Enumerable.Range(1, countOfElements).Select(k => k + 1).ToArray();
+            int[] antiQsArray = Enumerable.Range(1, countOfElements).ToArray();
 
             for (int i = 2; i < countOfElements; i++)
             {
