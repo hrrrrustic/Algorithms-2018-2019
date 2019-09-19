@@ -51,7 +51,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
         {
             string[] inputData = File.ReadAllLines("sort.in").Select(k => k.Trim()).ToArray();
             int countOfElements = int.Parse(inputData[0]);
-            int[] needToSortArray = inputData[1].Select(Convert.ToInt32).ToArray();
+            int[] needToSortArray = inputData[1].Split(' ').Select(int.Parse).ToArray();
             needToSortArray = MergeSorting(needToSortArray);
             for (int i = 0; i < needToSortArray.Length; i++)
             {
