@@ -20,13 +20,13 @@ namespace AlgorithmsAndStructuresByPCMS.Hash
 
                 string command = args[0];
                 string key = args[1];
-                string value = args[2];
 
                 int position = Math.Abs((int)((GetHash(key)) % hardDecision));
                 
                 switch (command)
                 {
                     case "put":
+                        string value = args[2];
                         PutCommand(hashTable, position, key, value);
                         break;
                     case "get":
