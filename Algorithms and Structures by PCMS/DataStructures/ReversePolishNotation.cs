@@ -15,7 +15,7 @@ namespace AlgorithmsAndStructuresByPCMS.DataStructures
                 { "*", ((x, y) => x * y) }
             };
 
-            string[] inputNotation = File.ReadAllText("postfix.in").Split(' ');
+            string[] inputNotation = File.ReadAllText("postfix.in").Trim().Split(' ');
             int current = 0;
             
             int[] stack = new int[inputNotation.Length];
