@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
@@ -24,7 +23,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
                 if (rightPointer < rightArray.Count && leftPointer < leftArray.Count)
                     if (string.CompareOrdinal(leftArray[leftPointer], rightArray[rightPointer]) > 0)
                     {
-                        mergedArray.Add(rightArray[leftPointer]);
+                        mergedArray.Add(rightArray[rightPointer]);
                         rightPointer++;
                     }
                     else
