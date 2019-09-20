@@ -50,9 +50,9 @@ namespace AlgorithmsAndStructuresByPCMS.GraphAlgorithms
             List<Tuple<long, long, long>> edgeList = new List<Tuple<long, long, long>>();
             for (int i = 0; i < edgeCount; i++)
             {
-                long from = inputData[i + 1][0] - 1;
-                long to = inputData[i + 1][1] - 1;
-                long weight = inputData[i + 1][2];
+                long from = inputData[i][0] - 1;
+                long to = inputData[i][1] - 1;
+                long weight = inputData[i][2];
                 edgeList.Add(Tuple.Create(from, to, weight));
             }
 
