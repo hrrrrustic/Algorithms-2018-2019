@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.IO;
 
 namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
 {
     public class InversionsResult
     {
-        public int InversionsCount = 0;
+        public long InversionsCount = 0;
     }
 
     public class MergeSortForInversions
@@ -16,14 +15,14 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
             if (needToSortArray.Length == 1)
                 return needToSortArray;
             int midPosition = needToSortArray.Length / 2;
-            return Merge(MergeSorting(needToSortArray.Take(midPosition).ToArray(), inversions), MergeSorting(needToSortArray.Skip(midPosition).ToArray(), inversions), inversions);
+            return Merge(MergeSorting(needToSortArray.Take(midPosition).ToArray(), inversions),
+                MergeSorting(needToSortArray.Skip(midPosition).ToArray(), inversions), inversions);
         }
         private static int[] Merge(int[] leftArray, int[] rightArray, InversionsResult inversions)
         {
             int leftPointer = 0, rightPointer = 0;
-            
             int[] mergedArray = new int[leftArray.Length + rightArray.Length];
-            for (int i = 0; i < leftArray.Length + rightArray.Length; i++)
+            for (int i = 0; i < mergedArray.Length; i++)
             {
                 if (rightPointer < rightArray.Length && leftPointer < leftArray.Length)
                 {
@@ -31,7 +30,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
                     {
                         mergedArray[i] = rightArray[rightPointer];
                         rightPointer++;
-                        inversions.InversionsCount = inversions.InversionsCount + (leftArray.Length - leftPointer);
+                        inversions.InversionsCount += (leftArray.Length - leftPointer);
                     }
                     else
                     {
@@ -59,8 +58,7 @@ namespace AlgorithmsAndStructuresByPCMS.SortingAlgorithms
         {
             string[] inputData = File.ReadAllLines("inversions.in").Select(k => k.Trim()).ToArray();
             InversionsResult inversions = new InversionsResult();
-            int countOfElements = int.Parse(inputData[0]);
-            int[] inputArray = inputData[1].Select(Convert.ToInt32).ToArray();
+            int[] inputArray = inputData[1].Split(' ').Select(int.Parse).ToArray();
             inputArray = MergeSorting(inputArray, inversions);
             File.WriteAllText("inversions.out", inversions.InversionsCount.ToString());
         }
